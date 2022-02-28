@@ -1,0 +1,5 @@
+# Python plugin definition
+refs:
+    # TODO: Add base plugin reference
+    - python.yml    # Python path contribution
+    - version.yml   # Python version contribution
