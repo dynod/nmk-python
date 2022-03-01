@@ -24,3 +24,4 @@ tasks:
         deps:
             - git.version
         appendToDeps: setup
+        if: ${pythonSrcFiles}   # Only if python source files are found

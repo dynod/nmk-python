@@ -1,0 +1,12 @@
+# Needs python path
+refs:
+    - python.yml
+
+config:
+    # Folder(s) for Python sources
+    pythonSrcFolders:
+        - ${PROJECTDIR}/src
+
+    # Found Python source files
+    pythonSrcFiles:
+        __resolver__: nmk_python.files.PythonFilesFinder

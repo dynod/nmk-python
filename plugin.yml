@@ -2,4 +2,6 @@
 refs:
     # TODO: Add base plugin reference
     - python.yml    # Python path contribution
+    - files.yml     # Look for python source files
     - version.yml   # Python version contribution
+    - setup.yml     # Python setup files generation
