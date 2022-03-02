@@ -13,3 +13,12 @@ class BlackBuilder(NmkTaskBuilder):
 
         # Touch output file
         self.main_output.touch()
+
+
+class IsortBuilder(NmkTaskBuilder):
+    def build(self, src_folders: List[str]):
+        # Delegate to isort
+        run_with_logs([sys.executable, "-m", "isort"] + src_folders, self.logger)
+
+        # Touch output file
+        self.main_output.touch()
