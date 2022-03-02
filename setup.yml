@@ -25,6 +25,7 @@ tasks:
         input:
             - ${pythonSetupPyTemplate}
             - ${pythonSetupCfgFiles}
+            - ${pythonVersionStamp}
         output:
             - ${pythonSetupPy}
             - ${pythonSetupCfg}
