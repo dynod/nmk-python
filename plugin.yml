@@ -5,4 +5,5 @@ refs:
     - files.yml     # Look for python source files
     - version.yml   # Python version contribution
     - setup.yml     # Python setup files generation
-    - format.yml    # Python code format (with black)
+    - format.yml    # Python code format (with black/isort)
+    - flake.yml     # Python code analysis (with flake8)

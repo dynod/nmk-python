@@ -6,9 +6,24 @@ from typing import List
 from jinja2 import Environment, Template, meta
 
 from nmk.model.builder import NmkTaskBuilder
+from nmk.model.keys import NmkRootConfig
 
 
 class PythonSetupBuilder(NmkTaskBuilder):
+    def config_value(self, config_name: str):
+        # Get value
+        v = self.model.config[config_name].value
+
+        # Make it project relative if possible
+        v_path = Path(str(v))
+        if v_path.is_absolute():
+            try:
+                return v_path.relative_to(self.model.config[NmkRootConfig.PROJECT_DIR].value)
+            except ValueError:  # pragma: no cover
+                # Simply ignore, non project -relative
+                pass
+        return v
+
     def build(self, setup_py_template: str, setup_cfg_files: List[str]):
         # Copy setup.py
         setup_py_output = self.outputs[0]
@@ -28,6 +43,6 @@ class PythonSetupBuilder(NmkTaskBuilder):
             assert len(unknown_items) == 0, f"Unknown config items referenced from python setup fragment {f_path}: {', '.join(unknown_items)}"
 
             # Finally update config with rendered template
-            c.read_string(Template(setup_source).render({c: self.model.config[c].value for c in required_items}))
+            c.read_string(Template(setup_source).render({c: self.config_value(c) for c in required_items}))
         with setup_cfg_output.open("w") as f:
             c.write(f)
