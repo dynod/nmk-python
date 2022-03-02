@@ -1,7 +1,3 @@
-# Needs python path
-refs:
-    - python.yml
-
 config:
     # The python version itself
     pythonVersion:

@@ -1,0 +1,29 @@
+config:
+
+    # Needs black
+    venvPkgDeps:
+        - black
+
+    # Max line length
+    pythonLineLength: 160
+
+    # Stamp file for black execution
+    pythonBlackStamp: ${outputDir}/.black
+
+tasks:
+    # Code format with black
+    py.format:
+        description: Format python code
+        emoji: ":snake:.:lipstick:"
+        deps:
+            - out
+        appendToDeps: setup
+        if: ${pythonSrcFiles}   # Only if python source files are found
+        output:
+            - ${pythonBlackStamp}
+        input:
+            - ${pythonSrcFiles}
+        builder: nmk_python.format.BlackBuilder
+        params:
+            src_folders: ${pythonSrcFolders}
+            line_length: ${pythonLineLength}
