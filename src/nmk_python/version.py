@@ -21,7 +21,7 @@ class PythonVersionResolver(NmkStrConfigResolver):
                 out += f".post{m.group(2)}"
             if m.group(3) is not None:
                 # Add hash/dirty
-                out += f"+{m.group(3)}"
+                out += f"+{m.group(3)}".replace("-", ".")
             return out
 
         # Probably a simpler version (without segments)

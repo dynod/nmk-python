@@ -7,3 +7,4 @@ refs:
     - setup.yml     # Python setup files generation
     - format.yml    # Python code format (with black/isort)
     - flake.yml     # Python code analysis (with flake8)
+    - build.yml     # Python module build/install

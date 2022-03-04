@@ -1,0 +1,51 @@
+config:
+
+    # Python package name (to be configured at project level)
+    pythonPackage: UNKNOWN
+
+    # Python artifacts directory
+    pythonArtifacts: ${outputDir}/artifacts
+
+    # Python source distribution + wheel artifacts
+    pythonDist: ${pythonArtifacts}/${pythonPackage}-${pythonVersion}.tar.gz
+    pythonWheel: ${pythonArtifacts}/${pythonPackage}-${pythonVersion}-py3-none-any.whl
+
+    # Add setup file for build config
+    pythonSetupCfgFiles:
+        - ${BASEDIR}/setup/build.cfg
+
+    # Python package dependencies (also contributed to venv)
+    pythonPackageRequirements: []
+    venvPkgDeps:
+        - setuptools
+        - wheel
+        - ${pythonPackageRequirements}
+
+    # Python files to be ignored
+    gitIgnoredFiles:
+        - .eggs/
+        - "*.egg-info/"
+        - "*.pyc"
+        - __pycache__
+        - build/
+
+tasks:
+
+    # Python module build
+    py.build:
+        description: Build python package
+        emoji: ":snake:.:hammer:"
+        deps:
+            - py.setup
+            - py.analyze
+        appendToDeps: build
+        if: ${pythonSrcFiles}   # Only if python source files are found
+        output:
+            - ${pythonDist}
+            - ${pythonWheel}
+        input:
+            - ${pythonSrcFiles}
+        builder: nmk_python.build.PackageBuilder
+        params:
+            setup: ${pythonSetupPy}
+            artifacts: ${pythonArtifacts}

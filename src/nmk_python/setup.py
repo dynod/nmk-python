@@ -10,18 +10,30 @@ from nmk.model.keys import NmkRootConfig
 
 
 class PythonSetupBuilder(NmkTaskBuilder):
-    def config_value(self, config_name: str):
-        # Get value
-        v = self.model.config[config_name].value
-
+    def relative_path(self, v: str) -> str:
         # Make it project relative if possible
         v_path = Path(str(v))
         if v_path.is_absolute():
             try:
-                return v_path.relative_to(self.model.config[NmkRootConfig.PROJECT_DIR].value)
+                return v_path.relative_to(self.model.config[NmkRootConfig.PROJECT_DIR].value).as_posix()
             except ValueError:  # pragma: no cover
                 # Simply ignore, non project -relative
                 pass
+        return v
+
+    def config_value(self, config_name: str):
+        # Get value
+        v = self.model.config[config_name].value
+
+        # Value processing depends on type
+        if isinstance(v, str):
+            # Single string
+            return self.relative_path(v)
+        elif isinstance(v, list):
+            # Potentially a list of string
+            return [self.relative_path(p) for p in v]
+
+        # Probably nothing to do with path, use raw value
         return v
 
     def build(self, setup_py_template: str, setup_cfg_files: List[str]):
