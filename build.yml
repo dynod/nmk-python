@@ -49,3 +49,19 @@ tasks:
         params:
             setup: ${pythonSetupPy}
             artifacts: ${pythonArtifacts}
+
+    # Python module install
+    py.install:
+        description: Install python package
+        emoji: ":snake:.:inbox_tray:"
+        deps:
+            - py.build
+        appendToDeps: build
+        if: ${pythonSrcFiles}   # Only if python source files are found
+        input: ${pythonWheel}
+        output: 
+            - ${ROOTDIR}/${venvName}
+            - ${venvState}
+        builder: nmk_base.venv.VenvUpdateBuilder
+        params:
+            pip_args: ${venvPipArgs}
