@@ -1,9 +1,8 @@
 import sys
 from typing import List
 
-from nmk_base.common import run_with_logs
-
 from nmk.model.builder import NmkTaskBuilder
+from nmk.utils import run_with_logs
 
 
 class BlackBuilder(NmkTaskBuilder):

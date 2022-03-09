@@ -1,9 +1,8 @@
 import sys
 
-from nmk_base.common import run_with_logs
-
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
+from nmk.utils import run_with_logs
 
 
 class PackageBuilder(NmkTaskBuilder):
