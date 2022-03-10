@@ -2,13 +2,15 @@ config:
 
     # Python package name (to be configured at project level)
     pythonPackage: UNKNOWN
+    pythonPackageForWheel:
+        __resolver__: nmk_python.build.PythonPackageForWheel
 
     # Python artifacts directory
     pythonArtifacts: ${outputDir}/artifacts
 
     # Python source distribution + wheel artifacts
     pythonDist: ${pythonArtifacts}/${pythonPackage}-${pythonVersion}.tar.gz
-    pythonWheel: ${pythonArtifacts}/${pythonPackage}-${pythonVersion}-py3-none-any.whl
+    pythonWheel: ${pythonArtifacts}/${pythonPackageForWheel}-${pythonVersion}-py3-none-any.whl
 
     # Add setup file for build config
     pythonSetupCfgFiles:
@@ -45,6 +47,7 @@ tasks:
             - ${pythonWheel}
         input:
             - ${pythonSrcFiles}
+            - ${pythonSetupCfg}
         builder: nmk_python.build.PackageBuilder
         params:
             setup: ${pythonSetupPy}
