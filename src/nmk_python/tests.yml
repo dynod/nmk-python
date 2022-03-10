@@ -20,6 +20,10 @@ config:
     # Pytest extra args
     pytestExtraArgs: --cov-fail-under=100
 
+    # Ignore pytest cache
+    gitIgnoredFiles:
+        - .pytest_cache/
+
 tasks:
 
     # Python tests (through pytest)
