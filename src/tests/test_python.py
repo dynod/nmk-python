@@ -6,6 +6,8 @@ from pathlib import Path
 
 from nmk.tests.tester import NmkBaseTester
 
+import nmk_python
+
 
 class TestPythonPlugin(NmkBaseTester):
     @property
@@ -122,3 +124,7 @@ class TestSomething:
 
         # Trigger again to cover clean code
         self.nmk(p, extra_args=["py.tests"])
+
+    def test_plugin_version(self):
+        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["version"])
+        self.check_logs(f"-  👉 nmk-python: {nmk_python.__version__}")
