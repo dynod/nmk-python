@@ -16,7 +16,7 @@ config:
 
     # Add setup file for isort config
     pythonSetupCfgFiles:
-        - ${BASEDIR}/setup/isort.cfg
+        - ${BASEDIR}/templates/isort.cfg
 
 tasks:
     # Code format with black

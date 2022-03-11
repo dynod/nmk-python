@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import List
 
 from jinja2 import Environment, Template, meta
-
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
 

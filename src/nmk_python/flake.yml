@@ -14,7 +14,7 @@ config:
 
     # Add setup file for isort config
     pythonSetupCfgFiles:
-        - ${BASEDIR}/setup/flake.cfg
+        - ${BASEDIR}/templates/flake.cfg
 
     # Folder for flake8 generated report
     pythonAnalysisReport: ${outputDir}/flake-report

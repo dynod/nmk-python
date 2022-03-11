@@ -1,0 +1,19 @@
+refs:
+    # Base+python plugins
+    - src/nmk_python/plugin.yml
+    - <base-plugin>/src/nmk_base/plugin.yml
+    - base-plugin:
+        remote: github://dynod/nmk-base/main
+        local: ../base
+
+config:
+    # Python package
+    pythonPackage: nmk-python
+    
+    # Nmk dependencies
+    pythonPackageRequirements:
+        - nmk
+
+    # Extra setup data
+    pythonSetupCfgFiles:
+        - nmk.cfg
