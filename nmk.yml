@@ -13,6 +13,8 @@ config:
     # Nmk dependencies
     pythonPackageRequirements:
         - nmk
+        - Jinja2
+        # TODO: add - nmk-base
 
     # Extra setup data
     pythonSetupCfgFiles:

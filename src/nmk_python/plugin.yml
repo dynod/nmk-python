@@ -9,3 +9,16 @@ refs:
     - flake.yml     # Python code analysis (with flake8)
     - build.yml     # Python module build/install
     - tests.yml     # Python automated tests
+
+config:
+    # Plugin version
+    nmkPythonPluginVersion:
+        __resolver__: nmk_python.NmkPythonVersionResolver
+
+    # Plugin versions dict
+    nmkPluginsVersions:
+        nmk-python: ${nmkPythonPluginVersion}
+
+    # Plugin help links dict
+    nmkPluginsDocs:
+        nmk-python: https://github.com/dynod/nmk/wiki/nmk-python-plugin
