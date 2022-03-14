@@ -5,8 +5,10 @@ from configparser import ConfigParser
 from pathlib import Path
 
 from nmk.tests.tester import NmkBaseTester
+from nmk_base.venv import VenvUpdateBuilder
 
 import nmk_python
+from nmk_python.build import Installer
 
 
 class TestPythonPlugin(NmkBaseTester):
@@ -128,3 +130,18 @@ class TestSomething:
     def test_plugin_version(self):
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["version"])
         self.check_logs(f"-  👉 nmk-python: {nmk_python.__version__}")
+
+    def test_install_ok(self, monkeypatch):
+        monkeypatch.setattr(VenvUpdateBuilder, "build", lambda _s, pip_args: None)
+
+        # Prepare test project for python install
+        self.fake_python_src("")
+        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.install"])
+
+    def test_install_skipped(self, monkeypatch):
+        monkeypatch.setattr(Installer, "is_windows", lambda _s: True)
+
+        # Prepare test project for python install
+        self.fake_python_src("")
+        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.install", "--config", "pythonPackage=nmk"])
+        self.check_logs("Can't install nmk while running nmk!")

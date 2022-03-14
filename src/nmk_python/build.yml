@@ -65,8 +65,9 @@ tasks:
         output: 
             - ${ROOTDIR}/${venvName}
             - ${venvState}
-        builder: nmk_base.venv.VenvUpdateBuilder
+        builder: nmk_python.build.Installer
         params:
+            name: ${pythonPackage}
             pip_args: --force-reinstall --no-deps ${venvPipArgs}
             # - force reinstall because otherwise install will be skipped if version didn't changed
             # - but skip dependencies to avoid reinstalling everything (deps are already installed by py.venv task)
