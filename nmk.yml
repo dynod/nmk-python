@@ -1,10 +1,14 @@
 refs:
-    # Base+python plugins
+    # Base+python+github plugins
     - src/nmk_python/plugin.yml
-    - <base-plugin>/src/nmk_base/plugin.yml
-    - base-plugin:
-        remote: github://dynod/nmk-base/main
-        local: ../base
+    - <github-plugin>/src/nmk_github/plugin.yml
+    - github-plugin:
+        remote: github://dynod/nmk-github/main
+        local: ../github
+    - <workspace>/shared.yml
+    - workspace:
+        local: ../../../../shared
+        remote: github://dynod/workspace/main/shared
 
 config:
     # Python package
@@ -12,9 +16,8 @@ config:
     
     # Nmk dependencies
     pythonPackageRequirements:
-        - nmk
+        - nmk-base
         - Jinja2
-        # TODO: add - nmk-base
 
     # Extra setup data
     pythonSetupCfgFiles:

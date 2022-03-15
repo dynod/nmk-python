@@ -6,6 +6,7 @@
 # Package dependencies from nmk project files
 #
 
+nmk
 black
 isort
 flake8
@@ -19,11 +20,10 @@ flake8-pep3101
 flake8-bugbear
 setuptools
 wheel
-nmk
+nmk-base
 Jinja2
 pytest-xdist
 pytest-cov
 pytest-multilog
-nmk
 
 
