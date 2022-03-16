@@ -60,7 +60,7 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(
             self.prepare_project("setup_missing_var.yml"),
             extra_args=["py.setup"],
-            expected_error=f"An error occurred during task py.setup build: Unknown config items referenced from python setup fragment {self.test_folder}/missing_var.cfg: unknownConfig",
+            expected_error=f"An error occurred during task py.setup build: Unknown config items referenced from template {self.test_folder}/missing_var.cfg: unknownConfig",
         )
 
     def test_python_setup_ok(self):
