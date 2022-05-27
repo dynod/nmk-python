@@ -19,6 +19,12 @@ config:
     # Folder for flake8 generated report
     pythonAnalysisReport: ${outputDir}/flake-report
 
+    # Ignored rules
+    pythonIgnoredRules:
+        - E501
+        - B902
+        - W503
+
 tasks:
 
     # Python source code analysis with flake8
