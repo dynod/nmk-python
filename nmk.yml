@@ -5,6 +5,10 @@ refs:
     - github-plugin:
         remote: github://dynod/nmk-github/main
         local: ../github
+    - <vscode-plugin>/src/nmk_vscode/plugin.yml
+    - vscode-plugin:
+        remote: github://dynod/nmk-vscode/main
+        local: ../vscode
     - <workspace>/shared.yml
     - workspace:
         local: ../../../../shared
