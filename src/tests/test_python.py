@@ -94,13 +94,17 @@ class TestPythonPlugin(NmkBaseTester):
     def test_python_flake(self):
         # Prepare fake source with flake errors
         self.fake_python_src("foo=0")
-        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.analyze"], expected_error=f"{self.test_folder}/src/fake/fake.py has issues: ")
-        assert (self.test_folder / "out" / "flake-report").is_dir()
+        self.nmk(
+            self.prepare_project("ref_python.yml"),
+            extra_args=["py.analyze"],
+            expected_error=f"{self.test_folder}/src/fake/fake.py:1:4: E225 missing whitespace around operator",
+        )
+        assert not (self.test_folder / "out" / ".flake").is_file()
 
         # Prepare fake source without errors
         self.fake_python_src("")
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.analyze"])
-        assert (self.test_folder / "out" / "flake-report").is_dir()
+        assert (self.test_folder / "out" / ".flake").is_file()
 
     def test_python_build(self):
         # Prepare test project for python build
