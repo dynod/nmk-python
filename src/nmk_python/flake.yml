@@ -3,7 +3,6 @@ config:
     # Needs flake8 and plugins
     venvPkgDeps:
         - flake8
-        - flake8-html
         - pep8-naming
         - flake8-builtins
         - flake8-blind-except
@@ -16,8 +15,8 @@ config:
     pythonSetupCfgFiles:
         - ${BASEDIR}/templates/flake.cfg
 
-    # Folder for flake8 generated report
-    pythonAnalysisReport: ${outputDir}/flake-report
+    # Stamp file for flake8 execution
+    pythonFlakeStamp: ${outputDir}/.flake
 
     # Ignored rules
     pythonIgnoredRules:
@@ -37,7 +36,7 @@ tasks:
         appendToDeps: setup
         if: ${pythonSrcFiles}   # Only if python source files are found
         output:
-            - ${pythonAnalysisReport}
+            - ${pythonFlakeStamp}
         input:
             - ${pythonSetupCfg}
             - ${pythonSrcFiles}
