@@ -83,6 +83,8 @@ class TestPythonPlugin(NmkBaseTester):
         assert c.get("dummy", "foo") == "bar"
         assert c.get("dummy", "bar") == "venv"
         assert c.get("dummy", "other") == "1,2,3"
+        assert c.get("dummy", "ymlcontributedvalue") == "foo"
+        assert c.get("anotherSection", "foo") == "bar"
 
     def test_python_format(self):
         # Prepare fake source python files to enable python tasks
