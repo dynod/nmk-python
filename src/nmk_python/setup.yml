@@ -9,6 +9,9 @@ config:
     # Template for setup.py file
     pythonSetupPyTemplate: ${BASEDIR}/templates/setup.py
 
+    # Contributed setup items from yml files
+    pythonSetupItems: {}
+
     # Contribute to gitignore
     gitIgnoredFiles:
         - ${pythonSetupPy}
@@ -33,3 +36,4 @@ tasks:
         params:
             setup_py_template: ${pythonSetupPyTemplate}
             setup_cfg_files: ${pythonSetupCfgFiles}
+            setup_items: ${pythonSetupItems}

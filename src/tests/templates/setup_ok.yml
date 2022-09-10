@@ -9,3 +9,10 @@ config:
     pythonSetupCfgFiles:
         - ${BASEDIR}/setup1.cfg
         - ${BASEDIR}/setup2.cfg
+
+    pythonSetupItems:
+        ignoredIntValue: 12
+        dummy:
+            ymlContributedValue: foo
+        anotherSection:
+            foo: bar
