@@ -1,14 +1,8 @@
 refs:
     # Base+python+github plugins
     - src/nmk_python/plugin.yml
-    - <github-plugin>/src/nmk_github/plugin.yml
-    - github-plugin:
-        remote: github://dynod/nmk-github/main
-        local: ../github
-    - <vscode-plugin>/src/nmk_vscode/plugin.yml
-    - vscode-plugin:
-        remote: github://dynod/nmk-vscode/main
-        local: ../vscode
+    - pip://nmk-github!plugin.yml
+    - pip://nmk-vscode!plugin.yml
     - <workspace>/shared.yml
     - workspace:
         local: ../../../../shared
@@ -24,5 +18,11 @@ config:
         - Jinja2
 
     # Extra setup data
-    pythonSetupCfgFiles:
-        - nmk.cfg
+    pythonSetupItems:
+        metadata:
+            description: Python plugin for nmk build system
+        options.package_data:
+            nmk_python: "*.yml,*.json"
+            nmk_python.templates: "*"
+        run:
+            omit: "src/tests/*,src/nmk_python/templates/*"
