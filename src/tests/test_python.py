@@ -60,7 +60,7 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(
             self.prepare_project("setup_missing_var.yml"),
             extra_args=["py.setup"],
-            expected_error=f"An error occurred during task py.setup build: Unknown config items referenced from template {self.test_folder}/missing_var.cfg: unknownConfig",
+            expected_error=f"An error occurred during task py.setup build: Unknown config items referenced from template {self.test_folder / 'missing_var.cfg'}: unknownConfig",
         )
 
     def test_python_setup_ok(self):
@@ -99,7 +99,8 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(
             self.prepare_project("ref_python.yml"),
             extra_args=["py.analyze"],
-            expected_error=f"{self.test_folder}/src/fake/fake.py:1:4: E225 missing whitespace around operator",
+            # Mixed / & \ on Windows (because pythonSrcFolders strings list is built with / even on Windows)
+            expected_error=f"{self.test_folder}/{Path('src')/'fake'/'fake.py'}:1:4: E225 missing whitespace around operator",
         )
         assert not (self.test_folder / "out" / ".flake").is_file()
 

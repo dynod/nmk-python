@@ -6,9 +6,17 @@ Python plugin for nmk build system
 [![PyPI](https://img.shields.io/pypi/v/nmk-python)](https://pypi.org/project/nmk-python/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+This plugin adds support for Python development in an **`nmk`** project:
+* setup file generation
+* code format with [black](https://github.com/psf/black)
+* import sorting with [isort](https://github.com/PyCQA/isort)
+* code analysis with [flake8](https://flake8.pycqa.org/)
+* python wheel build
+* test with [pytest](https://pytest.org)
+
 ## Usage
 
-To reference this plug-in in your **`nmk`** project, insert this reference:
+To use this plugin in your **`nmk`** project, insert this reference:
 ```
 refs:
     - pip://nmk-python!plugin.yml
