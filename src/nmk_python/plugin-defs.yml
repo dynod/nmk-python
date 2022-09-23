@@ -23,6 +23,8 @@ config:
     nmkPluginsDocs:
         nmk-python: https://github.com/dynod/nmk/wiki/nmk-python-plugin
 
-    # Contribution to VSCode settings (if plugin is used)
+    # Contribution to VSCode settings/launch (if plugin is used)
     vscodeSettingsFiles:
         - ${BASEDIR}/templates/python-settings.json
+    vscodeLaunchFiles:
+        - ${BASEDIR}/templates/python-test-debug-launch.json

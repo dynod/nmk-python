@@ -7,4 +7,6 @@ refs:
 
 config:
     pythonPackage: fake
-    pytestExtraArgs: ""
+    pytestExtraArgs:
+        no-cov: true
+        fancy-opt: false

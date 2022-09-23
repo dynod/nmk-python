@@ -13,6 +13,7 @@ This plugin adds support for Python development in an **`nmk`** project:
 * code analysis with [flake8](https://flake8.pycqa.org/)
 * python wheel build
 * test with [pytest](https://pytest.org)
+* VSCode settings generation (if [**`nmk-vscode`**](https://github.com/dynod/nmk-vscode) plugin is also used)
 
 ## Usage
 

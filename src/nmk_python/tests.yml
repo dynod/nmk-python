@@ -17,8 +17,11 @@ config:
     # Python test output folder
     pythonTestOutput: ${outputDir}/tests
 
-    # Pytest extra args
-    pytestExtraArgs: --cov-fail-under=100
+    # Pytest extra args (not generated in setup.cfg)
+    pytestExtraArgs:
+        numprocesses: auto
+        cov-fail-under: 100
+        dist: loadgroup
 
     # Ignore pytest cache
     gitIgnoredFiles:
