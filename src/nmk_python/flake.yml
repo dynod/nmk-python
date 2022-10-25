@@ -11,9 +11,15 @@ config:
         - flake8-pep3101
         - flake8-bugbear
 
-    # Add setup file for isort config
+    # Add setup file for flake8 config
     pythonSetupCfgFiles:
         - ${BASEDIR}/templates/flake.cfg
+
+    # Also contribute to setup items for extendable flake8 exclusion paths list
+    pythonSetupItems:
+        flake8:
+            exclude:
+                - __pycache__
 
     # Stamp file for flake8 execution
     pythonFlakeStamp: ${outputDir}/.flake

@@ -25,4 +25,6 @@ config:
             nmk_python: "*.yml,*.json"
             nmk_python.templates: "*"
         run:
-            omit: "src/tests/*,src/nmk_python/templates/*"
+            omit:
+                - out/tests/*
+                - src/nmk_python/templates/*
