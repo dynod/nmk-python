@@ -3,6 +3,12 @@ config:
     pythonSetupCfgFiles:
         - ${BASEDIR}/templates/pytest.cfg
 
+    # Extra config to get an extendable list of source paths to be ignored for coverage
+    pythonSetupItems:
+        run:
+            omit:
+                - ${pythonTestSources}/*
+
     # Tests related venv dependencies
     venvPkgDeps:
         - pytest-xdist

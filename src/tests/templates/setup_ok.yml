@@ -16,3 +16,6 @@ config:
             ymlContributedValue: foo
         anotherSection:
             foo: bar
+            arrayOfValues:
+                - abc
+                - def
