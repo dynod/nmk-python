@@ -4,8 +4,12 @@ config:
         - ${PROJECTDIR}/src
 
     # Found Python source files
-    pythonSrcFiles:
+    pythonFoundSrcFiles:
         __resolver__: nmk_python.files.PythonFilesFinder
+
+    # All Python source files (to let other plugins contribute)
+    pythonSrcFiles:
+        - ${pythonFoundSrcFiles}
 
     # Root folder for test sources
     pythonTestSources: ${PROJECTDIR}/src/tests
