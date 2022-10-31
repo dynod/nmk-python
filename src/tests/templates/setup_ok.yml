@@ -19,3 +19,5 @@ config:
             arrayOfValues:
                 - abc
                 - def
+        addedSection:
+            abc: def

@@ -38,7 +38,6 @@ class TestPythonPlugin(NmkBaseTester):
         fake = src / name
         with fake.open("w") as f:
             f.write(content)
-        (src / "__init__.py")
 
     def test_python_version_stamp(self):
         # Check python version is not generated (while no python files)
@@ -96,12 +95,12 @@ class TestPythonPlugin(NmkBaseTester):
 
     def test_python_flake(self):
         # Prepare fake source with flake errors
-        self.fake_python_src("foo=0")
+        self.fake_python_src("foo=foo")
         self.nmk(
             self.prepare_project("ref_python.yml"),
             extra_args=["py.analyze"],
             # Mixed / & \ on Windows (because pythonSrcFolders strings list is built with / even on Windows)
-            expected_error=f"{self.test_folder}/{Path('src')/'fake'/'fake.py'}:1:4: E225 missing whitespace around operator",
+            expected_error=f"{self.test_folder}/{Path('src')/'fake'/'fake.py'}:1:7: F821 undefined name 'foo'",
         )
         assert not (self.test_folder / "out" / ".flake").is_file()
 

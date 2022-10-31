@@ -33,7 +33,7 @@ tasks:
             - ${pythonSrcFiles}
         builder: nmk_python.format.BlackBuilder
         params:
-            src_folders: ${pythonSrcFolders}
+            src_files: ${pythonSrcFiles}
             line_length: ${pythonLineLength}
 
     # Sort imports

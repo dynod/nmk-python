@@ -6,9 +6,9 @@ from nmk.utils import run_with_logs
 
 
 class BlackBuilder(NmkTaskBuilder):
-    def build(self, src_folders: List[str], line_length: int):
+    def build(self, src_files: List[str], line_length: int):
         # Delegate to black
-        run_with_logs([sys.executable, "-m", "black", "-l", str(line_length)] + src_folders, self.logger)
+        run_with_logs([sys.executable, "-m", "black", "-l", str(line_length)] + src_files, self.logger)
 
         # Touch output file
         self.main_output.touch()
