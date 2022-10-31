@@ -88,10 +88,14 @@ class TestPythonPlugin(NmkBaseTester):
 
     def test_python_format(self):
         # Prepare fake source python files to enable python tasks
-        self.fake_python_src()
-        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.sort"])
-        assert (self.test_folder / "out" / ".black").is_file()
-        assert (self.test_folder / "out" / ".isort").is_file()
+        self.fake_python_src("import bbb\nimport aaa")
+        p = self.prepare_project("ref_python.yml")
+        self.nmk(p, extra_args=["py.format"])
+        assert (self.test_folder / "out" / ".format").is_file()
+
+        # Check incremental build
+        self.nmk(p, extra_args=["py.format"])
+        self.check_logs("[py.format]] DEBUG 🐛 - Task skipped, nothing to do")
 
     def test_python_flake(self):
         # Prepare fake source with flake errors

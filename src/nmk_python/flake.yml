@@ -38,7 +38,7 @@ tasks:
         emoji: ":snake:.:eye: "
         deps:
             - py.setup
-            - py.sort
+            - py.format
         appendToDeps: setup
         if: ${pythonSrcFiles}   # Only if python source files are found
         output:
