@@ -8,7 +8,6 @@ from nmk.tests.tester import NmkBaseTester
 from nmk_base.venv import VenvUpdateBuilder
 
 import nmk_python
-from nmk_python.build import Installer
 
 
 class TestPythonPlugin(NmkBaseTester):
@@ -150,7 +149,7 @@ class TestSomething:
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.install"])
 
     def test_install_skipped(self, monkeypatch):
-        monkeypatch.setattr(Installer, "is_windows", lambda _s: True)
+        monkeypatch.setattr("nmk_python.build.is_windows", lambda: True)
 
         # Prepare test project for python install
         self.fake_python_src("")
