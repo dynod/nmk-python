@@ -26,9 +26,10 @@ config:
 
     # Ignored rules
     pythonIgnoredRules:
-        - E501
-        - B902
-        - W503
+        - E203 # space before ":"; sometimes formatting with black introduces this kind of space in slice expressions
+        - E501 # line length; we're working with lines wider than the recommended 79 length
+        - B902 # allow blind Exception catch; typically usefull for fallback behaviors
+        - W503 # line break before operator; incompatible with black formatting
 
 tasks:
 
