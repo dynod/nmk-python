@@ -9,6 +9,7 @@ refs:
     - flake.yml     # Python code analysis (with flake8)
     - build.yml     # Python module build/install
     - tests.yml     # Python automated tests
+    - badges.yml    # Python badges
 
 config:
     # Plugin version
