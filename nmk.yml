@@ -1,7 +1,8 @@
 refs:
     # Base+python+github plugins
-    - src/nmk_python/plugin.yml
+    - pip://nmk-badges!plugin.yml
     - pip://nmk-github!plugin.yml
+    - src/nmk_python/plugin.yml
     - pip://nmk-vscode!plugin.yml
     - <workspace>/shared.yml
     - workspace:

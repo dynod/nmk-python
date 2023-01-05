@@ -1,10 +1,12 @@
 # nmk-python
 Python plugin for nmk build system
 
+<!-- NMK-BADGES-BEGIN -->
 [![License: MPL](https://img.shields.io/github/license/dynod/nmk-python)](https://github.com/dynod/nmk-python/blob/main/LICENSE)
-[![Checks](https://img.shields.io/github/workflow/status/dynod/nmk-python/Build/main?label=build%20%26%20u.t.)](https://github.com/dynod/nmk-python/actions?query=branch%3Amain)
+[![Checks](https://img.shields.io/github/actions/workflow/status/dynod/nmk-python/build.yml?branch=main&label=build%20%26%20u.t.)](https://github.com/dynod/nmk-python/actions?query=branch%3Amain)
 [![PyPI](https://img.shields.io/pypi/v/nmk-python)](https://pypi.org/project/nmk-python/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+<!-- NMK-BADGES-END -->
 
 This plugin adds support for Python development in an **`nmk`** project:
 * setup file generation
@@ -14,6 +16,7 @@ This plugin adds support for Python development in an **`nmk`** project:
 * python wheel build
 * test with [pytest](https://pytest.org)
 * VSCode settings generation (if [**`nmk-vscode`**](https://github.com/dynod/nmk-vscode) plugin is also used)
+* README badges generation (link to pypi.org + used tools; only if [**`nmk-badges`**](https://github.com/dynod/nmk-badges) plugin is also used)
 
 ## Usage
 
