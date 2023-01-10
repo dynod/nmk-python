@@ -3,9 +3,25 @@ from configparser import ConfigParser
 from pathlib import Path
 from typing import List, Union
 
+from nmk.model.resolver import NmkListConfigResolver
 from nmk_base.common import TemplateBuilder
 
 LIST_SEPARATOR = "\n"
+
+
+class PythonSupportedVersionsResolver(NmkListConfigResolver):
+    def get_value(self, name: str) -> List[str]:
+        # Get min/max values, and verify consistency
+        min_ver, max_ver = self.model.config["pythonMinVersion"].value, self.model.config["pythonMaxVersion"].value
+        min_split, max_split = list(map(int, min_ver.split("."))), list(map(int, max_ver.split(".")))
+        prefix = "Inconsistency in python min/max supported versions: "
+        assert len(min_split) == len(max_split), prefix + "not the same segments count"
+        assert len(min_split) == 2, prefix + "can only deal with X.Y versions (2 segments expected)"
+        assert min_split[0] == max_split[0], prefix + "can't deal with different major versions"
+        assert max_split[1] > min_split[1], prefix + "max isn't greater than min"
+
+        # Iterate and return versions range
+        return [f"{min_split[0]}.{sub}" for sub in range(min_split[1], max_split[1] + 1)]
 
 
 class PythonSetupBuilder(TemplateBuilder):
