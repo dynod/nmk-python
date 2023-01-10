@@ -1,6 +1,9 @@
 # Python badges configuration
 config:
     badges:
+      - alt: "Supported python versions"
+        img: https://img.shields.io/badge/python-${pythonMinVersion}%20--%20${pythonMaxVersion}-blue
+        url: https://www.python.org/
       - alt: PyPI
         img: https://img.shields.io/pypi/v/${pythonPackage}
         url: https://pypi.org/project/${pythonPackage}/
