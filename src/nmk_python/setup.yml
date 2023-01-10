@@ -12,6 +12,12 @@ config:
     # Contributed setup items from yml files
     pythonSetupItems: {}
 
+    # Python supported versions range (min-max)
+    pythonMinVersion: "3.8"
+    pythonMaxVersion: "3.11"
+    pythonSupportedVersions:
+        __resolver__: nmk_python.setup.PythonSupportedVersionsResolver
+
     # Contribute to gitignore
     gitIgnoredFiles:
         - ${pythonSetupPy}

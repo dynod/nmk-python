@@ -1,0 +1,10 @@
+refs:
+    - <base-plugin>/src/nmk_base/plugin.yml
+    - base-plugin:
+        remote: github://dynod/nmk-base/main
+        local: ../../../../../../base
+    - pip://nmk-python!plugin.yml
+
+config:
+    pythonMinVersion: "1.2.3"
+    pythonMaxVersion: "1.2.3"

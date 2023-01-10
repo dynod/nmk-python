@@ -3,6 +3,7 @@ import shutil
 import subprocess
 from configparser import ConfigParser
 from pathlib import Path
+from typing import List
 
 from nmk.tests.tester import NmkBaseTester
 from nmk_base.venv import VenvUpdateBuilder
@@ -14,6 +15,9 @@ class TestPythonPlugin(NmkBaseTester):
     @property
     def templates_root(self) -> Path:
         return Path(__file__).parent / "templates"
+
+    def expected_supp_versions(self) -> List[str]:
+        return ["3.8", "3.9", "3.10", "3.11"]
 
     def check_version(self, monkeypatch, git_version: str, expected_python_version: str):
         # Fake git subprocess behavior
@@ -85,6 +89,9 @@ class TestPythonPlugin(NmkBaseTester):
         assert c.get("anotherSection", "foo") == "bar"
         assert c.get("anotherSection", "arrayofvalues") == "\nabc\ndef"
 
+        # Verify supported python versions
+        assert c.get("metadata", "classifiers") == "\n" + "\n".join([f"Programming Language :: Python :: {v}" for v in self.expected_supp_versions()])
+
     def test_python_format(self):
         # Prepare fake source python files to enable python tasks
         self.fake_python_src("import bbb\nimport aaa")
@@ -155,3 +162,47 @@ class TestSomething:
         self.fake_python_src("")
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.install", "--config", "pythonPackage=nmk"])
         self.check_logs("Can't install nmk while running nmk!")
+
+    def test_supported_versions(self):
+        def quote(a: str) -> str:
+            return f'"{a}"'
+
+        # Check default supported versions
+        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["--print", "pythonSupportedVersions"])
+        self.check_logs(f'Config dump: {{ "pythonSupportedVersions": [ {", ".join(map(quote, self.expected_supp_versions()))} ] }}')
+
+    def test_invalid_supported_versions_inconsistent(self):
+        # Inconsistent segments count
+        self.nmk(
+            self.prepare_project("supported_versions_inconsistent.yml"),
+            extra_args=["--print", "pythonSupportedVersions"],
+            expected_rc=1,
+            expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: not the same segments count",
+        )
+
+    def test_invalid_supported_versions_segments(self):
+        # 3 segments count
+        self.nmk(
+            self.prepare_project("supported_versions_3_segments.yml"),
+            extra_args=["--print", "pythonSupportedVersions"],
+            expected_rc=1,
+            expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: can only deal with X.Y versions (2 segments expected)",
+        )
+
+    def test_invalid_supported_versions_different_major(self):
+        # Different major versions
+        self.nmk(
+            self.prepare_project("supported_versions_different.yml"),
+            extra_args=["--print", "pythonSupportedVersions"],
+            expected_rc=1,
+            expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: can't deal with different major versions",
+        )
+
+    def test_invalid_supported_versions_lower_max(self):
+        # Lower max
+        self.nmk(
+            self.prepare_project("supported_versions_lower_max.yml"),
+            extra_args=["--print", "pythonSupportedVersions"],
+            expected_rc=1,
+            expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: max isn't greater than min",
+        )
