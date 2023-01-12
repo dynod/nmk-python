@@ -10,3 +10,6 @@ config:
       - alt: "Code style: black"
         img: https://img.shields.io/badge/code%20style-black-000000.svg
         url: https://github.com/psf/black
+      - alt: "Flake8 analysis result"
+        img: https://img.shields.io/badge/flake8-0-green
+        url: https://flake8.pycqa.org/
