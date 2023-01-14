@@ -25,7 +25,7 @@ class TestPythonPlugin(NmkBaseTester):
             subprocess, "run", lambda all_args, check, capture_output, text, encoding, cwd: subprocess.CompletedProcess(all_args, 0, git_version, "")
         )
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["--print", "pythonVersion"])
-        self.check_logs(f'Config dump: {{ "pythonVersion": "{expected_python_version}" }}')
+        self.check_logs(f'Config dump: {{ "pythonVersion": "{expected_python_version}" }}')  # NOQA: B028
 
     def test_python_version(self, monkeypatch):
         self.check_version(monkeypatch, "\n", "")
@@ -165,7 +165,7 @@ class TestSomething:
 
     def test_supported_versions(self):
         def quote(a: str) -> str:
-            return f'"{a}"'
+            return f'"{a}"'  # NOQA: B028
 
         # Check default supported versions
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["--print", "pythonSupportedVersions"])
