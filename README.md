@@ -8,6 +8,7 @@ Python plugin for nmk build system
 [![PyPI](https://img.shields.io/pypi/v/nmk-python)](https://pypi.org/project/nmk-python/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Flake8 analysis result](https://img.shields.io/badge/flake8-0-green)](https://flake8.pycqa.org/)
+[![Code coverage](https://img.shields.io/codecov/c/github/dynod/nmk-python)](https://app.codecov.io/gh/dynod/nmk-python)
 <!-- NMK-BADGES-END -->
 
 This plugin adds support for Python development in an **`nmk`** project:
