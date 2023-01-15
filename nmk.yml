@@ -29,3 +29,7 @@ config:
             omit:
                 - out/tests/*
                 - src/nmk_python/templates/*
+
+    # Github issues logged in nmk project
+    githubIssuesRepo: nmk
+    githubIssuesLabel: "plugin:python"
