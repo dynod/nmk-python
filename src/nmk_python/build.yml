@@ -31,6 +31,15 @@ config:
         - __pycache__
         - build/
 
+    # Additional github publish step: publish on pypi.org
+    githubPublishSteps:
+        - name: Publish package on pypi.org
+          uses: pypa/gh-action-pypi-publish@v1.5.0
+          with:
+            user: __token__
+            password: ${{ secrets.pypi_password }}
+            packages_dir: ${r!pythonArtifacts}
+
 tasks:
 
     # Python module build
