@@ -33,6 +33,14 @@ config:
     gitIgnoredFiles:
         - .pytest_cache/
 
+    # Additional github build step: upload coverage report on codecov
+    githubBuildSteps:
+        - name: Upload coverage information
+          uses: codecov/codecov-action@v3.1.1
+          with:
+            files: ${r!pythonCoverageXmlReport}
+          __if__: ${pythonTestFiles}
+
 tasks:
 
     # Python tests (through pytest)
