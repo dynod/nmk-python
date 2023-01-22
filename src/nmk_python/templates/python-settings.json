@@ -33,5 +33,5 @@
     "python.analysis.extraPaths": [{% for folder in pythonSrcFolders %}{% if loop.index > 1 %},{% endif %}
         "{{folder}}"{% endfor %}
     ],
-    "python.testing.pytestEnabled": {% if pythonTestFiles | length > 0 %}true{% else %}false{% endif %}
+    "python.testing.pytestEnabled": {% if pythonTestSrcFiles | length > 0 %}true{% else %}false{% endif %}
 }

@@ -1,0 +1,11 @@
+refs:
+    - <base-plugin>/src/nmk_base/plugin.yml
+    - base-plugin:
+        remote: github://dynod/nmk-base/main
+        local: ../../../../../../base
+    - pip://nmk-python!plugin.yml
+
+config:
+    pythonPackage: fake
+    pythonGeneratedSrcFiles:
+        - ${PROJECTDIR}/src/codegen/foo.py
