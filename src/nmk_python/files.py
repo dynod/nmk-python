@@ -17,6 +17,16 @@ class PythonFilesFinder(FilesFinder):
     def find_in_folders(self) -> List[str]:
         return self.model.config["pythonSrcFolders"].value
 
+    def get_value(self, name: str) -> List[Path]:
+        # All found files
+        all_files = set(super().get_value(name))
+
+        # Remove generated and test ones
+        all_files -= {Path(p) for p in self.model.config["pythonTestSrcFiles"].value}
+        all_files -= {Path(p) for p in self.model.config["pythonGeneratedSrcFiles"].value}
+
+        return list(all_files)
+
 
 class PythonTestFilesFinder(FilesFinder):
     def find_in_folders(self) -> List[str]:

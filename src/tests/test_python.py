@@ -206,3 +206,25 @@ class TestSomething:
             expected_rc=1,
             expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: max isn't greater than min",
         )
+
+    def escape(self, to_escape: Path) -> str:
+        # Escape backslashes (for Windows paths in json print)
+        return str(to_escape).replace("\\", "\\\\")
+
+    def test_files(self):
+        # Basic setup
+        prj_file = self.prepare_project("with_files_def.yml")
+        self.fake_python_src()
+        self.fake_python_src(package="codegen", name="foo.py")
+        self.fake_python_src(package="tests", name="test.py")
+
+        # Check source files breakdown in variables
+        self.nmk(
+            prj_file,
+            extra_args=["--print", "pythonFoundSrcFiles", "--print", "pythonTestSrcFiles", "--print", "pythonGeneratedSrcFiles"],
+        )
+        self.check_logs(
+            f'Config dump: {{ "pythonTestSrcFiles": [ "{self.escape(self.test_folder/"src"/"tests"/"test.py")}" ], '  # NOQA: B028
+            + f'"pythonGeneratedSrcFiles": [ "{self.escape(self.test_folder)}/src/codegen/foo.py" ], '  # NOQA: B028
+            + f'"pythonFoundSrcFiles": [ "{self.escape(self.test_folder/"src"/"fake"/"fake.py")}" ] }}'  # NOQA: B028
+        )

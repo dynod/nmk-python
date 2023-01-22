@@ -39,7 +39,7 @@ config:
           uses: codecov/codecov-action@v3.1.1
           with:
             files: ${r!pythonCoverageXmlReport}
-          __if__: ${pythonTestFiles}
+          __if__: ${pythonFoundSrcFiles}
 
 tasks:
 
@@ -55,7 +55,7 @@ tasks:
             - ${pythonCoverageXmlReport}
             - ${pythonCoverageFile}
             - ${pythonTestOutput}
-        if: ${pythonTestFiles}   # Only if python test source files are found
+        if: ${pythonTestSrcFiles}   # Only if python test source files are found
         builder: nmk_python.tests.PytestBuilder
         params:
             pytest_args: ${pytestExtraArgs}
