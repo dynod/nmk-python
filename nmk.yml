@@ -10,9 +10,6 @@ refs:
         remote: github://dynod/workspace/main/shared
 
 config:
-    # Python package
-    pythonPackage: nmk-python
-    
     # Nmk dependencies
     pythonPackageRequirements:
         - nmk-base
