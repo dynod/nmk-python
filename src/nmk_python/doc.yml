@@ -1,0 +1,20 @@
+# Python doc customization
+config:
+    # List of extensions to be enabled in sphinx config
+    docExtensions:
+        - autoapi.extension
+
+    # Additional venv dependencies (sphinx plugins)
+    venvPkgDeps:
+        - sphinx-autoapi
+
+    # Extra doc config for api doc
+    docExtraConfig:
+        autoapi_dirs: ["../${r!sourceDir}"] # Location for source files
+        autoapi_ignore:
+            - "*tests*"     # Don't document tests module
+            - "*templates*" # Don't document templates subpackages
+
+    # Trigger doc rebuild if python files are updated
+    docInputs:
+        - ${pythonFoundSrcFiles}
