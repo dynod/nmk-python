@@ -24,5 +24,6 @@ Jinja2
 pytest-xdist
 pytest-cov
 pytest-multilog
+sphinx-autoapi
 
 
