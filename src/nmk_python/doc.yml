@@ -5,7 +5,7 @@ config:
         - autoapi.extension
 
     # Additional venv dependencies (sphinx plugins)
-    venvPkgDeps:
+    docExtensionsVenvDeps:
         - sphinx-autoapi
 
     # Extra doc config for api doc
