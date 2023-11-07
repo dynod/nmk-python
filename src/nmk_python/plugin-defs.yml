@@ -27,8 +27,8 @@ config:
 
     # Contribution to VSCode settings/launch/extensions (if plugin is used)
     vscodeSettingsFiles:
-        - ${BASEDIR}/templates/python-settings.json
+        - ${BASEDIR}/templates/python-settings.json.jinja
     vscodeLaunchFiles:
-        - ${BASEDIR}/templates/python-test-debug-launch.json
+        - ${BASEDIR}/templates/python-test-debug-launch.json.jinja
     vscodeExtensionsNames:
         - ms-python.python
