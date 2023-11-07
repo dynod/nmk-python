@@ -31,6 +31,10 @@ config:
         - B902 # allow blind Exception catch; typically usefull for fallback behaviors
         - W503 # line break before operator; incompatible with black formatting
 
+    # Require VSCode specific extension for flake8 analysis
+    vscodeExtensionsNames:
+        - ms-python.flake8
+
 tasks:
 
     # Python source code analysis with flake8

@@ -15,6 +15,10 @@ config:
     pythonSetupCfgFiles:
         - ${BASEDIR}/templates/isort.cfg
 
+    # Require VSCode specific extension for black formatting
+    vscodeExtensionsNames:
+        - ms-python.black-formatter
+
 tasks:
     # Code format tools execution
     py.format:
