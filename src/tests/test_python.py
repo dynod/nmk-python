@@ -22,7 +22,7 @@ class TestPythonPlugin(NmkBaseTester):
     def check_version(self, monkeypatch, git_version: str, expected_python_version: str):
         # Fake git subprocess behavior
         monkeypatch.setattr(
-            subprocess, "run", lambda all_args, check, capture_output, text, encoding, cwd: subprocess.CompletedProcess(all_args, 0, git_version, "")
+            subprocess, "run", lambda all_args, check, capture_output, text, encoding, cwd, errors: subprocess.CompletedProcess(all_args, 0, git_version, "")
         )
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["--print", "pythonVersion"])
         self.check_logs(f'Config dump: {{ "pythonVersion": "{expected_python_version}" }}')  # NOQA: B028
@@ -110,7 +110,7 @@ class TestPythonPlugin(NmkBaseTester):
             self.prepare_project("ref_python.yml"),
             extra_args=["py.analyze"],
             # Mixed / & \ on Windows (because pythonSrcFolders strings list is built with / even on Windows)
-            expected_error=f"{self.test_folder}/{Path('src')/'fake'/'fake.py'}:1:7: F821 undefined name 'foo'",
+            expected_error=f"{Path('src')/'fake'/'fake.py'}:1:7: F821 undefined name 'foo'",
         )
         assert not (self.test_folder / "out" / ".flake").is_file()
 
