@@ -14,7 +14,7 @@ config:
 
     # Python supported versions range (min-max)
     pythonMinVersion: "3.8"
-    pythonMaxVersion: "3.11"
+    pythonMaxVersion: "3.12"
     pythonSupportedVersions:
         __resolver__: nmk_python.setup.PythonSupportedVersionsResolver
 
