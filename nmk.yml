@@ -9,6 +9,10 @@ refs:
         local: ../../../../shared
         remote: github://dynod/workspace/main/shared
 
+# Python path for locally defined tasks
+path:
+    - src
+
 config:
     # Nmk dependencies
     pythonPackageRequirements:
