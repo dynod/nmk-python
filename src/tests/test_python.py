@@ -17,7 +17,7 @@ class TestPythonPlugin(NmkBaseTester):
         return Path(__file__).parent / "templates"
 
     def expected_supp_versions(self) -> List[str]:
-        return ["3.8", "3.9", "3.10", "3.11"]
+        return ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     def check_version(self, monkeypatch, git_version: str, expected_python_version: str):
         # Fake git subprocess behavior
@@ -110,7 +110,7 @@ class TestPythonPlugin(NmkBaseTester):
             self.prepare_project("ref_python.yml"),
             extra_args=["py.analyze"],
             # Mixed / & \ on Windows (because pythonSrcFolders strings list is built with / even on Windows)
-            expected_error=f"{Path('src')/'fake'/'fake.py'}:1:7: F821 undefined name 'foo'",
+            expected_error=f"{Path('src') / 'fake' / 'fake.py'}:1:7: F821 undefined name 'foo'",
         )
         assert not (self.test_folder / "out" / ".flake").is_file()
 
@@ -224,7 +224,7 @@ class TestSomething:
             extra_args=["--print", "pythonFoundSrcFiles", "--print", "pythonTestSrcFiles", "--print", "pythonGeneratedSrcFiles"],
         )
         self.check_logs(
-            f'Config dump: {{ "pythonTestSrcFiles": [ "{self.escape(self.test_folder/"src"/"tests"/"test.py")}" ], '  # NOQA: B028
+            f'Config dump: {{ "pythonTestSrcFiles": [ "{self.escape(self.test_folder / "src" / "tests" / "test.py")}" ], '  # NOQA: B028
             + f'"pythonGeneratedSrcFiles": [ "{self.escape(self.test_folder)}/src/codegen/foo.py" ], '  # NOQA: B028
-            + f'"pythonFoundSrcFiles": [ "{self.escape(self.test_folder/"src"/"fake"/"fake.py")}" ] }}'  # NOQA: B028
+            + f'"pythonFoundSrcFiles": [ "{self.escape(self.test_folder / "src" / "fake" / "fake.py")}" ] }}'  # NOQA: B028
         )
