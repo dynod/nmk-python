@@ -1,4 +1,5 @@
 # Tests for python plugin
+import platform
 import shutil
 import subprocess
 from configparser import ConfigParser
@@ -204,6 +205,23 @@ class TestSomething:
             extra_args=["--print", "pythonSupportedVersions"],
             expected_rc=1,
             expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: max isn't greater than min",
+        )
+
+    def test_current_version_not_compatible(self, monkeypatch):
+        # Fake python version
+        monkeypatch.setattr(platform, "python_version", lambda: "2.7")
+        self.nmk(
+            self.prepare_project("setup_ok.yml"),
+            extra_args=["--print", "pythonSupportedVersions"],
+            expected_rc=1,
+            expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: current python major version (2.7) doesn't match with supported versions range",
+        )
+        monkeypatch.setattr(platform, "python_version", lambda: "3.6")
+        self.nmk(
+            self.prepare_project("setup_ok.yml"),
+            extra_args=["--print", "pythonSupportedVersions"],
+            expected_rc=1,
+            expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: current python version (3.6) is out of supported versions range",
         )
 
     def escape(self, to_escape: Path) -> str:
