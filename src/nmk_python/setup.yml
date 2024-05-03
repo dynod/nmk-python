@@ -1,13 +1,9 @@
 config:
     # Generated setup config files
     pythonSetupCfg: ${PROJECTDIR}/setup.cfg
-    pythonSetupPy: ${PROJECTDIR}/setup.py
 
     # Paths to setup.cfg fragments to be merged
     pythonSetupCfgFiles: []
-
-    # Template for setup.py file
-    pythonSetupPyTemplate: ${BASEDIR}/templates/setup.py
 
     # Contributed setup items from yml files
     pythonSetupItems: {}
@@ -20,7 +16,6 @@ config:
 
     # Contribute to gitignore
     gitIgnoredFiles:
-        - ${pythonSetupPy}
         - ${pythonSetupCfg}
 
 tasks:
@@ -28,11 +23,9 @@ tasks:
         description: Generate python setup files
         emoji: ":snake:.:toolbox:"
         input:
-            - ${pythonSetupPyTemplate}
             - ${pythonSetupCfgFiles}
             - ${pythonVersionStamp}
         output:
-            - ${pythonSetupPy}
             - ${pythonSetupCfg}
         deps:
             - py.version
@@ -40,6 +33,5 @@ tasks:
         if: ${pythonSrcFiles}   # Only if python source files are found
         builder: nmk_python.setup.PythonSetupBuilder
         params:
-            setup_py_template: ${pythonSetupPyTemplate}
             setup_cfg_files: ${pythonSetupCfgFiles}
             setup_items: ${pythonSetupItems}

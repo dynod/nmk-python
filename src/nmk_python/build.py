@@ -8,10 +8,10 @@ from nmk_base.venvbuilder import VenvUpdateBuilder
 
 
 class PackageBuilder(NmkTaskBuilder):
-    def build(self, setup: str, artifacts: str):
+    def build(self, artifacts: str, build_dir: str):
         # Delegate to setup
         run_with_logs(
-            [sys.executable, setup, "sdist", "-d", artifacts, "bdist_wheel", "-d", artifacts],
+            [sys.executable, "-c", "from setuptools import setup; setup()", "build", "-b", build_dir, "bdist_wheel", "-d", artifacts],
             self.logger,
             cwd=self.model.config[NmkRootConfig.PROJECT_DIR].value,
         )

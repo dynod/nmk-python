@@ -74,7 +74,6 @@ class TestPythonPlugin(NmkBaseTester):
             self.prepare_project("setup_ok.yml"),
             extra_args=["py.setup"],
         )
-        assert (self.test_folder / "setup.py").is_file()
         generated_setup = self.test_folder / "setup.cfg"
         assert generated_setup.is_file()
 
@@ -124,7 +123,7 @@ class TestPythonPlugin(NmkBaseTester):
         self.fake_python_src("")
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.build"])
         archives = list((self.test_folder / "out" / "artifacts").glob("fake-*"))
-        assert len(archives) == 2
+        assert len(archives) == 1
 
     def test_python_test(self):
         # Prepare test project for python build

@@ -8,6 +8,9 @@ config:
     # Python artifacts directory
     pythonArtifacts: ${outputDir}/artifacts
 
+    # Python build directory
+    pythonBuildDir: ${outputDir}/python
+
     # Python source distribution + wheel artifacts
     pythonDist: ${pythonArtifacts}/${pythonPackage}-${pythonVersion}.tar.gz
     pythonWheel: ${pythonArtifacts}/${pythonPackageForWheel}-${pythonVersion}-py3-none-any.whl
@@ -29,7 +32,6 @@ config:
         - "*.egg-info/"
         - "*.pyc"
         - __pycache__
-        - build/
 
     # Additional github publish step: publish on pypi.org
     githubPublishSteps:
@@ -59,8 +61,8 @@ tasks:
             - ${pythonSetupCfg}
         builder: nmk_python.build.PackageBuilder
         params:
-            setup: ${pythonSetupPy}
             artifacts: ${pythonArtifacts}
+            build_dir: ${pythonBuildDir}
 
     # Python module install
     py.install:
