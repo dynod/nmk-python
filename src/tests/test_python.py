@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import List
 
 from nmk.tests.tester import NmkBaseTester
-from nmk_base.venv import VenvUpdateBuilder
+from nmk_base.venvbuilder import VenvUpdateBuilder
 
 import nmk_python
 

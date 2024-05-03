@@ -4,7 +4,7 @@ from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
 from nmk.model.resolver import NmkStrConfigResolver
 from nmk.utils import is_windows, run_with_logs
-from nmk_base.venv import VenvUpdateBuilder
+from nmk_base.venvbuilder import VenvUpdateBuilder
 
 
 class PackageBuilder(NmkTaskBuilder):
