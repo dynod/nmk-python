@@ -23,3 +23,22 @@ The builder is called with the following parameters mapping:
 | Name | Value |
 |- |-
 | version | **{ref}`${pythonVersion}<pythonVersion>`**
+
+(py.project)=
+### **`py.project`** -- Python project file generation
+
+This task generates the **{ref}`${pythonProjectFile}<pythonProjectFile>`** project file.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.project.PythonProjectBuilder`
+| input    | {ref}`${pythonProjectFileFragments}<pythonProjectFileFragments>` files
+| output   | {ref}`${pythonProjectFile}<pythonProjectFile>` file
+| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| fragment_files | **{ref}`${pythonProjectFileFragments}<pythonProjectFileFragments>`**
+| items | **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**

@@ -3,6 +3,7 @@ refs:
     - pip://nmk-base!plugin.yml
     - files.yml     # Look for python source files
     - version.yml   # Python version contribution
+    - project.yml   # Python project file generation
     - setup.yml     # Python setup files generation
     - format.yml    # Python code format (with black/isort)
     - flake.yml     # Python code analysis (with flake8)

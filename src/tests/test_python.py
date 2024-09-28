@@ -8,6 +8,7 @@ from typing import List
 
 from nmk.tests.tester import NmkBaseTester
 from nmk_base.venvbuilder import VenvUpdateBuilder
+from tomlkit.toml_file import TOMLFile
 
 import nmk_python
 
@@ -55,6 +56,37 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.version"])
         self.check_logs("Refresh python version")
         assert (self.test_folder / "out" / ".pythonversion").is_file()
+
+    def test_python_project_missing_config(self):
+        # Prepare fake source python files to enable python tasks
+        self.fake_python_src()
+        shutil.copyfile(self.template("missing_var.cfg"), self.test_folder / "missing_var.cfg")
+        self.nmk(
+            self.prepare_project("project_missing_var.yml"),
+            extra_args=["py.project"],
+            expected_error=f"An error occurred during task py.project build: Unknown config items referenced from template {self.test_folder / 'missing_var.cfg'}: unknownConfig",
+        )
+
+    def test_python_project_ok(self):
+        # Prepare fake source python files to enable python tasks
+        self.fake_python_src()
+        shutil.copyfile(self.template("setup1.toml"), self.test_folder / "setup1.toml")
+        shutil.copyfile(self.template("setup2.toml"), self.test_folder / "setup2.toml")
+        self.nmk(
+            self.prepare_project("project_ok.yml"),
+            extra_args=["py.project"],
+        )
+        generated_project = self.test_folder / "pyproject.toml"
+        assert generated_project.is_file()
+
+        # Verify merged content
+        doc = TOMLFile(generated_project).read()
+        assert doc["dummy"]["foo"] == "bar"
+        assert doc["dummy"]["bar"] == "venv"
+        assert doc["dummy"]["other"] == "1,2,3"
+        assert doc["dummy"]["ymlContributedValue"] == "foo"
+        assert doc["anotherSection"]["foo"] == "bar"
+        assert doc["anotherSection"]["arrayOfValues"] == ["azerty", "abc", "def"]
 
     def test_python_setup_missing_config(self):
         # Prepare fake source python files to enable python tasks

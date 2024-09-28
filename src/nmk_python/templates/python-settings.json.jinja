@@ -26,7 +26,7 @@
         "pyvenv",
         "sdist",
         "venv",
-        "loadme"
+        "pyproject"
     ],
     "python.analysis.extraPaths": [{% for folder in pythonSrcFolders %}{% if loop.index > 1 %},{% endif %}
         "{{folder}}"{% endfor %}

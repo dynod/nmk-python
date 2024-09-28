@@ -27,7 +27,7 @@
         "pyvenv",
         "sdist",
         "venv",
-        "loadme",
+        "pyproject",
         "rtype",
         "dynod",
         "nmk",

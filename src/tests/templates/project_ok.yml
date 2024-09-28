@@ -1,0 +1,19 @@
+refs:
+    - pip://nmk-python!plugin.yml
+
+config:
+    pythonProjectFileFragments:
+        - ${BASEDIR}/setup1.toml
+        - ${BASEDIR}/setup2.toml
+
+    pythonProjectFileItems:
+        ignoredIntValue: 12
+        dummy:
+            ymlContributedValue: foo
+        anotherSection:
+            foo: bar
+            arrayOfValues:
+                - abc
+                - def
+        addedSection:
+            abc: def

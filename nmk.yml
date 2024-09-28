@@ -19,6 +19,7 @@ config:
     pythonPackageRequirements:
         - nmk-base
         - Jinja2
+        - tomlkit
 
     # Extra setup data
     pythonSetupItems:

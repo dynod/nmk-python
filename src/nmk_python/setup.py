@@ -1,36 +1,10 @@
-import platform
 from configparser import ConfigParser
 from pathlib import Path
 from typing import List, Union
 
-from nmk.model.resolver import NmkListConfigResolver
 from nmk_base.common import TemplateBuilder
 
 LIST_SEPARATOR = "\n"
-
-
-class PythonSupportedVersionsResolver(NmkListConfigResolver):
-    def get_value(self, name: str) -> List[str]:
-        def split_version(v: str) -> List[int]:
-            return list(map(int, v.split(".")))
-
-        # Get min/max values, and verify consistency
-        min_ver, max_ver = self.model.config["pythonMinVersion"].value, self.model.config["pythonMaxVersion"].value
-        min_split, max_split = split_version(min_ver), split_version(max_ver)
-        prefix = "Inconsistency in python min/max supported versions: "
-        assert len(min_split) == len(max_split), prefix + "not the same segments count"
-        assert len(min_split) == 2, prefix + "can only deal with X.Y versions (2 segments expected)"
-        assert min_split[0] == max_split[0], prefix + "can't deal with different major versions"
-        assert max_split[1] > min_split[1], prefix + "max isn't greater than min"
-
-        # Also verifies current runtime is in range
-        p_ver = platform.python_version()
-        cur_split = split_version(p_ver)
-        assert cur_split[0] == max_split[0], prefix + f"current python major version ({p_ver}) doesn't match with supported versions range"
-        assert min_split[1] <= cur_split[1] <= max_split[1], prefix + f"current python version ({p_ver}) is out of supported versions range"
-
-        # Iterate and return versions range
-        return [f"{min_split[0]}.{sub}" for sub in range(min_split[1], max_split[1] + 1)]
 
 
 class PythonSetupBuilder(TemplateBuilder):
