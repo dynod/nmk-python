@@ -10,6 +10,7 @@ Python plugin for nmk build system
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Flake8 analysis result](https://img.shields.io/badge/flake8-0-green)](https://flake8.pycqa.org/)
 [![Code coverage](https://img.shields.io/codecov/c/github/dynod/nmk-python)](https://app.codecov.io/gh/dynod/nmk-python)
+[![Documentation Status](https://readthedocs.org/projects/nmk-python/badge/?version=stable)](https://nmk-python.readthedocs.io/)
 <!-- NMK-BADGES-END -->
 
 This plugin adds support for Python development in an **`nmk`** project:
@@ -36,7 +37,7 @@ refs:
 
 ## Documentation
 
-This plugin documentation is available [here](https://github.com/dynod/nmk/wiki/nmk-python-plugin)
+This plugin documentation is available [here](https://nmk-python.readthedocs.io/)
 
 ## Issues
 

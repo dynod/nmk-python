@@ -1,3 +1,7 @@
+"""
+Python files resolvers
+"""
+
 from pathlib import Path
 from typing import List
 
@@ -5,19 +9,44 @@ from nmk.model.resolver import NmkListConfigResolver
 
 
 class FilesFinder(NmkListConfigResolver):
+    """
+    Shared logic for files resolution
+    """
+
     def find_in_folders(self) -> List[str]:  # pragma: no cover
+        """
+        Folders to be browsed (to be overridden)
+
+        :return: List of folders to be browsed for python files
+        """
         pass
 
     def get_value(self, name: str) -> List[Path]:
+        """
+        Browse for python files in specified folders
+
+        :param name: Config item name
+        :return: List of found python files
+        """
         # Iterate on source paths, and find all python files
         return [src_file for src_path in map(Path, self.find_in_folders()) for src_file in filter(lambda f: f.is_file(), src_path.rglob("*.py"))]
 
 
 class PythonFilesFinder(FilesFinder):
+    """Regular python files resolver"""
+
     def find_in_folders(self) -> List[str]:
+        """
+        Python source folders
+        """
         return self.model.config["pythonSrcFolders"].value
 
     def get_value(self, name: str) -> List[Path]:
+        """
+        Browse for python files in specified folders
+
+        Also and make sure they don't overlap with generated and test source code
+        """
         # All found files
         all_files = set(super().get_value(name))
 
@@ -29,5 +58,10 @@ class PythonFilesFinder(FilesFinder):
 
 
 class PythonTestFilesFinder(FilesFinder):
+    """Test python files resolver"""
+
     def find_in_folders(self) -> List[str]:
+        """
+        Python tests source folders
+        """
         return [self.model.config["pythonTestSources"].value]

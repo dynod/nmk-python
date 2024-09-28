@@ -1,18 +1,27 @@
+"""
+Python version handling
+"""
+
 import re
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.resolver import NmkStrConfigResolver
 
 # Git version pattern
-GIT_VERSION_PATTERN = re.compile("([^-]+)(?:-([0-9]+))?(?:-(.+))?")
+_GIT_VERSION_PATTERN = re.compile("([^-]+)(?:-([0-9]+))?(?:-(.+))?")
 
 
 class PythonVersionResolver(NmkStrConfigResolver):
+    """
+    Python version resolver
+    """
+
     def get_value(self, name: str) -> str:
-        # Turn the git version in the Python way
-        # See https://www.python.org/dev/peps/pep-0440/
+        """
+        Turn the git version in the Python way
+        """
         git_version = self.model.config["gitVersion"].value
-        m = GIT_VERSION_PATTERN.match(git_version)
+        m = _GIT_VERSION_PATTERN.match(git_version)
         if m is not None:
             # Build python version from git version segments
             out = m.group(1)
@@ -30,8 +39,14 @@ class PythonVersionResolver(NmkStrConfigResolver):
 
 
 class PythonVersionRefresh(NmkTaskBuilder):
+    """
+    Python version builder
+    """
+
     def build(self, version: str):
-        # Simple version dump
+        """
+        Simple python version dump
+        """
         self.logger.info(self.task.emoji, self.task.description)
         with self.main_output.open("w") as f:
             f.write(version)

@@ -22,7 +22,7 @@ config:
 
     # Plugin help links dict
     nmkPluginsDocs:
-        nmk-python: https://github.com/dynod/nmk/wiki/nmk-python-plugin
+        nmk-python: https://nmk-python.readthedocs.io/
 
     # Contribution to VSCode settings/launch/extensions (if plugin is used)
     vscodeSettingsFiles:

@@ -1,13 +1,17 @@
+"""
+Python support for nmk
+"""
+
 from configparser import ConfigParser
+from importlib.metadata import version
 from pathlib import Path
 
 from nmk_base.version import VersionResolver
-from pkg_resources import DistributionNotFound, get_distribution
 
 __title__ = "nmk-python"
 try:
-    __version__ = get_distribution(__title__).version
-except DistributionNotFound:  # pragma: no cover
+    __version__ = version(__title__)
+except Exception:  # pragma: no cover
     # For debug
     try:
         with (Path(__file__).parent.parent.parent / "setup.cfg").open("r") as f:
@@ -19,5 +23,8 @@ except DistributionNotFound:  # pragma: no cover
 
 
 class NmkPythonVersionResolver(VersionResolver):
+    """Plugin version resolver"""
+
     def get_version(self) -> str:
+        """Returns nmk-python plugin version"""
         return __version__
