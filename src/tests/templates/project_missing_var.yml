@@ -1,0 +1,6 @@
+refs:
+    - pip://nmk-python!plugin.yml
+
+config:
+    pythonProjectFileFragments:
+        - ${BASEDIR}/missing_var.cfg
