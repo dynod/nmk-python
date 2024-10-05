@@ -8,6 +8,10 @@ config:
     # Contributed project items from yml files
     pythonProjectFileItems: {}
 
+    # Require VSCode specific extension for toml support
+    vscodeExtensionsNames:
+        - tamasfe.even-better-toml
+
 tasks:
     py.project:
         description: Generate python project file

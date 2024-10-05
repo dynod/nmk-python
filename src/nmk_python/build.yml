@@ -49,6 +49,7 @@ tasks:
         emoji: ":snake:.:hammer:"
         deps:
             - py.setup
+            - py.format
             - py.analyze
         appendToDeps: build
         if: ${pythonSrcFiles}   # Only if python source files are found
