@@ -6,14 +6,7 @@
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": true
     },
-    "black-formatter.args": [
-        "-l",
-        "{{ pythonLineLength }}"
-    ],
-    "flake8.args": [
-        "--ignore={% for rule in pythonIgnoredRules %}{% if loop.index > 1 %},{% endif %}{{rule}}{% endfor %}"
-    ],
-    "python.defaultInterpreterPath": "venv/bin/python",
+    "python.defaultInterpreterPath": "{{ venvName }}/bin/python",
     "python.autoComplete.extraPaths": [{% for folder in pythonSrcFolders %}{% if loop.index > 1 %},{% endif %}
         "{{folder}}"{% endfor %}
     ],

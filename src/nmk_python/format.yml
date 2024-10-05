@@ -11,9 +11,10 @@ config:
     # Stamp file for format tools execution
     pythonFormatStamp: ${outputDir}/.format
 
-    # Add setup file for isort config
-    pythonSetupCfgFiles:
-        - ${BASEDIR}/templates/isort.cfg
+    # Add file fragment for isort config
+    pythonProjectFileFragments:
+        - ${BASEDIR}/templates/isort.toml.jinja
+        - ${BASEDIR}/templates/black.toml.jinja
 
     # Require VSCode specific extension for black formatting
     vscodeExtensionsNames:
@@ -27,7 +28,7 @@ tasks:
         deps:
             - out
             - py.setup
-        appendToDeps: setup
+        appendToDeps: build
         if: ${pythonSrcFiles}   # Only if python source files are found
         output:
             - ${pythonFormatStamp}

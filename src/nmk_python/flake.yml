@@ -10,16 +10,11 @@ config:
         - flake8-string-format
         - flake8-pep3101
         - flake8-bugbear
+        - flake8-pyproject
 
-    # Add setup file for flake8 config
-    pythonSetupCfgFiles:
-        - ${BASEDIR}/templates/flake.cfg
-
-    # Also contribute to setup items for extendable flake8 exclusion paths list
-    pythonSetupItems:
-        flake8:
-            exclude:
-                - __pycache__
+    # Add project file fragment for flake8 config
+    pythonProjectFileFragments:
+        - ${BASEDIR}/templates/flake.toml.jinja
 
     # Stamp file for flake8 execution
     pythonFlakeStamp: ${outputDir}/.flake
@@ -42,9 +37,8 @@ tasks:
         description: Analyze python code
         emoji: ":snake:.:eye: "
         deps:
-            - py.setup
             - py.format
-        appendToDeps: setup
+        appendToDeps: build
         if: ${pythonSrcFiles}   # Only if python source files are found
         output:
             - ${pythonFlakeStamp}
