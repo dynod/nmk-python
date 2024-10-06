@@ -4,7 +4,7 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": "always"
         },
-        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.defaultFormatter": "charliermarsh.ruff",
         "editor.formatOnSave": true
     },
     "python.defaultInterpreterPath": "venv/bin/python",

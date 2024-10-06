@@ -2,9 +2,7 @@
 
 This plugin adds support for Python development in an **`nmk`** project:
 * setup file generation
-* code format with [black](https://github.com/psf/black)
-* import sorting with [isort](https://github.com/PyCQA/isort)
-* code analysis with [flake8](https://flake8.pycqa.org/)
+* code format and analysis with [ruff](https://astral.sh/ruff)
 * python wheel build
 * test with [pytest](https://pytest.org)
 * VSCode settings generation (if [**`nmk-vscode`**](https://github.com/dynod/nmk-vscode) plugin is also used)

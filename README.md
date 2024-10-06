@@ -7,17 +7,15 @@ Python plugin for nmk build system
 [![Issues](https://img.shields.io/github/issues-search/dynod/nmk?label=issues&query=is%3Aopen+is%3Aissue+label%3Aplugin%3Apython)](https://github.com/dynod/nmk/issues?q=is%3Aopen+is%3Aissue+label%3Aplugin%3Apython)
 [![Supported python versions](https://img.shields.io/badge/python-3.8%20--%203.12-blue)](https://www.python.org/)
 [![PyPI](https://img.shields.io/pypi/v/nmk-python)](https://pypi.org/project/nmk-python/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Flake8 analysis result](https://img.shields.io/badge/flake8-0-green)](https://flake8.pycqa.org/)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://astral.sh/ruff)
+[![Ruff analysis result](https://img.shields.io/badge/ruff-0-green)](https://astral.sh/ruff)
 [![Code coverage](https://img.shields.io/codecov/c/github/dynod/nmk-python)](https://app.codecov.io/gh/dynod/nmk-python)
 [![Documentation Status](https://readthedocs.org/projects/nmk-python/badge/?version=stable)](https://nmk-python.readthedocs.io/)
 <!-- NMK-BADGES-END -->
 
 This plugin adds support for Python development in an **`nmk`** project:
-* setup file generation
-* code format with [black](https://github.com/psf/black)
-* import sorting with [isort](https://github.com/PyCQA/isort)
-* code analysis with [flake8](https://flake8.pycqa.org/)
+* project file generation
+* code format and analysis with [ruff](https://astral.sh/ruff)
 * python wheel build
 * test with [pytest](https://pytest.org)
 * VSCode settings generation (if [**`nmk-vscode`**](https://github.com/dynod/nmk-vscode) plugin is also used)

@@ -42,3 +42,45 @@ The builder is called with the following parameters mapping:
 |- |-
 | fragment_files | **{ref}`${pythonProjectFileFragments}<pythonProjectFileFragments>`**
 | items | **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**
+
+## Build tasks
+
+All tasks in this chapter are dependencies of the base [**`build`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#build-task) task.
+
+(py.format)=
+### **`py.format`** -- Python code format
+
+This task calls **`ruff format`** command to format python code of this project.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.ruff.RuffBuilder`
+| input    | {ref}`${pythonSrcFiles}<pythonSrcFiles>` + {ref}`${pythonProjectFile}<pythonProjectFile>` files
+| output   | {ref}`${pythonRuffFormatStamp}<pythonRuffFormatStamp>` file
+| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
+| command | format
+
+(py.analysis)=
+### **`py.analysis`** -- Python code analysis
+
+This task calls **`ruff check`** command to analyze python code of this project.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.ruff.RuffBuilder`
+| input    | {ref}`${pythonSrcFiles}<pythonSrcFiles>` + {ref}`${pythonProjectFile}<pythonProjectFile>` files
+| output   | {ref}`${pythonRuffCheckStamp}<pythonRuffCheckStamp>` file
+| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
+| command | check

@@ -135,3 +135,41 @@ List of project fragment files to be merged in generated **{ref}`${pythonProject
 | Dict | {}
 
 Dictionary of items to be contributed in generated **{ref}`${pythonProjectFile}<pythonProjectFile>`** file.
+
+## Code format/analysis
+
+(pythonLineLength)=
+### **`pythonLineLength`** -- Max python source line length
+
+| Type | Default value |
+|-     |-
+| int | 160
+
+This is the maximum line length when formatting code with [ruff](https://astral.sh/ruff).
+
+(pythonIgnoredRules)=
+### **`pythonIgnoredRules`** -- List of ignored rules
+
+| Type | Default value |
+|-     |-
+| List[str] | ["E203","E501"]
+
+This is the list of rules that need to be ignored when analyzing code with [ruff](https://astral.sh/ruff).
+
+(pythonRuffFormatStamp)=
+### **`pythonRuffFormatStamp`** -- Python format stamp file
+
+| Type | Default value |
+|-     |-
+| str | [${outputDir}](https://nmk-base.readthedocs.io/en/stable/config.html#outputdir-output-base-directory)/.ruff-format
+
+This is the stamp file updated each time the **{ref}`py.format<py.format>`** task is executed.
+
+(pythonRuffCheckStamp)=
+### **`pythonRuffCheckStamp`** -- Python check stamp file
+
+| Type | Default value |
+|-     |-
+| str | [${outputDir}](https://nmk-base.readthedocs.io/en/stable/config.html#outputdir-output-base-directory)/.ruff-check
+
+This is the stamp file updated each time the **{ref}`py.analysis<py.analysis>`** task is executed.
