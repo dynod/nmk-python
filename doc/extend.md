@@ -13,3 +13,20 @@ Following config items may be extended for that purpose:
   pythonGeneratedSrcFiles:
       - ${sourceDir}/some_generated_file.py
   ```
+
+## Code format/analysis
+
+Python code format/analysis behavior may be configured by python projects.
+
+Following config items may be extended for that purpose:
+* **{ref}`${pythonLineLength}<pythonLineLength>`**: python source code length
+  Example:
+  ```yaml
+  pythonLineLength: 150
+  ```
+* **{ref}`${pythonIgnoredRules}<pythonIgnoredRules>`**: list of ignored rules
+  Example:
+  ```yaml
+  pythonIgnoredRules:
+    - E123
+  ```

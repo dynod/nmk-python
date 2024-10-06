@@ -129,27 +129,27 @@ class TestPythonPlugin(NmkBaseTester):
         self.fake_python_src("import bbb\nimport aaa")
         p = self.prepare_project("ref_python.yml")
         self.nmk(p, extra_args=["py.format"])
-        assert (self.test_folder / "out" / ".format").is_file()
+        assert (self.test_folder / "out" / ".ruff-format").is_file()
 
         # Check incremental build
         self.nmk(p, extra_args=["py.format"])
         self.check_logs("[py.format]] DEBUG 🐛 - Task skipped, nothing to do")
 
-    def test_python_flake(self):
-        # Prepare fake source with flake errors
+    def test_python_analysis(self):
+        # Prepare fake source with errors
         self.fake_python_src("foo=foo")
         self.nmk(
             self.prepare_project("ref_python.yml"),
             extra_args=["py.analyze"],
             # Mixed / & \ on Windows (because pythonSrcFolders strings list is built with / even on Windows)
-            expected_error=f"{Path('src') / 'fake' / 'fake.py'}:1:7: F821 undefined name 'foo'",
+            expected_error="An error occurred during task py.analyze build: command returned 1",
         )
-        assert not (self.test_folder / "out" / ".flake").is_file()
+        assert not (self.test_folder / "out" / ".ruff-check").is_file()
 
         # Prepare fake source without errors
         self.fake_python_src("")
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.analyze"])
-        assert (self.test_folder / "out" / ".flake").is_file()
+        assert (self.test_folder / "out" / ".ruff-check").is_file()
 
     def test_python_build(self):
         # Prepare test project for python build
