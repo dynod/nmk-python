@@ -8,6 +8,7 @@ Python generated files list may be extended by plugins enabling such python code
 
 Following config items may be extended for that purpose:
 * **{ref}`${pythonGeneratedSrcFiles}<pythonGeneratedSrcFiles>`**: List of python generated files.
+
   Example:
   ```yaml
   pythonGeneratedSrcFiles:
@@ -20,13 +21,39 @@ Python code format/analysis behavior may be configured by python projects.
 
 Following config items may be extended for that purpose:
 * **{ref}`${pythonLineLength}<pythonLineLength>`**: python source code length
+
   Example:
   ```yaml
   pythonLineLength: 150
   ```
 * **{ref}`${pythonIgnoredRules}<pythonIgnoredRules>`**: list of ignored rules
+
   Example:
   ```yaml
   pythonIgnoredRules:
     - E123
+  ```
+
+## Tests
+
+Python test behavior may be configured by python projects.
+
+Following config items may be extended for that purpose:
+* **{ref}`${pytestExtraArgs}<pytestExtraArgs>`**: pytest extra options
+
+  Example:
+  ```yaml
+  pytestExtraArgs:
+    cov-fail-under: 80
+  ```
+* **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**: extra project config items to exclude folders from coverage
+
+  Example:
+  ```yaml
+  pythonProjectFileItems:
+    tool:
+      coverage:
+        run:
+          omit:
+            - src/some_package/templates/*
   ```

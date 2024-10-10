@@ -84,3 +84,23 @@ The builder is called with the following parameters mapping:
 |- |-
 | src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
 | command | check
+
+## Tests tasks
+
+All tasks in this chapter are dependencies of the base [**`tests`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#tests-task) task.
+
+(py.tests)=
+### **`py.tests`** -- Run Python tests
+
+This task calls **`pytest`** command to execute python tests.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.tests.PytestBuilder`
+| if       | {ref}`${pythonTestSrcFiles}<pythonTestSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| pytest_args | **{ref}`${pytestExtraArgs}<pytestExtraArgs>`**
