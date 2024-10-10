@@ -1,13 +1,7 @@
 config:
-    # Tests related setup config
-    pythonSetupCfgFiles:
-        - ${BASEDIR}/templates/pytest.cfg
-
-    # Extra config to get an extendable list of source paths to be ignored for coverage
-    pythonSetupItems:
-        run:
-            omit:
-                - ${pythonTestSources}/*
+    # Tests related project config
+    pythonProjectFileFragments:
+        - ${BASEDIR}/templates/pytest.toml.jinja
 
     # Tests related venv dependencies
     venvPkgDeps:
@@ -23,7 +17,7 @@ config:
     # Python test output folder
     pythonTestOutput: ${outputDir}/tests
 
-    # Pytest extra args (not generated in setup.cfg)
+    # Pytest extra args (not generated in project file)
     pytestExtraArgs:
         numprocesses: auto
         cov-fail-under: 100

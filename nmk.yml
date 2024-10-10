@@ -28,10 +28,13 @@ config:
         options.package_data:
             nmk_python: "*.yml,*.json"
             nmk_python.templates: "*"
-        run:
-            omit:
-                - out/tests/*
-                - src/nmk_python/templates/*
+    pythonProjectFileItems:
+        tool:
+            coverage:
+                run:
+                    omit:
+                        - out/tests/*
+                        - src/nmk_python/templates/*
 
     # Github issues logged in nmk project
     githubIssuesRepo: nmk

@@ -60,11 +60,12 @@ class TestPythonPlugin(NmkBaseTester):
     def test_python_project_missing_config(self):
         # Prepare fake source python files to enable python tasks
         self.fake_python_src()
-        shutil.copyfile(self.template("missing_var.cfg"), self.test_folder / "missing_var.cfg")
+        project_file_fragment = self.test_folder / "missing_var.cfg"
+        shutil.copyfile(self.template("missing_var.cfg"), project_file_fragment)
         self.nmk(
             self.prepare_project("project_missing_var.yml"),
             extra_args=["py.project"],
-            expected_error=f"An error occurred during task py.project build: Unknown config items referenced from template {self.test_folder / 'missing_var.cfg'}: unknownConfig",
+            expected_error=f"An error occurred during task py.project build: While loading project file template ({project_file_fragment}): Unknown config items referenced from template {self.test_folder / 'missing_var.cfg'}: unknownConfig",
         )
 
     def test_python_project_ok(self):

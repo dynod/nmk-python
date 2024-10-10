@@ -28,4 +28,6 @@ class PytestBuilder(NmkTaskBuilder):
                 args.append(f"--{opt_k}={opt_v}")
 
         # Invoke pytest
-        subprocess.run([sys.executable, "-m", "pytest"] + args, check=True, cwd=self.model.config[NmkRootConfig.PROJECT_DIR].value)
+        all_args = [sys.executable, "-m", "pytest"] + args
+        self.logger.debug(f"Running subprocess: {' '.join(all_args)}")
+        subprocess.run(all_args, check=True, cwd=self.model.config[NmkRootConfig.PROJECT_DIR].value)
