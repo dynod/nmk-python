@@ -173,3 +173,50 @@ This is the stamp file updated each time the **{ref}`py.format<py.format>`** tas
 | str | [${outputDir}](https://nmk-base.readthedocs.io/en/stable/config.html#outputdir-output-base-directory)/.ruff-check
 
 This is the stamp file updated each time the **{ref}`py.analysis<py.analysis>`** task is executed.
+
+## Tests
+
+(pythonTestOutput)=
+### **`pythonTestOutput`** -- Python tests output folder
+
+| Type | Default value |
+|-     |-
+| str | [${outputDir}](https://nmk-base.readthedocs.io/en/stable/config.html#outputdir-output-base-directory)/tests
+
+This is the output folder where tests results are generated.
+
+(pythonCoverageHtmlReport)=
+### **`pythonCoverageHtmlReport`** -- Python code coverage HTML report folder
+
+| Type | Default value |
+|-     |-
+| str | [${outputDir}](https://nmk-base.readthedocs.io/en/stable/config.html#outputdir-output-base-directory)/coverage-report
+
+This is the output folder where python code coverage HTML report is generated.
+
+(pythonCoverageXmlReport)=
+### **`pythonCoverageXmlReport`** -- Python code coverage XML report file
+
+| Type | Default value |
+|-     |-
+| str | [${outputDir}](https://nmk-base.readthedocs.io/en/stable/config.html#outputdir-output-base-directory)/coverage.xml
+
+This is the output file for python code coverage XML report.
+
+(pythonCoverageFile)=
+### **`pythonCoverageFile`** -- Python code coverage data file
+
+| Type | Default value |
+|-     |-
+| str | [${outputDir}](https://nmk-base.readthedocs.io/en/stable/config.html#outputdir-output-base-directory)/.coverage
+
+This is the cumulative data file for python code coverage.
+
+(pytestExtraArgs)=
+### **`pytestExtraArgs`** -- Extra pytest arguments
+
+| Type | Default value |
+|-     |-
+| Dict[str, str] | {"numprocesses": "auto", "cov-fail-under": 100, "dist": "loadgroup"}
+
+This is a name/value dictionary of [pytest](https://docs.pytest.org/) options used on the command line when launching tests.

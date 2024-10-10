@@ -55,8 +55,12 @@ class PythonProjectBuilder(TemplateBuilder):
         # Merge project fragments to generate final project
         project = {}
         for f_path in map(Path, fragment_files):
-            # Update document with rendered template
-            fragment_doc = loads(self.render_template(f_path, {}))
+            try:
+                # Update document with rendered template
+                fragment_doc = loads(self.render_template(f_path, {}))
+            except Exception as e:
+                # Propagate error with file name
+                raise ValueError(f"While loading project file template ({f_path}): {e}") from e
             self._contribute(project, fragment_doc.unwrap())
 
         # Iterate on items contributed through yml project files (only ones contributing maps)
