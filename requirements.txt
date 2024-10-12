@@ -6,6 +6,7 @@
 # Package dependencies from nmk project files
 #
 
+build
 Jinja2
 myst-parser
 nmk-base

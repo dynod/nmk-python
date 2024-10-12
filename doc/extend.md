@@ -34,6 +34,28 @@ Following config items may be extended for that purpose:
     - E123
   ```
 
+## Build
+
+Python wheel build behavior may be configured by python projects.
+
+Following config items may be extended for that purpose:
+* **{ref}`${pythonPackageRequirements}<pythonPackageRequirements>`**: package dependencies
+
+  Example:
+  ```yaml
+  pythonPackageRequirements:
+    - some-package-dep
+  ```
+* **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**: additional project configuration:
+  * extra details on the project
+
+    Example:
+    ```yaml
+    pythonProjectFileItems:
+      project:
+        description: Some descriptive text for my python package
+    ```
+
 ## Tests
 
 Python test behavior may be configured by python projects.

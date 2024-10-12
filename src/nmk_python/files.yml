@@ -3,8 +3,11 @@ config:
     pythonSrcFolders:
         - ${sourceDir}
 
+    # Package holding test code
+    pythonTestPackage: tests
+
     # Root folder for test sources
-    pythonTestSources: ${sourceDir}/tests
+    pythonTestSources: ${sourceDir}/${pythonTestPackage}
 
     # Found Python test source files
     pythonTestSrcFiles:

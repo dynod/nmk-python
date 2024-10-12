@@ -2,8 +2,8 @@ config:
 
     # Python package name (to be configured at project level)
     pythonPackage: ${projectName}
-    pythonPackageForWheel:
-        __resolver__: nmk_python.build.PythonPackageForWheel
+    pythonModule:
+        __resolver__: nmk_python.build.PythonModuleResolver
 
     # Python artifacts directory
     pythonArtifacts: ${outputDir}/artifacts
@@ -12,17 +12,18 @@ config:
     pythonBuildDir: ${outputDir}/python
 
     # Python source distribution + wheel artifacts
-    pythonWheel: ${pythonArtifacts}/${pythonPackageForWheel}-${pythonVersion}-py3-none-any.whl
+    pythonWheel: ${pythonArtifacts}/${pythonModule}-${pythonVersion}-py3-none-any.whl
 
-    # Add setup file for build config
-    pythonSetupCfgFiles:
-        - ${BASEDIR}/templates/build.cfg
+    # Add project file fragment for build config
+    pythonProjectFileFragments:
+        - ${BASEDIR}/templates/build.toml.jinja
 
     # Python package dependencies (also contributed to venv)
     pythonPackageRequirements: []
     venvPkgDeps:
         - setuptools
         - wheel
+        - build
         - ${pythonPackageRequirements}
 
     # Python files to be ignored
@@ -48,7 +49,7 @@ tasks:
         description: Build python package
         emoji: ":snake:.:hammer:"
         deps:
-            - py.setup
+            - py.project
             - py.format
             - py.analyze
         appendToDeps: build
@@ -57,10 +58,13 @@ tasks:
             - ${pythonWheel}
         input:
             - ${pythonSrcFiles}
-            - ${pythonSetupCfg}
+            - ${pythonProjectFile}
         builder: nmk_python.build.PackageBuilder
         params:
-            artifacts: ${pythonArtifacts}
+            project_file: ${pythonProjectFile}
+            version_file: ${pythonVersionStamp}
+            source_dirs: ${pythonSrcFolders}
+            artifacts_dir: ${pythonArtifacts}
             build_dir: ${pythonBuildDir}
 
     # Python module install
