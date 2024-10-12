@@ -1,29 +1,105 @@
+"""
+Python package build module
+"""
+
+import shutil
 import sys
+from pathlib import Path
+from typing import List
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
 from nmk.model.resolver import NmkStrConfigResolver
 from nmk.utils import is_windows, run_with_logs
 from nmk_base.venvbuilder import VenvUpdateBuilder
+from tomlkit import loads
+from tomlkit.toml_file import TOMLFile
 
 
 class PackageBuilder(NmkTaskBuilder):
-    def build(self, artifacts: str, build_dir: str):
-        # Delegate to setup
+    """
+    Python package builder
+    """
+
+    def build(self, project_file: str, version_file: str, source_dirs: List[str], artifacts_dir: str, build_dir: str):
+        """
+        Delegate to python build module, from a temporary build folder
+
+        :param project_file: path to python project file
+        :param version_file: path to generated version file
+        :param source_dirs: list of source folders for this wheel
+        :param artifacts_dir: output folder for built wheel
+        :param build_dir: temporary build folder
+        """
+
+        # Prepare build folder
+        build_path = Path(build_dir)
+        if build_path.is_dir():
+            shutil.rmtree(build_path)
+        build_path.mkdir(exist_ok=True, parents=True)
+
+        # Copy source folders and various project files
+        project_root = Path(self.model.config[NmkRootConfig.PROJECT_DIR].value)
+        for source_dir in map(Path, source_dirs):
+            shutil.copytree(source_dir, build_path / source_dir.relative_to(project_root))
+        for candidate in filter(lambda p: p.is_file(), map(Path, [project_file, version_file, project_root / "README.md", project_root / "LICENSE"])):
+            shutil.copyfile(candidate, build_path / candidate.name)
+
+        # Update project file with version
+        build_project = build_path / Path(project_file).name
+        build_version = build_path / Path(version_file).name
+        with build_project.open() as f:
+            project_doc = loads(f.read())
+        dyn_table = project_doc.get("tool").get("setuptools").get("dynamic")
+        dyn_table["version"] = {"file": build_version.name}
+        project_output = TOMLFile(build_project)
+        project_output.write(project_doc)
+
+        # Prepare artifacts folder
+        artifacts_path = Path(artifacts_dir)
+        artifacts_path.mkdir(exist_ok=True, parents=True)
+        for wheel in artifacts_path.glob("*.whl"):
+            wheel.unlink()
+
+        # Delegate to build module
         run_with_logs(
-            [sys.executable, "-c", "from setuptools import setup; setup()", "build", "-b", build_dir, "bdist_wheel", "-d", artifacts],
+            [sys.executable, "-m", "build", "--wheel", "--skip-dependency-check", "--no-isolation"],
             self.logger,
-            cwd=self.model.config[NmkRootConfig.PROJECT_DIR].value,
+            cwd=build_path,
         )
 
+        # Copy wheel to artifacts folder
+        target_wheel = self.main_output
+        built_wheel = build_path / "dist" / target_wheel.name
+        assert built_wheel.is_file(), f"Expected built wheel not found: {built_wheel}"
+        shutil.copyfile(built_wheel, target_wheel)
 
-class PythonPackageForWheel(NmkStrConfigResolver):
+
+class PythonModuleResolver(NmkStrConfigResolver):
+    """
+    Python module name resolver
+    """
+
     def get_value(self, name: str) -> str:
+        """
+        Return module name from package (i.e. wheel) name
+        """
         return self.model.config["pythonPackage"].value.replace("-", "_")
 
 
 class Installer(VenvUpdateBuilder):
+    """
+    Install built wheel in venv
+    """
+
     def build(self, name: str, pip_args: str):
+        """
+        Install wheel in venv
+
+        :param name: wheel name to be installed
+        :param pip_args: pip command line arguments
+        """
+
         # On Windows, refuse to install nmk package while running nmk (wont' work)
         if is_windows() and name == "nmk":
             self.logger.warning("Can't install nmk while running nmk!")

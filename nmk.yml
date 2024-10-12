@@ -21,14 +21,10 @@ config:
         - Jinja2
         - tomlkit
 
-    # Extra setup data
-    pythonSetupItems:
-        metadata:
-            description: Python plugin for nmk build system
-        options.package_data:
-            nmk_python: "*.yml,*.json"
-            nmk_python.templates: "*"
+    # Extra project data
     pythonProjectFileItems:
+        project:
+            description: Python plugin for nmk build system
         tool:
             coverage:
                 run:

@@ -23,13 +23,13 @@ class FilesFinder(NmkListConfigResolver):
 
     def get_value(self, name: str) -> List[Path]:
         """
-        Browse for python files in specified folders
+        Browse for source files in specified folders
 
         :param name: Config item name
-        :return: List of found python files
+        :return: List of found source files
         """
-        # Iterate on source paths, and find all python files
-        return [src_file for src_path in map(Path, self.find_in_folders()) for src_file in filter(lambda f: f.is_file(), src_path.rglob("*.py"))]
+        # Iterate on source paths, and find all source files
+        return [src_file for src_path in map(Path, self.find_in_folders()) for src_file in filter(lambda f: f.is_file(), src_path.rglob("*"))]
 
 
 class PythonFilesFinder(FilesFinder):

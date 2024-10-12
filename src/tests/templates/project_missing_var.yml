@@ -3,4 +3,4 @@ refs:
 
 config:
     pythonProjectFileFragments:
-        - ${BASEDIR}/missing_var.cfg
+        - ${BASEDIR}/missing_var.toml

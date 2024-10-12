@@ -2,7 +2,6 @@
 import platform
 import shutil
 import subprocess
-from configparser import ConfigParser
 from pathlib import Path
 from typing import List
 
@@ -60,12 +59,12 @@ class TestPythonPlugin(NmkBaseTester):
     def test_python_project_missing_config(self):
         # Prepare fake source python files to enable python tasks
         self.fake_python_src()
-        project_file_fragment = self.test_folder / "missing_var.cfg"
-        shutil.copyfile(self.template("missing_var.cfg"), project_file_fragment)
+        project_file_fragment = self.test_folder / "missing_var.toml"
+        shutil.copyfile(self.template("missing_var.toml"), project_file_fragment)
         self.nmk(
             self.prepare_project("project_missing_var.yml"),
             extra_args=["py.project"],
-            expected_error=f"An error occurred during task py.project build: While loading project file template ({project_file_fragment}): Unknown config items referenced from template {self.test_folder / 'missing_var.cfg'}: unknownConfig",
+            expected_error=f"An error occurred during task py.project build: While loading project file template ({project_file_fragment}): Unknown config items referenced from template {self.test_folder / 'missing_var.toml'}: unknownConfig",
         )
 
     def test_python_project_ok(self):
@@ -88,42 +87,6 @@ class TestPythonPlugin(NmkBaseTester):
         assert doc["dummy"]["ymlContributedValue"] == "foo"
         assert doc["anotherSection"]["foo"] == "bar"
         assert doc["anotherSection"]["arrayOfValues"] == ["azerty", "abc", "def"]
-
-    def test_python_setup_missing_config(self):
-        # Prepare fake source python files to enable python tasks
-        self.fake_python_src()
-        shutil.copyfile(self.template("missing_var.cfg"), self.test_folder / "missing_var.cfg")
-        self.nmk(
-            self.prepare_project("setup_missing_var.yml"),
-            extra_args=["py.setup"],
-            expected_error=f"An error occurred during task py.setup build: Unknown config items referenced from template {self.test_folder / 'missing_var.cfg'}: unknownConfig",
-        )
-
-    def test_python_setup_ok(self):
-        # Prepare fake source python files to enable python tasks
-        self.fake_python_src()
-        shutil.copyfile(self.template("setup1.cfg"), self.test_folder / "setup1.cfg")
-        shutil.copyfile(self.template("setup2.cfg"), self.test_folder / "setup2.cfg")
-        self.nmk(
-            self.prepare_project("setup_ok.yml"),
-            extra_args=["py.setup"],
-        )
-        generated_setup = self.test_folder / "setup.cfg"
-        assert generated_setup.is_file()
-
-        # Verify merged content
-        with generated_setup.open() as f:
-            c = ConfigParser()
-            c.read_file(f.readlines())
-        assert c.get("dummy", "foo") == "bar"
-        assert c.get("dummy", "bar") == "venv"
-        assert c.get("dummy", "other") == "1,2,3"
-        assert c.get("dummy", "ymlcontributedvalue") == "foo"
-        assert c.get("anotherSection", "foo") == "bar"
-        assert c.get("anotherSection", "arrayofvalues") == "\nabc\ndef"
-
-        # Verify supported python versions
-        assert c.get("metadata", "classifiers") == "\n" + "\n".join([f"Programming Language :: Python :: {v}" for v in self.expected_supp_versions()])
 
     def test_python_format(self):
         # Prepare fake source python files to enable python tasks
@@ -155,7 +118,17 @@ class TestPythonPlugin(NmkBaseTester):
     def test_python_build(self):
         # Prepare test project for python build
         self.fake_python_src("")
-        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.build"])
+        project = self.prepare_project("ref_python.yml")
+        self.nmk(project, extra_args=["py.build"])
+        archives = list((self.test_folder / "out" / "artifacts").glob("fake-*"))
+        assert len(archives) == 1
+
+        # Another build
+        self.nmk(project, extra_args=["py.build"])
+        self.check_logs("nothing to do")
+
+        # Another build (forces)
+        self.nmk(project, extra_args=["py.build", "-f"])
         archives = list((self.test_folder / "out" / "artifacts").glob("fake-*"))
         assert len(archives) == 1
 
@@ -244,14 +217,14 @@ class TestSomething:
         # Fake python version
         monkeypatch.setattr(platform, "python_version", lambda: "2.7")
         self.nmk(
-            self.prepare_project("setup_ok.yml"),
+            self.prepare_project("project_ok.yml"),
             extra_args=["--print", "pythonSupportedVersions"],
             expected_rc=1,
             expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: current python major version (2.7) doesn't match with supported versions range",
         )
         monkeypatch.setattr(platform, "python_version", lambda: "3.6")
         self.nmk(
-            self.prepare_project("setup_ok.yml"),
+            self.prepare_project("project_ok.yml"),
             extra_args=["--print", "pythonSupportedVersions"],
             expected_rc=1,
             expected_error="Error occurred while resolving config pythonSupportedVersions: Inconsistency in python min/max supported versions: current python version (3.6) is out of supported versions range",

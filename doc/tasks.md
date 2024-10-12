@@ -85,6 +85,51 @@ The builder is called with the following parameters mapping:
 | src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
 | command | check
 
+## Build tasks
+
+All tasks in this chapter are dependencies of the base [**`build`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#build-task) task.
+
+(py.build)=
+### **`py.build`** -- Build Python wheel
+
+This task use the python **`build`** module to handle the wheel build.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.build.PackageBuilder`
+| input    | {ref}`${pythonSrcFiles}<pythonSrcFiles>` + {ref}`${pythonProjectFile}<pythonProjectFile>` files
+| output   | {ref}`${pythonWheel}<pythonWheel>` file
+| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| project_file | **{ref}`${pythonProjectFile}<pythonProjectFile>`**
+| version_file | **{ref}`${pythonVersionStamp}<pythonVersionStamp>`**
+| source_dirs | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
+| artifacts_dir | **{ref}`${pythonArtifacts}<pythonArtifacts>`**
+| build_dir | **{ref}`${pythonBuildDir}<pythonBuildDir>`**
+
+(py.install)=
+### **`py.install`** -- Install Python wheel
+
+This task installs the built python wheel in the project venv.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.build.Installer`
+| input   | {ref}`${pythonWheel}<pythonWheel>` file
+| output  | [${venvState}](https://nmk-base.readthedocs.io/en/stable/config.html#venvstate-output-requirements-file-name)
+| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| name | **{ref}`${pythonPackage}<pythonPackage>`**
+| pip_args | "--force-reinstall --no-deps ${venvPipArgs}"
+
 ## Tests tasks
 
 All tasks in this chapter are dependencies of the base [**`tests`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#tests-task) task.
