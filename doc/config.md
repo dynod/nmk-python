@@ -203,6 +203,15 @@ This is the name of the python package (wheel) to be generated.
 
 This is the name of the python module (typically the same than the wheel name, with "_" instead of "-").
 
+(pythonPackagePlatform)=
+### **`pythonPackagePlatform`** -- Python package platform tag
+
+| Type | Default value |
+|-     |-
+| str | any
+
+This is the platform tag for the current python project.
+
 (pythonArtifacts)=
 ### **`pythonArtifacts`** -- Python artifacts folder
 
@@ -226,7 +235,7 @@ This is the output path where the wheel build is performed.
 
 | Type | Default value |
 |-     |-
-| str | {ref}`${pythonArtifacts}<pythonArtifacts>`/{ref}`${pythonModule}<pythonModule>`-{ref}`${pythonVersion}<pythonVersion>`-py3-none-any.whl
+| str | {ref}`${pythonArtifacts}<pythonArtifacts>`/{ref}`${pythonModule}<pythonModule>`-{ref}`${pythonVersion}<pythonVersion>`-py3-none-{ref}`${pythonPackagePlatform}<pythonPackagePlatform>`.whl
 
 This is the generated python wheel file.
 
@@ -238,6 +247,23 @@ This is the generated python wheel file.
 | list[str] | []
 
 This is the list of python package dependencies for the built wheel (i.e. list of packages to be installed when the wheel itself is installed).
+
+(pythonExtraResources)=
+### **`pythonExtraResources`** -- Python extra bundled resources
+
+| Type | Default value |
+|-     |-
+| dict[str,str] | {}
+
+This is a dictionary specifying extra resources to be bundled in the built python wheel, that are not part of the source tree:
+* keys are existing resource files or folders
+* values are expected paths in the source tree
+
+Paths may be absolute or relative; non-absolute paths are considered to be relative to the project root folder.
+
+```{note}
+Resources won't actually be copied in the source tree. Destination path should be considered as the location where resource *would* exist in the source tree.
+```
 
 ## Tests
 

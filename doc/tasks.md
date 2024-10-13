@@ -85,10 +85,6 @@ The builder is called with the following parameters mapping:
 | src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
 | command | check
 
-## Build tasks
-
-All tasks in this chapter are dependencies of the base [**`build`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#build-task) task.
-
 (py.build)=
 ### **`py.build`** -- Build Python wheel
 
@@ -110,6 +106,7 @@ The builder is called with the following parameters mapping:
 | source_dirs | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
 | artifacts_dir | **{ref}`${pythonArtifacts}<pythonArtifacts>`**
 | build_dir | **{ref}`${pythonBuildDir}<pythonBuildDir>`**
+| extra_resources | **{ref}`${pythonExtraResources}<pythonExtraResources>`**
 
 (py.install)=
 ### **`py.install`** -- Install Python wheel

@@ -2,6 +2,8 @@
 import platform
 import shutil
 import subprocess
+import sysconfig
+from json import dumps
 from pathlib import Path
 from typing import List
 
@@ -35,13 +37,16 @@ class TestPythonPlugin(NmkBaseTester):
         self.check_version(monkeypatch, "1.2.3-12-gb95312a", "1.2.3.post12+gb95312a")
         self.check_version(monkeypatch, "1.2.3-12-gb95312a-dirty", "1.2.3.post12+gb95312a.dirty")
 
-    def fake_python_src(self, content: str = "", package: str = "fake", name: str = "fake.py"):
+    def fake_python_src(self, content: str = "", package: str = "fake", name: str = "fake.py", with_init=False):
         # Prepare fake source python files to enable python tasks
         src = self.test_folder / "src" / package
         src.mkdir(parents=True, exist_ok=True)
         fake = src / name
         with fake.open("w") as f:
             f.write(content)
+        if with_init:
+            init = src / "__init__.py"
+            init.touch()
 
     def test_python_version_stamp(self):
         # Check python version is not generated (while no python files)
@@ -131,6 +136,39 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(project, extra_args=["py.build", "-f"])
         archives = list((self.test_folder / "out" / "artifacts").glob("fake-*"))
         assert len(archives) == 1
+
+    def test_python_build_platform_specific(self):
+        # Prepare test project for python build
+        self.fake_python_src("", with_init=True)
+        project = self.prepare_project("ref_python.yml")
+        some_fake_resources = self.test_folder / "foo.lib"
+        some_fake_resources.touch()
+        some_fake_folder = self.test_folder / "resources"
+        some_fake_folder.mkdir()
+        (some_fake_folder / "blablabla").touch()
+
+        # Build for platform, with extra resource
+        platform = sysconfig.get_platform().replace("-", "_")
+        self.nmk(
+            project,
+            extra_args=[
+                "py.build",
+                "--config",
+                f"pythonPackagePlatform={platform}",
+                "--config",
+                dumps({"pythonExtraResources": {some_fake_resources.name: "src/fake", some_fake_folder.name: "src/fake/extra"}}, indent=None),
+            ],
+        )
+        archives = list((self.test_folder / "out" / "artifacts").glob(f"fake-*-{platform}.whl"))
+        assert len(archives) == 1
+
+        # Verify copied resources
+        build = self.test_folder / "out" / "python" / "src" / "fake"
+        assert (build / "foo.lib").is_file()
+        assert (build / "extra" / "blablabla").is_file()
+
+        # Check logs for extra resource bundling
+        self.check_logs("adding 'fake/foo.lib'")
 
     def test_python_test(self):
         # Prepare test project for python build

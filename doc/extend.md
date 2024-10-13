@@ -55,6 +55,19 @@ Following config items may be extended for that purpose:
       project:
         description: Some descriptive text for my python package
     ```
+* **{ref}`${pythonPackagePlatform}<pythonPackagePlatform>`**: package platform tag
+
+  Example:
+  ```yaml
+  pythonPackagePlatform: win_amd64 # Windows 64bits specific package
+  ```
+* **{ref}`${pythonExtraResources}<pythonExtraResources>`**: extra resources to be bundled in the built wheel
+
+  Example:
+  ```yaml
+  pythonExtraResources:
+    out/somethingbuilt.lib: ${sourceDir}/my_package
+  ```
 
 ## Tests
 

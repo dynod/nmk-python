@@ -30,3 +30,6 @@ namespaces = false
 
 [tool.setuptools.dynamic.version]
 file = "{{ pythonVersionStamp }}"
+
+[tool.distutils.bdist_wheel]
+plat-name = "{{ pythonPackagePlatform }}"

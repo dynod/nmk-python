@@ -5,7 +5,7 @@ Python package build module
 import shutil
 import sys
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
@@ -21,7 +21,7 @@ class PackageBuilder(NmkTaskBuilder):
     Python package builder
     """
 
-    def build(self, project_file: str, version_file: str, source_dirs: List[str], artifacts_dir: str, build_dir: str):
+    def build(self, project_file: str, version_file: str, source_dirs: List[str], artifacts_dir: str, build_dir: str, extra_resources: Dict[str, str]):
         """
         Delegate to python build module, from a temporary build folder
 
@@ -30,6 +30,7 @@ class PackageBuilder(NmkTaskBuilder):
         :param source_dirs: list of source folders for this wheel
         :param artifacts_dir: output folder for built wheel
         :param build_dir: temporary build folder
+        :param extra_resources: dictionary of extra resources mapping (original path -> target path)
         """
 
         # Prepare build folder
@@ -54,6 +55,25 @@ class PackageBuilder(NmkTaskBuilder):
         dyn_table["version"] = {"file": build_version.name}
         project_output = TOMLFile(build_project)
         project_output.write(project_doc)
+
+        # Handle extra resources
+        for src, dst in extra_resources.items():
+            src_path, dst_path = Path(src), Path(dst)
+            if not src_path.is_absolute():  # pragma: no branch
+                src_path = project_root / src_path
+            if not dst_path.is_absolute():  # pragma: no branch
+                dst_path = project_root / dst_path
+            assert src_path.exists(), f"Required extra resource path not found: {src_path}"
+            dst_path = build_path / dst_path.relative_to(project_root)
+            dst_path.mkdir(exist_ok=True, parents=True)
+            if src_path.is_file():
+                # Single file copy
+                self.logger.debug(f"Copy extra resource file: {src_path} --> {dst_path}")
+                shutil.copyfile(src_path, dst_path / src_path.name)
+            else:
+                # Directory copy
+                self.logger.debug(f"Copy extra resource tree: {src_path} --> {dst_path}")
+                shutil.copytree(src_path, dst_path, dirs_exist_ok=True)
 
         # Prepare artifacts folder
         artifacts_path = Path(artifacts_dir)
