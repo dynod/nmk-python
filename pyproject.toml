@@ -33,6 +33,9 @@ namespaces = false
 [tool.setuptools.dynamic.version]
 file = "out/.pythonversion"
 
+[tool.distutils.bdist_wheel]
+plat-name = "any"
+
 [tool.ruff]
 line-length = 160
 
