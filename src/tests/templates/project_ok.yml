@@ -15,5 +15,6 @@ config:
             arrayOfValues:
                 - abc
                 - def
+            with_some_path: ${sourceDir}/foo
         addedSection:
             abc: def
