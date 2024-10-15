@@ -3,7 +3,7 @@ Python project file builder
 """
 
 from pathlib import Path
-from typing import List
+from typing import Any, List
 
 from nmk_base.common import TemplateBuilder
 from tomlkit import TOMLDocument, comment, loads
@@ -14,6 +14,16 @@ class PythonProjectBuilder(TemplateBuilder):
     """
     Python project file builder
     """
+
+    # Handle relative path for all contributions
+    def _check_paths(self, value: Any):
+        if isinstance(value, str):
+            return self.relative_path(value)
+        if isinstance(value, list):
+            return list(map(self._check_paths, value))
+        if isinstance(value, dict):
+            return {k: self._check_paths(v) for k, v in value.items()}
+        return value
 
     def _contribute(self, main: dict, update: dict):
         """
@@ -33,16 +43,16 @@ class PythonProjectBuilder(TemplateBuilder):
             if k in main:
                 # List: extend
                 if isinstance(v, list):
-                    main[k].extend(v)
+                    main[k].extend(self._check_paths(v))
                 # Map: recursive contribution
                 elif isinstance(v, dict):
                     self._contribute(main[k], v)
                 # Otherwise: replace
                 else:
-                    main[k] = v
+                    main[k] = self._check_paths(v)
             else:
                 # New key
-                main[k] = v
+                main[k] = self._check_paths(v)
 
     def build(self, fragment_files: List[str], items: dict):
         """

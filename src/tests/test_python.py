@@ -92,6 +92,7 @@ class TestPythonPlugin(NmkBaseTester):
         assert doc["dummy"]["ymlContributedValue"] == "foo"
         assert doc["anotherSection"]["foo"] == "bar"
         assert doc["anotherSection"]["arrayOfValues"] == ["azerty", "abc", "def"]
+        assert doc["anotherSection"]["with_some_path"] == "src/foo"
 
     def test_python_format(self):
         # Prepare fake source python files to enable python tasks
