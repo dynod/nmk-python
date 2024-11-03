@@ -92,3 +92,14 @@ tasks:
             pip_args: --force-reinstall --no-deps ${venvPipArgs}
             # - force reinstall because otherwise install will be skipped if version didn't changed
             # - but skip dependencies to avoid reinstalling everything (deps are already installed by py.venv task)
+
+    # Python module clean
+    py.uninstall:
+        description: Uninstall python package
+        emoji: ":broom:.:snake:"
+        appendToDeps:
+            - clean
+        builder: nmk_python.build.Uninstaller
+        params:
+            name: ${pythonPackage}
+        if: ${pythonSrcFiles}   # Only if python source files are found

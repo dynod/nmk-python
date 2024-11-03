@@ -173,6 +173,12 @@ class TestSomething:
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.install", "--config", "pythonPackage=nmk"])
         self.check_logs("Can't install nmk while running nmk!")
 
+    def test_uninstall(self):
+        # Simple pip call with sample package
+        self.fake_python_src("")
+        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.uninstall"])
+        self.check_logs("'-m', 'pip', 'uninstall', '--yes', 'fake'")
+
     def test_supported_versions(self):
         def quote(a: str) -> str:
             return f'"{a}"'  # NOQA: B028

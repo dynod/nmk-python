@@ -147,3 +147,23 @@ The builder is called with the following parameters mapping:
 | Name | Value |
 |- |-
 | pytest_args | **{ref}`${pytestExtraArgs}<pytestExtraArgs>`**
+
+## Clean tasks
+
+All tasks in this chapter are dependencies of the base [**`clean`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#clean-task) task.
+
+(py.uninstall)=
+### **`py.uninstall`** -- Uninstall Python wheel
+
+This task uninstalls the built python wheel from the project venv.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.build.Uninstaller`
+| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| name | **{ref}`${pythonPackage}<pythonPackage>`**

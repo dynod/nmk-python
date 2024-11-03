@@ -9,7 +9,7 @@ from pathlib import Path
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
 from nmk.model.resolver import NmkStrConfigResolver
-from nmk.utils import is_windows, run_with_logs
+from nmk.utils import is_windows, run_pip, run_with_logs
 from nmk_base.venvbuilder import VenvUpdateBuilder
 from tomlkit import loads
 from tomlkit.toml_file import TOMLFile
@@ -124,3 +124,21 @@ class Installer(VenvUpdateBuilder):
             self.logger.warning("Can't install nmk while running nmk!")
         else:
             super().build(pip_args)
+
+
+class Uninstaller(NmkTaskBuilder):
+    """
+    Uninstall current project wheel from venv
+    """
+
+    def build(self, name: str):
+        """
+        Uninstall wheel from venv
+
+        Note that task won't fail if the wheel is not installed
+
+        :param name: wheel name to be uninstalled
+        """
+
+        # Simply delegate to pip
+        run_pip(["uninstall", "--yes", name], logger=self.logger)
