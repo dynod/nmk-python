@@ -3,7 +3,6 @@ Python files resolvers
 """
 
 from pathlib import Path
-from typing import List
 
 from nmk.model.resolver import NmkListConfigResolver
 
@@ -13,7 +12,7 @@ class FilesFinder(NmkListConfigResolver):
     Shared logic for files resolution
     """
 
-    def find_in_folders(self) -> List[str]:  # pragma: no cover
+    def find_in_folders(self) -> list[str]:  # pragma: no cover
         """
         Folders to be browsed (to be overridden)
 
@@ -21,7 +20,7 @@ class FilesFinder(NmkListConfigResolver):
         """
         pass
 
-    def get_value(self, name: str) -> List[Path]:
+    def get_value(self, name: str) -> list[Path]:
         """
         Browse for source files in specified folders
 
@@ -35,13 +34,13 @@ class FilesFinder(NmkListConfigResolver):
 class PythonFilesFinder(FilesFinder):
     """Regular python files resolver"""
 
-    def find_in_folders(self) -> List[str]:
+    def find_in_folders(self) -> list[str]:
         """
         Python source folders
         """
         return self.model.config["pythonSrcFolders"].value
 
-    def get_value(self, name: str) -> List[Path]:
+    def get_value(self, name: str) -> list[Path]:
         """
         Browse for python files in specified folders
 
@@ -60,7 +59,7 @@ class PythonFilesFinder(FilesFinder):
 class PythonTestFilesFinder(FilesFinder):
     """Test python files resolver"""
 
-    def find_in_folders(self) -> List[str]:
+    def find_in_folders(self) -> list[str]:
         """
         Python tests source folders
         """

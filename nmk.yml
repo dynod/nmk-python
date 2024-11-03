@@ -7,7 +7,7 @@ refs:
     - pip://nmk-doc!plugin.yml
     - <workspace>/shared.yml
     - workspace:
-        local: ../../../../shared
+        local: ../../shared
         remote: github://dynod/workspace/main/shared
 
 # Python path for locally defined tasks
@@ -17,7 +17,7 @@ path:
 config:
     # Nmk dependencies
     pythonPackageRequirements:
-        - nmk-base
+        - nmk-base>=0.24.0
         - Jinja2
         - tomlkit
 

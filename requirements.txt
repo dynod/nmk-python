@@ -10,6 +10,7 @@ build
 Jinja2
 myst-parser
 nmk-base
+nmk-base>=0.24.0
 nmk-vscode
 pytest-cov
 pytest-multilog

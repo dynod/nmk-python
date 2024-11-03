@@ -5,7 +5,6 @@ Python package build module
 import shutil
 import sys
 from pathlib import Path
-from typing import Dict, List
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
@@ -21,7 +20,7 @@ class PackageBuilder(NmkTaskBuilder):
     Python package builder
     """
 
-    def build(self, project_file: str, version_file: str, source_dirs: List[str], artifacts_dir: str, build_dir: str, extra_resources: Dict[str, str]):
+    def build(self, project_file: str, version_file: str, source_dirs: list[str], artifacts_dir: str, build_dir: str, extra_resources: dict[str, str]):
         """
         Delegate to python build module, from a temporary build folder
 

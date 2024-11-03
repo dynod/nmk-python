@@ -4,7 +4,6 @@ Ruff tool handling
 
 import contextlib
 from pathlib import Path
-from typing import List
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
@@ -16,7 +15,7 @@ class RuffBuilder(NmkTaskBuilder):
     Ruff tool builder
     """
 
-    def build(self, src_folders: List[str], command: str):
+    def build(self, src_folders: list[str], command: str):
         """
         Invoke ruff
 
