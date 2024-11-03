@@ -1,15 +1,12 @@
 # Tests for python plugin
 import platform
-import shutil
 import subprocess
 import sysconfig
 from json import dumps
 from pathlib import Path
-from typing import List
 
 from nmk.tests.tester import NmkBaseTester
 from nmk_base.venvbuilder import VenvUpdateBuilder
-from tomlkit.toml_file import TOMLFile
 
 import nmk_python
 
@@ -19,7 +16,7 @@ class TestPythonPlugin(NmkBaseTester):
     def templates_root(self) -> Path:
         return Path(__file__).parent / "templates"
 
-    def expected_supp_versions(self) -> List[str]:
+    def expected_supp_versions(self) -> list[str]:
         return ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     def check_version(self, monkeypatch, git_version: str, expected_python_version: str):
@@ -61,39 +58,6 @@ class TestPythonPlugin(NmkBaseTester):
         self.check_logs("Refresh python version")
         assert (self.test_folder / "out" / ".pythonversion").is_file()
 
-    def test_python_project_missing_config(self):
-        # Prepare fake source python files to enable python tasks
-        self.fake_python_src()
-        project_file_fragment = self.test_folder / "missing_var.toml"
-        shutil.copyfile(self.template("missing_var.toml"), project_file_fragment)
-        self.nmk(
-            self.prepare_project("project_missing_var.yml"),
-            extra_args=["py.project"],
-            expected_error=f"An error occurred during task py.project build: While loading project file template ({project_file_fragment}): Unknown config items referenced from template {self.test_folder / 'missing_var.toml'}: unknownConfig",
-        )
-
-    def test_python_project_ok(self):
-        # Prepare fake source python files to enable python tasks
-        self.fake_python_src()
-        shutil.copyfile(self.template("setup1.toml"), self.test_folder / "setup1.toml")
-        shutil.copyfile(self.template("setup2.toml"), self.test_folder / "setup2.toml")
-        self.nmk(
-            self.prepare_project("project_ok.yml"),
-            extra_args=["py.project"],
-        )
-        generated_project = self.test_folder / "pyproject.toml"
-        assert generated_project.is_file()
-
-        # Verify merged content
-        doc = TOMLFile(generated_project).read()
-        assert doc["dummy"]["foo"] == "bar"
-        assert doc["dummy"]["bar"] == "venv"
-        assert doc["dummy"]["other"] == "1,2,3"
-        assert doc["dummy"]["ymlContributedValue"] == "foo"
-        assert doc["anotherSection"]["foo"] == "bar"
-        assert doc["anotherSection"]["arrayOfValues"] == ["azerty", "abc", "def"]
-        assert doc["anotherSection"]["with_some_path"] == "src/foo"
-
     def test_python_format(self):
         # Prepare fake source python files to enable python tasks
         self.fake_python_src("import bbb\nimport aaa")
@@ -128,6 +92,7 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(project, extra_args=["py.build"])
         archives = list((self.test_folder / "out" / "artifacts").glob("fake-*"))
         assert len(archives) == 1
+        assert (self.test_folder / "pyproject.toml").is_file()
 
         # Another build
         self.nmk(project, extra_args=["py.build"])

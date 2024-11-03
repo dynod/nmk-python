@@ -5,7 +5,6 @@ Python tests builder
 import shutil
 import subprocess
 import sys
-from typing import Dict
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
@@ -16,7 +15,7 @@ class PytestBuilder(NmkTaskBuilder):
     Python tests builder
     """
 
-    def build(self, pytest_args: Dict[str, str]):
+    def build(self, pytest_args: dict[str, str]):
         """
         Invoke pytest with specified options
 

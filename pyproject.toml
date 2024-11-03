@@ -7,9 +7,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nmk-python"
 dynamic = ["version"]
-requires-python = ">=3.8"
-classifiers = ["Programming Language :: Python :: 3.8", "Programming Language :: Python :: 3.9", "Programming Language :: Python :: 3.10", "Programming Language :: Python :: 3.11", "Programming Language :: Python :: 3.12"]
-dependencies = ["nmk-base", "Jinja2", "tomlkit"]
+requires-python = ">=3.9"
+classifiers = ["Programming Language :: Python :: 3.9", "Programming Language :: Python :: 3.10", "Programming Language :: Python :: 3.11", "Programming Language :: Python :: 3.12"]
+dependencies = ["nmk-base>=0.24.0", "Jinja2", "tomlkit"]
 description = "Python plugin for nmk build system"
 
 [[project.authors]]
@@ -21,6 +21,14 @@ name = "The dynod project"
 [project.readme]
 file = "README.md"
 content-type = "text/markdown"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://github.com/dynod/nmk-python"
+Repository = "https://github.com/dynod/nmk-python"
+Issues = "https://github.com/dynod/nmk/issues?q=is%3Aopen+is%3Aissue+label%3Aplugin%3Apython"
 
 [tool.setuptools.packages.find]
 where = ["src"]

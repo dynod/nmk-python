@@ -31,7 +31,7 @@ This task generates the **{ref}`${pythonProjectFile}<pythonProjectFile>`** proje
 
 | Property | Value/description |
 |-         |-
-| builder  | {py:class}`nmk_python.project.PythonProjectBuilder`
+| builder  | [nmk_base.common.TomlFileBuilder](https://nmk-base.readthedocs.io/en/stable/autoapi/nmk_base/common/index.html#nmk_base.common.TomlFileBuilder)
 | input    | {ref}`${pythonProjectFileFragments}<pythonProjectFileFragments>` files
 | output   | {ref}`${pythonProjectFile}<pythonProjectFile>` file
 | if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found
@@ -42,6 +42,7 @@ The builder is called with the following parameters mapping:
 |- |-
 | fragment_files | **{ref}`${pythonProjectFileFragments}<pythonProjectFileFragments>`**
 | items | **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**
+| plugin_name | "nmk-python"
 
 ## Build tasks
 

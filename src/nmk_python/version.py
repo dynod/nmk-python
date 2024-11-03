@@ -4,7 +4,6 @@ Python version handling
 
 import platform
 import re
-from typing import List
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.resolver import NmkListConfigResolver, NmkStrConfigResolver
@@ -59,14 +58,14 @@ class PythonSupportedVersionsResolver(NmkListConfigResolver):
     Supported python versions range resolver
     """
 
-    def get_value(self, name: str) -> List[str]:
+    def get_value(self, name: str) -> list[str]:
         """
         Returns supported python versions range
 
         :return: list of all python versions between min and max supported versions
         """
 
-        def _split_version(v: str) -> List[int]:
+        def _split_version(v: str) -> list[int]:
             return list(map(int, v.split(".")))
 
         # Get min/max values, and verify consistency
