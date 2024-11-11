@@ -32,6 +32,9 @@ config:
     # Extra (external) resources to be bundled in built python wheel
     pythonExtraResources: {}
 
+    # Python editable install stamp
+    pythonEditableStamp: ${outputDir}/.pyeditable
+
     # Python files to be ignored
     gitIgnoredFiles:
         - .eggs/
@@ -50,15 +53,33 @@ config:
 
 tasks:
 
-    # Python module build
-    py.build:
-        description: Build python package
-        emoji: ":snake:.:hammer:"
+    # Python editable install
+    py.editable:
+        description: Install python editable package
+        emoji: ":snake:.:house:"
         deps:
             - py.project
             - py.format
             - py.analyze
         appendToDeps: build
+        if: ${pythonSrcFiles}   # Only if python source files are found
+        output:
+            - ${pythonEditableStamp}
+        input:
+            - ${pythonProjectFile}
+        builder: nmk_python.build.EditableBuilder
+        params:
+            pip_args: --force-reinstall --no-deps ${venvPipArgs}
+
+    # Python wheel build
+    py.build:
+        description: Build python wheel
+        emoji: ":snake:.:hammer:"
+        deps:
+            - py.project
+            - py.format
+            - py.analyze
+        appendToDeps: package
         if: ${pythonSrcFiles}   # Only if python source files are found
         output:
             - ${pythonWheel}
@@ -74,13 +95,13 @@ tasks:
             build_dir: ${pythonBuildDir}
             extra_resources: ${pythonExtraResources}
 
-    # Python module install
+    # Python wheel install
     py.install:
-        description: Install python package
+        description: Install python wheel
         emoji: ":snake:.:inbox_tray:"
         deps:
             - py.build
-        appendToDeps: build
+        appendToDeps: install
         if: ${pythonSrcFiles}   # Only if python source files are found
         input: ${pythonWheel}
         output: 
