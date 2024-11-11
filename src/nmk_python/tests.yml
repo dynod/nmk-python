@@ -44,7 +44,7 @@ tasks:
         description: Run python tests
         emoji: ":snake:.:crossed_fingers:"
         deps:
-            - py.install
+            - py.editable
         appendToDeps: tests
         output:
             - ${pythonCoverageHtmlReport}

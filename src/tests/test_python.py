@@ -85,6 +85,19 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.analyze"])
         assert (self.test_folder / "out" / ".ruff-check").is_file()
 
+    def test_python_editable(self):
+        # Prepare test project for python editable install
+        self.fake_python_src("")
+        project = self.prepare_project("ref_python.yml")
+        self.nmk(project, extra_args=["py.editable"])
+        stamp = self.test_folder / "out" / ".pyeditable"
+        assert (self.test_folder / "pyproject.toml").is_file()
+        assert stamp.is_file()
+
+        # Another build
+        self.nmk(project, extra_args=["py.editable"])
+        self.check_logs("nothing to do")
+
     def test_python_build(self):
         # Prepare test project for python build
         self.fake_python_src("")

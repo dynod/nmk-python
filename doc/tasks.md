@@ -86,6 +86,48 @@ The builder is called with the following parameters mapping:
 | src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
 | command | check
 
+(py.editable)=
+### **`py.editable`** -- Python project install in editable mode
+
+This task installs the project in editable mode in the venv.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.build.EditableBuilder`
+| input    | {ref}`${pythonProjectFile}<pythonProjectFile>` file
+| output   | {ref}`${pythonEditableStamp}<pythonEditableStamp>` file
+| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| pip_args | "--force-reinstall --no-deps ${venvPipArgs}"
+
+## Tests tasks
+
+All tasks in this chapter are dependencies of the base [**`tests`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#tests-task) task.
+
+(py.tests)=
+### **`py.tests`** -- Run Python tests
+
+This task calls **`pytest`** command to execute python tests.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.tests.PytestBuilder`
+| if       | {ref}`${pythonTestSrcFiles}<pythonTestSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| pytest_args | **{ref}`${pytestExtraArgs}<pytestExtraArgs>`**
+
+## Package tasks
+
+All tasks in this chapter are dependencies of the base [**`package`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#package-task) task.
+
 (py.build)=
 ### **`py.build`** -- Build Python wheel
 
@@ -109,6 +151,10 @@ The builder is called with the following parameters mapping:
 | build_dir | **{ref}`${pythonBuildDir}<pythonBuildDir>`**
 | extra_resources | **{ref}`${pythonExtraResources}<pythonExtraResources>`**
 
+## Install tasks
+
+All tasks in this chapter are dependencies of the base [**`install`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#install-task) task.
+
 (py.install)=
 ### **`py.install`** -- Install Python wheel
 
@@ -127,26 +173,6 @@ The builder is called with the following parameters mapping:
 |- |-
 | name | **{ref}`${pythonPackage}<pythonPackage>`**
 | pip_args | "--force-reinstall --no-deps ${venvPipArgs}"
-
-## Tests tasks
-
-All tasks in this chapter are dependencies of the base [**`tests`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#tests-task) task.
-
-(py.tests)=
-### **`py.tests`** -- Run Python tests
-
-This task calls **`pytest`** command to execute python tests.
-
-| Property | Value/description |
-|-         |-
-| builder  | {py:class}`nmk_python.tests.PytestBuilder`
-| if       | {ref}`${pythonTestSrcFiles}<pythonTestSrcFiles>` are found
-
-The builder is called with the following parameters mapping:
-
-| Name | Value |
-|- |-
-| pytest_args | **{ref}`${pytestExtraArgs}<pytestExtraArgs>`**
 
 ## Clean tasks
 

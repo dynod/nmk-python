@@ -142,3 +142,22 @@ class Uninstaller(NmkTaskBuilder):
 
         # Simply delegate to pip
         run_pip(["uninstall", "--yes", name], logger=self.logger)
+
+
+class EditableBuilder(NmkTaskBuilder):
+    """
+    Install python project in editable mode
+    """
+
+    def build(self, pip_args: str):
+        """
+        Install project in venv as editable package
+
+        :param pip_args: pip command line arguments
+        """
+
+        # Delegate to pip
+        run_pip(["install", "-e", "."], logger=self.logger, extra_args=pip_args)
+
+        # Touch stamp file
+        self.main_output.touch()
