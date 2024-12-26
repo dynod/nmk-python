@@ -11,10 +11,6 @@ config:
         img: https://img.shields.io/badge/code%20style-ruff-000000.svg
         url: https://astral.sh/ruff
         if: ${pythonFoundSrcFiles}
-      - alt: "Ruff analysis result"
-        img: https://img.shields.io/badge/ruff-0-green
-        url: https://astral.sh/ruff
-        if: ${pythonFoundSrcFiles}
       - alt: "Code coverage"
         img: https://img.shields.io/codecov/c/github/${githubUser}/${githubRepo}
         url: https://app.codecov.io/gh/${githubUser}/${githubRepo}
