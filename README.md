@@ -8,7 +8,6 @@ Python plugin for nmk build system
 [![Supported python versions](https://img.shields.io/badge/python-3.9%20--%203.13-blue)](https://www.python.org/)
 [![PyPI](https://img.shields.io/pypi/v/nmk-python)](https://pypi.org/project/nmk-python/)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://astral.sh/ruff)
-[![Ruff analysis result](https://img.shields.io/badge/ruff-0-green)](https://astral.sh/ruff)
 [![Code coverage](https://img.shields.io/codecov/c/github/dynod/nmk-python)](https://app.codecov.io/gh/dynod/nmk-python)
 [![Documentation Status](https://readthedocs.org/projects/nmk-python/badge/?version=stable)](https://nmk-python.readthedocs.io/)
 <!-- NMK-BADGES-END -->
