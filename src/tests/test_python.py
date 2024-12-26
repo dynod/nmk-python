@@ -17,7 +17,7 @@ class TestPythonPlugin(NmkBaseTester):
         return Path(__file__).parent / "templates"
 
     def expected_supp_versions(self) -> list[str]:
-        return ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        return ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
     def check_version(self, monkeypatch, git_version: str, expected_python_version: str):
         # Fake git subprocess behavior
