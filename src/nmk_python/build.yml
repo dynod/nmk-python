@@ -113,6 +113,7 @@ tasks:
             pip_args: --force-reinstall --no-deps ${venvPipArgs}
             # - force reinstall because otherwise install will be skipped if version didn't changed
             # - but skip dependencies to avoid reinstalling everything (deps are already installed by py.venv task)
+            to_remove: ${pythonEditableStamp}
 
     # Python module clean
     py.uninstall:

@@ -173,6 +173,9 @@ The builder is called with the following parameters mapping:
 |- |-
 | name | **{ref}`${pythonPackage}<pythonPackage>`**
 | pip_args | "--force-reinstall --no-deps ${venvPipArgs}"
+| to_remove | **{ref}`${pythonEditableStamp}<pythonEditableStamp>`**
+
+The builder also removes the **{ref}`${pythonEditableStamp}<pythonEditableStamp>`** stamp file, to force installing the project in editable mode again on the next build.
 
 ## Clean tasks
 

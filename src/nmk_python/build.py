@@ -111,12 +111,13 @@ class Installer(VenvUpdateBuilder):
     Install built wheel in venv
     """
 
-    def build(self, name: str, pip_args: str):
+    def build(self, name: str, pip_args: str, to_remove: str):
         """
         Install wheel in venv
 
         :param name: wheel name to be installed
         :param pip_args: pip command line arguments
+        :param to_remove: stamp file to be removed
         """
 
         # On Windows, refuse to install nmk package while running nmk (wont' work)
@@ -124,6 +125,9 @@ class Installer(VenvUpdateBuilder):
             self.logger.warning("Can't install nmk while running nmk!")
         else:
             super().build(pip_args)
+
+        # Remove stamp file
+        Path(to_remove).unlink(missing_ok=True)
 
 
 class Uninstaller(NmkTaskBuilder):
