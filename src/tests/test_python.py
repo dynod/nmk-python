@@ -98,6 +98,14 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(project, extra_args=["py.editable"])
         self.check_logs("nothing to do")
 
+    def test_python_editable_skipped(self, monkeypatch):
+        monkeypatch.setattr("nmk_python.build.is_windows", lambda: True)
+
+        # Prepare test project for python install
+        self.fake_python_src("")
+        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.editable", "--config", "pythonPackage=nmk"])
+        self.check_logs("Can't install nmk while running nmk!")
+
     def test_python_build(self):
         # Prepare test project for python build
         self.fake_python_src("")
