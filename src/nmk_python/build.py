@@ -4,6 +4,7 @@ Python package build module
 
 import shutil
 import sys
+from logging import Logger
 from pathlib import Path
 
 from nmk.model.builder import NmkTaskBuilder
@@ -13,6 +14,15 @@ from nmk.utils import is_windows, run_pip, run_with_logs
 from nmk_base.venvbuilder import VenvUpdateBuilder
 from tomlkit import loads
 from tomlkit.toml_file import TOMLFile
+
+
+# Install filter for Windows
+def _can_install(name: str, logger: Logger) -> bool:
+    # On Windows, refuse to install nmk package while running nmk (wont' work)
+    if is_windows() and name == "nmk":
+        logger.warning("Can't install nmk while running nmk!")
+        return False
+    return True
 
 
 class PackageBuilder(NmkTaskBuilder):
@@ -120,14 +130,13 @@ class Installer(VenvUpdateBuilder):
         :param to_remove: stamp file to be removed
         """
 
-        # On Windows, refuse to install nmk package while running nmk (wont' work)
-        if is_windows() and name == "nmk":
-            self.logger.warning("Can't install nmk while running nmk!")
-        else:
+        # Check if wheel can be installed
+        if _can_install(name, self.logger):
+            # Install wheel in current venv
             super().build(pip_args)
 
-        # Remove stamp file
-        Path(to_remove).unlink(missing_ok=True)
+            # Remove stamp file
+            Path(to_remove).unlink(missing_ok=True)
 
 
 class Uninstaller(NmkTaskBuilder):
@@ -160,8 +169,10 @@ class EditableBuilder(NmkTaskBuilder):
         :param pip_args: pip command line arguments
         """
 
-        # Delegate to pip
-        run_pip(["install", "-e", "."], logger=self.logger, extra_args=pip_args)
+        # Check if project can be installed in editable mode
+        if _can_install(self.model.config["pythonPackage"].value, self.logger):
+            # Delegate to pip
+            run_pip(["install", "-e", "."], logger=self.logger, extra_args=pip_args)
 
-        # Touch stamp file
-        self.main_output.touch()
+            # Touch stamp file
+            self.main_output.touch()
