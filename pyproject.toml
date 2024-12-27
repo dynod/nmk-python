@@ -23,7 +23,7 @@ file = "README.md"
 content-type = "text/markdown"
 
 [project.license]
-file = "LICENSE"
+text = "MIT License"
 
 [project.urls]
 Homepage = "https://github.com/dynod/nmk-python"
