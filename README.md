@@ -2,7 +2,7 @@
 Python plugin for nmk build system
 
 <!-- NMK-BADGES-BEGIN -->
-[![License: MPL](https://img.shields.io/github/license/dynod/nmk-python?color=green)](https://github.com/dynod/nmk-python/blob/main/LICENSE)
+[![License: MIT License](https://img.shields.io/github/license/dynod/nmk-python)](https://github.com/dynod/nmk-python/blob/main/LICENSE)
 [![Checks](https://img.shields.io/github/actions/workflow/status/dynod/nmk-python/build.yml?branch=main&label=build%20%26%20u.t.)](https://github.com/dynod/nmk-python/actions?query=branch%3Amain)
 [![Issues](https://img.shields.io/github/issues-search/dynod/nmk?label=issues&query=is%3Aopen+is%3Aissue+label%3Aplugin%3Apython)](https://github.com/dynod/nmk/issues?q=is%3Aopen+is%3Aissue+label%3Aplugin%3Apython)
 [![Supported python versions](https://img.shields.io/badge/python-3.9%20--%203.13-blue)](https://www.python.org/)
