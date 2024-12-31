@@ -24,9 +24,6 @@ config:
     # Python package dependencies (also contributed to venv)
     pythonPackageRequirements: []
     venvPkgDeps:
-        - setuptools
-        - wheel
-        - build
         - ${pythonPackageRequirements}
 
     # Extra (external) resources to be bundled in built python wheel
