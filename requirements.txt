@@ -8,18 +8,18 @@
 
 build
 Jinja2
-myst-parser
+nmk-badges
 nmk-base
-nmk-base>=0.24.0
+nmk-base>=1.0.1
+nmk-doc
+nmk-github
 nmk-vscode
 pytest-cov
 pytest-multilog
 pytest-xdist
 ruff
 setuptools
-sphinx
 sphinx-autoapi
-sphinx_rtd_theme
 tomlkit
 wheel
 

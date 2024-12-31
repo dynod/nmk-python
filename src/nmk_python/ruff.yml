@@ -1,9 +1,5 @@
 config:
 
-    # Just needs ruff
-    venvPkgDeps:
-        - ruff
-
     # Max line length
     pythonLineLength: 160
 

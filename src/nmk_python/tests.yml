@@ -3,12 +3,6 @@ config:
     pythonProjectFileFragments:
         - ${BASEDIR}/templates/pytest.toml.jinja
 
-    # Tests related venv dependencies
-    venvPkgDeps:
-        - pytest-xdist
-        - pytest-cov
-        - pytest-multilog
-
     # Coverage outputs
     pythonCoverageHtmlReport: ${outputDir}/coverage-report
     pythonCoverageXmlReport: ${outputDir}/coverage.xml

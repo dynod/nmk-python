@@ -17,9 +17,16 @@ path:
 config:
     # Nmk dependencies
     pythonPackageRequirements:
-        - nmk-base>=0.24.0
+        - nmk-base>=1.0.1
         - Jinja2
         - tomlkit
+        - setuptools
+        - wheel
+        - build
+        - ruff
+        - pytest-xdist
+        - pytest-cov
+        - pytest-multilog
 
     # Extra project data
     pythonProjectFileItems:
