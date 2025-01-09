@@ -48,6 +48,16 @@ config:
             password: ${{ secrets.pypi_password }}
             packages_dir: ${r!pythonArtifacts}
 
+    # Wheel install arguments
+    pythonWheelInstallArgs:
+        - --force-reinstall # force reinstall because otherwise install will be skipped if version didn't changed
+        - --no-deps         # but skip dependencies to avoid reinstalling everything (deps are already installed by py.venv task)
+
+    # Editable install arguments
+    pythonEditableInstallArgs:
+        - --no-deps             # skip dependencies to avoid reinstalling everything
+        - --no-build-isolation  # disable dependencies install when building for "editable" mode
+
 tasks:
 
     # Python editable install
@@ -66,7 +76,8 @@ tasks:
             - ${pythonProjectFile}
         builder: nmk_python.build.EditableBuilder
         params:
-            pip_args: --force-reinstall --no-deps ${venvPipArgs}
+            pip_args:
+                - ${pythonEditableInstallArgs}
 
     # Python wheel build
     py.build:
@@ -107,9 +118,8 @@ tasks:
         builder: nmk_python.build.Installer
         params:
             name: ${pythonPackage}
-            pip_args: --force-reinstall --no-deps ${venvPipArgs}
-            # - force reinstall because otherwise install will be skipped if version didn't changed
-            # - but skip dependencies to avoid reinstalling everything (deps are already installed by py.venv task)
+            pip_args:
+                - ${pythonWheelInstallArgs}
             to_remove: ${pythonEditableStamp}
 
     # Python module clean

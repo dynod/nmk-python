@@ -121,7 +121,7 @@ class Installer(VenvUpdateBuilder):
     Install built wheel in venv
     """
 
-    def build(self, name: str, pip_args: str, to_remove: str):
+    def build(self, name: str, pip_args: list[str], to_remove: str):
         """
         Install wheel in venv
 
@@ -133,7 +133,7 @@ class Installer(VenvUpdateBuilder):
         # Check if wheel can be installed
         if _can_install(name, self.logger):
             # Install wheel in current venv
-            super().build(pip_args)
+            super().build(" ".join(pip_args))
 
             # Remove stamp file
             Path(to_remove).unlink(missing_ok=True)
@@ -162,7 +162,7 @@ class EditableBuilder(NmkTaskBuilder):
     Install python project in editable mode
     """
 
-    def build(self, pip_args: str):
+    def build(self, pip_args: list[str]):
         """
         Install project in venv as editable package
 
@@ -172,7 +172,7 @@ class EditableBuilder(NmkTaskBuilder):
         # Check if project can be installed in editable mode
         if _can_install(self.model.config["pythonPackage"].value, self.logger):
             # Delegate to pip
-            run_pip(["install", "-e", "."], logger=self.logger, extra_args=pip_args)
+            run_pip(["install", "-e", "."], logger=self.logger, extra_args=" ".join(pip_args))
 
             # Touch stamp file
             self.main_output.touch()
