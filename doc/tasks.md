@@ -102,7 +102,7 @@ The builder is called with the following parameters mapping:
 
 | Name | Value |
 |- |-
-| pip_args | "--force-reinstall --no-deps ${venvPipArgs}"
+| pip_args | **{ref}`${pythonEditableInstallArgs}<pythonEditableInstallArgs>`**<br> <br>*<span style="color:orange">Changed in version 1.1</span>* -- Previous value was `"--force-reinstall --no-deps ${venvPipArgs}"`
 
 ## Tests tasks
 
@@ -172,7 +172,7 @@ The builder is called with the following parameters mapping:
 | Name | Value |
 |- |-
 | name | **{ref}`${pythonPackage}<pythonPackage>`**
-| pip_args | "--force-reinstall --no-deps ${venvPipArgs}"
+| pip_args | **{ref}`${pythonWheelInstallArgs}<pythonWheelInstallArgs>`**<br> <br>*<span style="color:orange">Changed in version 1.1</span>* -- Previous value was `"--force-reinstall --no-deps ${venvPipArgs}"`
 | to_remove | **{ref}`${pythonEditableStamp}<pythonEditableStamp>`**
 
 The builder also removes the **{ref}`${pythonEditableStamp}<pythonEditableStamp>`** stamp file, to force installing the project in editable mode again on the next build.

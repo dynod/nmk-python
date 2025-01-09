@@ -274,6 +274,28 @@ Resources won't actually be copied in the source tree. Destination path should b
 
 This is the python editable install stamp file, updated each time the project is installed in editable mode.
 
+(pythonEditableInstallArgs)=
+### **`pythonEditableInstallArgs`** -- pip arguments for editable mode install
+
+| Type | Default value |
+|-     |-
+| list[str] | ["--no-deps", "--no-build-isolation"]
+
+This is the list of **`pip install`** options to be used when installing project in editable mode with **{ref}`py.editable<py.editable>`** task.
+
+*<span style="color:green">Added in version 1.1</span>*
+
+(pythonWheelInstallArgs)=
+### **`pythonWheelInstallArgs`** -- pip arguments for wheel install
+
+| Type | Default value |
+|-     |-
+| list[str] | ["--force-reinstall", "--no-deps"]
+
+This is the list of **`pip install`** options to be used when installing project built wheel with **{ref}`py.install<py.install>`** task.
+
+*<span style="color:green">Added in version 1.1</span>*
+
 ## Tests
 
 (pythonTestOutput)=
