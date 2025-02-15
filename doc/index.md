@@ -2,7 +2,7 @@
 
 This plugin adds support for Python development in an **`nmk`** project:
 * setup file generation
-* code format and analysis with [ruff](https://astral.sh/ruff)
+* code format, fix and analysis with [ruff](https://astral.sh/ruff)
 * python wheel build
 * test with [pytest](https://pytest.org)
 * VSCode settings generation (if [**`nmk-vscode`**](https://github.com/dynod/nmk-vscode) plugin is also used)

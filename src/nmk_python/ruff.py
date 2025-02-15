@@ -7,6 +7,7 @@ from pathlib import Path
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
+from nmk.model.resolver import NmkStrConfigResolver
 from nmk.utils import run_with_logs
 
 
@@ -35,7 +36,23 @@ class RuffBuilder(NmkTaskBuilder):
             relative_src_folders.append(p)
 
         # Delegate to ruff
-        run_with_logs(["ruff", command] + relative_src_folders, self.logger, cwd=project_folder)
+        run_with_logs(["ruff"] + [arg for arg in command.split(" ") if arg] + relative_src_folders, self.logger, cwd=project_folder)
 
         # Touch output file
         self.main_output.touch()
+
+
+class JoinedRulesResolver(NmkStrConfigResolver):
+    """
+    Join auto-fix rules as a comma separated string
+    """
+
+    def get_value(self, name: str, rules: list[str]) -> str:
+        """
+        Return coma separated rules list string
+
+        :param name: name of the config
+        :param rules: list of rules
+        :return: coma separated rules list string
+        """
+        return ",".join(rules)

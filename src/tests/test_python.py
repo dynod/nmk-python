@@ -69,6 +69,17 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(p, extra_args=["py.format"])
         self.check_logs("[py.format]] DEBUG 🐛 - Task skipped, nothing to do")
 
+    def test_python_fix(self):
+        # Prepare fake source python files to enable python tasks
+        self.fake_python_src("from fake import bbb, aaa")
+        p = self.prepare_project("ref_python.yml")
+        self.nmk(p, extra_args=["py.fix"])
+        assert (self.test_folder / "out" / ".ruff-fix").is_file()
+
+        # Check incremental build
+        self.nmk(p, extra_args=["py.fix"])
+        self.check_logs("[py.fix]] DEBUG 🐛 - Task skipped, nothing to do")
+
     def test_python_analysis(self):
         # Prepare fake source with errors
         self.fake_python_src("foo=foo")
