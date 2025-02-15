@@ -65,10 +65,33 @@ The builder is called with the following parameters mapping:
 | Name | Value |
 |- |-
 | src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
-| command | format
+| command | format {ref}`${pythonRuffCommonExtraArgs}<pythonRuffCommonExtraArgs>` {ref}`${pythonRuffFormatExtraArgs}<pythonRuffFormatExtraArgs>`<br> <br>*<span style="color:orange">Changed in version 1.2</span>* -- Previous value was `"format"`
 
-(py.analysis)=
-### **`py.analysis`** -- Python code analysis
+(py.fix)=
+### **`py.fix`** -- Python code fix
+
+This task calls **`ruff check --fix-only`** command to fix python code of this project.
+
+See {ref}`${pythonAutoFixRules}<pythonAutoFixRules>` config item to define [rules categories](https://docs.astral.sh/ruff/rules/) to auto-fix.
+
+| Property | Value/description |
+|-         |-
+| builder  | {py:class}`nmk_python.ruff.RuffBuilder`
+| input    | {ref}`${pythonSrcFiles}<pythonSrcFiles>` + {ref}`${pythonProjectFile}<pythonProjectFile>` files
+| output   | {ref}`${pythonRuffFixStamp}<pythonRuffFixStamp>` file
+| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found
+
+The builder is called with the following parameters mapping:
+
+| Name | Value |
+|- |-
+| src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
+| command | check --fix-only --select {ref}`${pythonAutoFixJoinedRules}<pythonAutoFixJoinedRules>` {ref}`${pythonRuffCommonExtraArgs}<pythonRuffCommonExtraArgs>` {ref}`${pythonRuffFixExtraArgs}<pythonRuffFixExtraArgs>`
+
+*<span style="color:green">Added in version 1.2</span>*
+
+(py.analyze)=
+### **`py.analyze`** -- Python code analysis
 
 This task calls **`ruff check`** command to analyze python code of this project.
 
@@ -84,7 +107,7 @@ The builder is called with the following parameters mapping:
 | Name | Value |
 |- |-
 | src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**
-| command | check
+| command | check {ref}`${pythonRuffCommonExtraArgs}<pythonRuffCommonExtraArgs>` {ref}`${pythonRuffCheckExtraArgs}<pythonRuffCheckExtraArgs>`<br> <br>*<span style="color:orange">Changed in version 1.2</span>* -- Previous value was `"check"`
 
 (py.editable)=
 ### **`py.editable`** -- Python project install in editable mode

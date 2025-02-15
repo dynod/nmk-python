@@ -9,5 +9,5 @@ refs:
 Then you can start adding python source files in your project **src** sub-folder.\
 Once done, **`nmk`** build will:
 * generate python settings files
-* trigger code analysis and formatting tools
+* trigger code analysis, fix and formatting tools
 * build a python wheel integrating your code

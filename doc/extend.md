@@ -34,6 +34,14 @@ Following config items may be extended for that purpose:
     - E123
   ```
 
+* **{ref}`${pythonAutoFixRules}<pythonAutoFixRules>`**: list of rules categories to auto-fix
+
+  Example:
+  ```yaml
+  pythonAutoFixRules:
+    - F401 # Auto-fix unused imports
+  ```
+
 ## Build
 
 Python wheel build behavior may be configured by python projects.
