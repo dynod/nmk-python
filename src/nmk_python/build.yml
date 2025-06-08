@@ -21,10 +21,25 @@ config:
     pythonProjectFileFragments:
         - ${BASEDIR}/templates/build.toml.jinja
 
-    # Python package dependencies (also contributed to venv)
+    # Python optional deps (named groups of python package optional dependencies)
+    pythonPackageOptionalRequirements: {}
+
+    # Derived list of python dependencies from the dependency groups
+    pythonPackageOptionalRequirementsList:
+        __resolver__: nmk_python.build.PythonOptionalDepsResolver
+        params:
+            groups: ${pythonPackageOptionalRequirements}
+    pythonProjectFileItems:
+        project:
+            optional-dependencies: ${pythonPackageOptionalRequirements}
+
+    # Python package dependencies
     pythonPackageRequirements: []
+
+    # Also install in venv all dependencies
     venvPkgDeps:
         - ${pythonPackageRequirements}
+        - ${pythonPackageOptionalRequirementsList}
 
     # Extra (external) resources to be bundled in built python wheel
     pythonExtraResources: {}

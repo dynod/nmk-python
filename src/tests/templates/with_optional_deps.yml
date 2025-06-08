@@ -1,0 +1,10 @@
+refs:
+    - pip://nmk-python!plugin.yml
+
+config:
+  pythonPackageOptionalRequirements:
+      implem:
+        - foo
+        - bar
+      tests:
+        - pytest

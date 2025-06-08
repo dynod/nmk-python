@@ -8,6 +8,10 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.3.0
+
+* handle python package optional dependencies through {ref}`${pythonPackageOptionalRequirements}<pythonPackageOptionalRequirements>` new config item
+
 ## Release 1.2.0
 
 * new **{ref}`py.fix<py.fix>`** build task to auto-fix python code through [ruff](https://docs.astral.sh/ruff/linter/#fixes)

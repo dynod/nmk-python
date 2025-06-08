@@ -7,6 +7,7 @@ from pathlib import Path
 
 from nmk.tests.tester import NmkBaseTester
 from nmk_base.venvbuilder import VenvUpdateBuilder
+from tomlkit import parse
 
 import nmk_python
 
@@ -293,3 +294,29 @@ class TestSomething:
             + f'"pythonGeneratedSrcFiles": [ "{self.escape(self.test_folder)}/src/codegen/foo.py" ], '  # NOQA: B028
             + f'"pythonFoundSrcFiles": [ "{self.escape(self.test_folder / "src" / "fake" / "fake.py")}" ] }}'  # NOQA: B028
         )
+
+    def test_dep_groups(self):
+        # Prepare python
+        prj = self.prepare_project("with_optional_deps.yml")
+        self.fake_python_src()
+
+        # Check generated requirements
+        self.nmk(prj, extra_args=["py.req"])
+        req_file = self.test_folder / "requirements.txt"
+        assert req_file.is_file()
+        with req_file.open("r") as f:
+            content = f.read().splitlines()
+            assert "foo" in content
+            assert "bar" in content
+            assert "pytest" in content
+
+        # Check generated projet file
+        self.nmk(prj, extra_args=["py.project"])
+        project_file = self.test_folder / "pyproject.toml"
+        assert project_file.is_file()
+        project_model = parse(project_file.read_text())
+        dep_groups = project_model.get("project").get("optional-dependencies")
+        assert dep_groups == {
+            "implem": ["foo", "bar"],
+            "tests": ["pytest"],
+        }
