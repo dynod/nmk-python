@@ -9,7 +9,7 @@ from pathlib import Path
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.keys import NmkRootConfig
-from nmk.model.resolver import NmkStrConfigResolver
+from nmk.model.resolver import NmkListConfigResolver, NmkStrConfigResolver
 from nmk.utils import is_windows, run_pip, run_with_logs
 from nmk_base.venvbuilder import VenvUpdateBuilder
 from tomlkit import loads
@@ -176,3 +176,15 @@ class EditableBuilder(NmkTaskBuilder):
 
             # Touch stamp file
             self.main_output.touch()
+
+
+class PythonOptionalDepsResolver(NmkListConfigResolver):
+    """
+    Python optional deps resolver
+    """
+
+    def get_value(self, name: str, groups: dict[str, list[str]]) -> list[str]:
+        """
+        Turn dependency options deps dict into a merged list of dependencies
+        """
+        return sorted(list(set(dependency for deps in groups.values() for dependency in deps)))

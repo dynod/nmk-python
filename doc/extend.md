@@ -47,12 +47,15 @@ Following config items may be extended for that purpose:
 Python wheel build behavior may be configured by python projects.
 
 Following config items may be extended for that purpose:
-* **{ref}`${pythonPackageRequirements}<pythonPackageRequirements>`**: package dependencies
+* **{ref}`${pythonPackageRequirements}<pythonPackageRequirements>`** and **{ref}`${pythonPackageOptionalRequirements}<pythonPackageOptionalRequirements>`**: package mandatory/optional dependencies
 
   Example:
   ```yaml
   pythonPackageRequirements:
     - some-package-dep
+  pythonPackageOptionalRequirements:
+    option-name:
+      - some-optional-dep
   ```
 * **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**: additional project configuration:
   * extra details on the project

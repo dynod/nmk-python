@@ -325,6 +325,27 @@ This is the generated python wheel file.
 
 This is the list of python package dependencies for the built wheel (i.e. list of packages to be installed when the wheel itself is installed).
 
+(pythonPackageOptionalRequirements)=
+### **`pythonPackageOptionalRequirements`** -- Python package optional dependencies
+
+| Type | Default value |
+|-     |-
+| dict[str,list[str]] | {}
+
+This is the list of python package **optional** dependencies for the built wheel. This is a map of extra dependencies to be installed when the wheel itself is
+installed with an extra specifier.
+
+E.g. when a **sample** wheel is built with this configuration:
+```yaml
+pythonPackageOptionalRequirements:
+    my-option:
+        - numpy
+```
+
+... the extra **numpy** dependency will be installed only if the `sample[my-option]` syntax is used in requirements.
+
+*<span style="color:green">Added in version 1.3</span>*
+
 (pythonExtraResources)=
 ### **`pythonExtraResources`** -- Python extra bundled resources
 
