@@ -260,6 +260,17 @@ This is the stamp file updated each time the **{ref}`py.fix<py.fix>`** task is e
 
 This is the stamp file updated each time the **{ref}`py.analyze<py.analyze>`** task is executed.
 
+(pythonTypeCheckingMode)=
+### **`pythonTypeCheckingMode`** -- Pyright type checking mode
+
+| Type | Default value |
+|-     |-
+| str | "strict"
+
+This is the rule set to use with [pyright](https://microsoft.github.io/pyright/#/) type checking tool (executed from VSCode extension).
+
+*<span style="color:green">Added in version 1.4</span>*
+
 ## Build
 
 (pythonPackage)=

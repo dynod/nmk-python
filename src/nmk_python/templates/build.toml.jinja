@@ -33,3 +33,8 @@ file = "{{ pythonVersionStamp }}"
 
 [tool.distutils.bdist_wheel]
 plat-name = "{{ pythonPackagePlatform }}"
+
+[tool.pyright]
+include = {{ pythonSrcFolders }}
+typeCheckingMode = "{{ pythonTypeCheckingMode }}"
+reportMissingTypeStubs = false

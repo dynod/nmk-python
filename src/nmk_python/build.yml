@@ -73,6 +73,9 @@ config:
         - --no-deps             # skip dependencies to avoid reinstalling everything
         - --no-build-isolation  # disable dependencies install when building for "editable" mode
 
+    # Type checking mode for Pyright; may be off, basic, standard, strict
+    pythonTypeCheckingMode: strict
+
 tasks:
 
     # Python editable install
