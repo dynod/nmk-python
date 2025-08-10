@@ -8,6 +8,10 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.4.0
+
+* generate [pyright](https://microsoft.github.io/pyright/#/) type checking tool configuration in **pyproject.toml**. The {ref}`${pythonTypeCheckingMode}<pythonTypeCheckingMode>` config item can be used to set the rule set to be used.
+
 ## Release 1.3.0
 
 * handle python package optional dependencies through {ref}`${pythonPackageOptionalRequirements}<pythonPackageOptionalRequirements>` new config item
