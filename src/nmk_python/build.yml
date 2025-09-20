@@ -76,6 +76,9 @@ config:
     # Type checking mode for Pyright; may be off, basic, standard, strict
     pythonTypeCheckingMode: strict
 
+    # Excluded modules for wheel build
+    pythonBuildExcludedModules: []
+
 tasks:
 
     # Python editable install

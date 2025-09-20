@@ -8,6 +8,10 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.5.0
+
+* new {ref}`${pythonBuildExcludedModules}<pythonBuildExcludedModules>` config item to list modules to be excluded from the python wheel build
+
 ## Release 1.4.0
 
 * generate [pyright](https://microsoft.github.io/pyright/#/) type checking tool configuration in **pyproject.toml**. The {ref}`${pythonTypeCheckingMode}<pythonTypeCheckingMode>` config item can be used to set the rule set to be used.

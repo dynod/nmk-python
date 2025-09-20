@@ -31,6 +31,10 @@ config:
             CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           __if__: ${pythonFoundSrcFiles}
 
+    # Ignore test module from wheel build (+ submodules)
+    pythonBuildExcludedModules:
+        - ${pythonTestPackage}*
+
 tasks:
 
     # Python tests (through pytest)

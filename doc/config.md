@@ -405,6 +405,18 @@ This is the list of **`pip install`** options to be used when installing project
 
 *<span style="color:green">Added in version 1.1</span>*
 
+(pythonBuildExcludedModules)=
+### **`pythonBuildExcludedModules`** -- Excluded modules from wheel build
+
+| Type | Default value |
+|-     |-
+| list[str] | ["{ref}`${pythonTestPackage}<pythonTestPackage>`*"]
+
+This is the list of python modules to be excluded (relatively to source directories) when building the python wheel.
+Default behavior is to exclude the tests modules (i.e. {ref}`${pythonTestPackage}<pythonTestPackage>` module and sub-modules).
+
+*<span style="color:green">Added in version 1.5</span>*
+
 ## Tests
 
 (pythonTestOutput)=

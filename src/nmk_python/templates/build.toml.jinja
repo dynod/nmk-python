@@ -22,7 +22,7 @@ dependencies = [{% for req in pythonPackageRequirements %}
 
 [tool.setuptools.packages.find]
 where = [{% for path in pythonSrcFolders %}"{{path}}",{% endfor %}]
-exclude = ["{{pythonTestPackage}}"]
+exclude = [{% for module in pythonBuildExcludedModules %}{% if loop.index > 1 %},{% endif %}"{{module}}"{% endfor %}]
 namespaces = false
 
 [tool.setuptools.package-data]
