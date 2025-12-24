@@ -8,6 +8,10 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.6.0
+
+* added `--show-capture=no` pytest default option to {ref}`${pytestExtraArgs}<pytestExtraArgs>` config item
+
 ## Release 1.5.0
 
 * new {ref}`${pythonBuildExcludedModules}<pythonBuildExcludedModules>` config item to list modules to be excluded from the python wheel build
