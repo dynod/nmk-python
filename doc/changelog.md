@@ -11,6 +11,7 @@ The fully detailed changelog is also available on [Github](https://github.com/dy
 ## Release 1.6.0
 
 * added `--show-capture=no` pytest default option to {ref}`${pytestExtraArgs}<pytestExtraArgs>` config item
+* updated supported versions range to 3.10-3.14 (see {ref}`${pythonMinVersion}<pythonMinVersion>` and {ref}`${pythonMaxVersion}<pythonMaxVersion>` config items)
 
 ## Release 1.5.0
 
