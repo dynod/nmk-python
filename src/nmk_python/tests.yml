@@ -16,6 +16,7 @@ config:
         numprocesses: auto
         cov-fail-under: 100
         dist: loadgroup
+        show-capture: "no"
 
     # Ignore pytest cache
     gitIgnoredFiles:

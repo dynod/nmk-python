@@ -460,6 +460,16 @@ This is the cumulative data file for python code coverage.
 
 | Type | Default value |
 |-     |-
-| dict[str, str] | {"numprocesses": "auto", "cov-fail-under": 100, "dist": "loadgroup"}
+| dict[str, str] | see below
 
-This is a name/value dictionary of [pytest](https://docs.pytest.org/) options used on the command line when launching tests.
+This is a name/value dictionary of [pytest](https://docs.pytest.org/) options used on the command line when launching tests. Name/value pairs are converted to command-line options using the `--name=value` syntax.
+
+```{warning}
+Because of YAML "feature" to consider some values as valid booleans (e.g. unquoted `no` value is parsed as a boolean `false`), please pay attention to these options syntax.
+```
+
+Default options are:
+* `"numprocesses": "auto"`: automatically use all available cores to parallelize tests (see [pytest-xdist documentation](https://pytest-xdist.readthedocs.io/en/stable/distribution.html))
+* `"cov-fail-under": 100`: fails if code coverage falls under 100% (see [pytest-cov documentation](https://pytest-cov.readthedocs.io/en/latest/config.html))
+* `"dist": "loadgroup"`: load together tests marked with the same group (see [pytest-xdist documentation](https://pytest-xdist.readthedocs.io/en/stable/distribution.html))
+* `"show-capture": "no"`: don't show captured logs on test failure (see [pytest documentation](https://docs.pytest.org/en/stable/reference/reference.html#cmdoption-show-capture))<br> <br>*<span style="color:green">Added in version 1.6.0</span>*
