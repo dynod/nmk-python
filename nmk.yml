@@ -1,44 +1,44 @@
 refs:
-    # Base+python+github plugins
-    - pip://nmk-badges!plugin.yml
-    - pip://nmk-github!plugin.yml
-    - src/nmk_python/plugin.yml
-    - pip://nmk-vscode!plugin.yml
-    - pip://nmk-doc!plugin.yml
-    - <workspace>/shared.yml
-    - workspace:
-        local: ../../shared
-        remote: github://dynod/workspace/main/shared
+  # Base+python+github plugins
+  - pip://nmk-badges!plugin.yml
+  - pip://nmk-github!plugin.yml
+  - src/nmk_python/plugin.yml
+  - pip://nmk-vscode!plugin.yml
+  - pip://nmk-doc!plugin.yml
+  - <workspace>/shared.yml
+  - workspace:
+      local: ../../shared
+      remote: github://dynod/workspace/main/shared
 
 # Python path for locally defined tasks
 path:
-    - src
+  - src
 
 config:
-    # Nmk dependencies
-    pythonPackageRequirements:
-        - nmk-base>=1.0.1
-        - Jinja2
-        - tomlkit
-        - setuptools
-        - wheel
-        - build
-        - ruff
-        - pytest-xdist
-        - pytest-cov
-        - pytest-multilog
+  # Nmk dependencies
+  pythonPackageRequirements:
+    - nmk-base>=1.0.1
+    - Jinja2
+    - tomlkit
+    - setuptools
+    - wheel
+    - build
+    - ruff
+    - pytest-xdist
+    - pytest-cov
+    - pytest-multilog
 
-    # Extra project data
-    pythonProjectFileItems:
-        project:
-            description: Python plugin for nmk build system
-        tool:
-            coverage:
-                run:
-                    omit:
-                        - out/tests/*
-                        - src/nmk_python/templates/*
+  # Extra project data
+  pythonProjectFileItems:
+    project:
+      description: Python plugin for nmk build system
+    tool:
+      coverage:
+        run:
+          omit:
+            - out/tests/*
+            - src/nmk_python/templates/*
 
-    # Github issues logged in nmk project
-    githubIssuesRepo: nmk
-    githubIssuesLabel: "plugin:python"
+  # Github issues logged in nmk project
+  githubIssuesRepo: nmk
+  githubIssuesLabel: "plugin:python"
