@@ -221,5 +221,5 @@ class PythonArchiveDepsResolver(NmkDictConfigResolver):
         for dep in filter(lambda p: p.is_file() and "-" in p.name, map(Path, archives)):
             # Extract package name from wheel file name
             dep_name = dep.name.split("-")[0].replace("_", "-")
-            out[dep_name] = str(dep.resolve())
+            out[dep_name] = str(dep.resolve()).replace("\\", "\\\\")  # Escape backslashes for Windows paths
         return out
