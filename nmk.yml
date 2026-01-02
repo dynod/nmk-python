@@ -38,6 +38,7 @@ config:
           omit:
             - out/tests/*
             - src/nmk_python/templates/*
+            - src/nmk_python/backends/uv_build_backend.py
 
   # Github issues logged in nmk project
   githubIssuesRepo: nmk

@@ -36,6 +36,19 @@ config:
     # Python package dependencies
     pythonPackageRequirements: []
 
+    # Python development dependencies
+    pythonDevRequirements:
+      __resolver__: nmk_python.build.PythonDevDepsResolver
+      params:
+        package_deps: ${pythonPackageRequirements}
+        all_deps: ${venvPkgDeps}
+
+    # Archive related requirements
+    pythonArchiveRequirements:
+      __resolver__: nmk_python.build.PythonArchiveDepsResolver
+      params:
+        archives: ${venvArchiveDeps}
+
     # Also install in venv all dependencies
     venvPkgDeps:
         - ${pythonPackageRequirements}
@@ -63,15 +76,21 @@ config:
             password: ${{ secrets.pypi_password }}
             packages_dir: ${r!pythonArtifacts}
 
-    # Wheel install arguments
-    pythonWheelInstallArgs:
+    # Wheel install arguments (for pip backend)
+    pythonWheelPipInstallArgs:
         - --force-reinstall # force reinstall because otherwise install will be skipped if version didn't changed
         - --no-deps         # but skip dependencies to avoid reinstalling everything (deps are already installed by py.venv task)
 
-    # Editable install arguments
-    pythonEditableInstallArgs:
+    # Editable install arguments (for pip backend)
+    pythonEditablePipInstallArgs:
         - --no-deps             # skip dependencies to avoid reinstalling everything
         - --no-build-isolation  # disable dependencies install when building for "editable" mode
+
+    # Wheel install arguments (for uv backend)
+    pythonWheelUvInstallArgs: []
+
+    # Editable install arguments (for uv backend)
+    pythonEditableUvInstallArgs: []
 
     # Type checking mode for Pyright; may be off, basic, standard, strict
     pythonTypeCheckingMode: strict
@@ -96,9 +115,7 @@ tasks:
         input:
             - ${pythonProjectFile}
         builder: nmk_python.build.EditableBuilder
-        params:
-            pip_args:
-                - ${pythonEditableInstallArgs}
+
 
     # Python wheel build
     py.build:
@@ -139,8 +156,7 @@ tasks:
         builder: nmk_python.build.Installer
         params:
             name: ${pythonPackage}
-            pip_args:
-                - ${pythonWheelInstallArgs}
+            wheel: ${pythonWheel}
             to_remove: ${pythonEditableStamp}
 
     # Python module clean

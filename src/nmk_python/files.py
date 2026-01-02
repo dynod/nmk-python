@@ -2,7 +2,9 @@
 Python files resolvers
 """
 
+from abc import abstractmethod
 from pathlib import Path
+from typing import cast
 
 from nmk.model.resolver import NmkListConfigResolver
 
@@ -12,6 +14,7 @@ class FilesFinder(NmkListConfigResolver):
     Shared logic for files resolution
     """
 
+    @abstractmethod
     def find_in_folders(self) -> list[str]:  # pragma: no cover
         """
         Folders to be browsed (to be overridden)
@@ -38,7 +41,7 @@ class PythonFilesFinder(FilesFinder):
         """
         Python source folders
         """
-        return self.model.config["pythonSrcFolders"].value
+        return cast(list[str], self.model.config["pythonSrcFolders"].value)
 
     def get_value(self, name: str) -> list[Path]:
         """
@@ -50,8 +53,8 @@ class PythonFilesFinder(FilesFinder):
         all_files = set(super().get_value(name))
 
         # Remove generated and test ones
-        all_files -= {Path(p) for p in self.model.config["pythonTestSrcFiles"].value}
-        all_files -= {Path(p) for p in self.model.config["pythonGeneratedSrcFiles"].value}
+        all_files -= {Path(p) for p in cast(list[str], self.model.config["pythonTestSrcFiles"].value)}
+        all_files -= {Path(p) for p in cast(list[str], self.model.config["pythonGeneratedSrcFiles"].value)}
 
         return list(all_files)
 
@@ -63,4 +66,4 @@ class PythonTestFilesFinder(FilesFinder):
         """
         Python tests source folders
         """
-        return [self.model.config["pythonTestSources"].value]
+        return [cast(str, self.model.config["pythonTestSources"].value)]
