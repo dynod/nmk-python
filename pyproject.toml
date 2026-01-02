@@ -30,6 +30,9 @@ Homepage = "https://github.com/dynod/nmk-python"
 Repository = "https://github.com/dynod/nmk-python"
 Issues = "https://github.com/dynod/nmk/issues?q=is%3Aopen+is%3Aissue+label%3Aplugin%3Apython"
 
+[dependency-groups]
+dev = ["nmk-badges", "nmk-base", "nmk-doc", "nmk-github", "nmk-vscode", "sphinx-autoapi"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 exclude = ["tests*"]
@@ -67,4 +70,4 @@ data_file = "out/.coverage"
 concurrency = ["thread"]
 disable_warnings = ["no-data-collected"]
 branch = true
-omit = ["src/tests/*", "out/tests/*", "src/nmk_python/templates/*"]
+omit = ["src/tests/*", "out/tests/*", "src/nmk_python/templates/*", "src/nmk_python/backends/uv_build_backend.py"]

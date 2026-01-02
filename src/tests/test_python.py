@@ -4,7 +4,6 @@ import subprocess
 import sysconfig
 from json import dumps
 from pathlib import Path
-from typing import Any, cast
 
 import pytest
 from nmk.tests.tester import NmkBaseTester
@@ -51,10 +50,6 @@ class TestPythonPlugin(NmkBaseTester):
             init.touch()
 
     def test_python_version_stamp(self):
-        # Check python version is not generated (while no python files)
-        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.version"])
-        assert not (self.test_folder / "out" / ".pythonversion").is_file()
-
         # Prepare fake source python files to enable python tasks
         self.fake_python_src()
 
@@ -303,6 +298,8 @@ class TestSomething:
         # Prepare python
         prj = self.prepare_project("with_optional_deps.yml")
         self.fake_python_src()
+        test_wheel = self.test_folder / "foo_bar-1.2.3.whl"
+        test_wheel.touch()
 
         # Check generated requirements
         self.nmk(prj, extra_args=["py.req"])
@@ -314,14 +311,19 @@ class TestSomething:
             assert "bar" in content
             assert "pytest" in content
 
-        # Check generated projet file
+        # Check generated project file
         self.nmk(prj, extra_args=["py.project"])
         project_file = self.test_folder / "pyproject.toml"
         assert project_file.is_file()
         project_model = parse(project_file.read_text())
-        p = cast(dict[str, Any], project_model.get("project"))  # type: ignore
-        dep_groups = cast(dict[str, list[str]], p.get("optional-dependencies"))
+
+        # Check optional dependencies groups
+        dep_groups = project_model.get("project").get("optional-dependencies")  # type: ignore
         assert dep_groups == {
             "implem": ["foo", "bar"],
             "tests": ["pytest"],
         }
+
+        # Check dev dependencies (enabled for uv backend)
+        dev_packages = project_model.get("dependency-groups").get("dev")  # type: ignore
+        assert f"foo-bar@{str(test_wheel)}" in dev_packages

@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["{% if pythonUseUvBuildBackend %}uv_build>=0.9.18,<0.10.0{% else %}setuptools{% endif %}"]
+build-backend = "{% if pythonUseUvBuildBackend %}uv_build{% else %}setuptools.build_meta{% endif %}"
 
 [project]
 name = "{{ pythonPackage }}"
-dynamic = ["version"]
+{% if pythonUseUvBuildBackend %}version = "0.0.0"{% else %}dynamic = ["version"]{% endif %}
 authors = [
     {name="{{ projectAuthor }}"},
 ]
@@ -20,7 +20,17 @@ dependencies = [{% for req in pythonPackageRequirements %}
     "{{ req }}",{% endfor %}
 ]
 
-[tool.setuptools.packages.find]
+[dependency-groups]
+dev = [{% for req in pythonDevRequirements %}
+    "{{ req }}",{% endfor %}{% for req in pythonArchiveRequirements %}
+    "{{ req }}@{{ pythonArchiveRequirements[req] }}",{% endfor %}
+]
+
+{% if pythonUseUvBuildBackend %}[tool.uv.build-backend]
+module-root = "{{pythonSrcFolders[0]}}"
+wheel-exclude = [{% for module in pythonBuildExcludedModules %}{% if loop.index > 1 %},{% endif %}"{{module}}"{% endfor %}]
+
+{% else %}[tool.setuptools.packages.find]
 where = [{% for path in pythonSrcFolders %}"{{path}}",{% endfor %}]
 exclude = [{% for module in pythonBuildExcludedModules %}{% if loop.index > 1 %},{% endif %}"{{module}}"{% endfor %}]
 namespaces = false
@@ -31,7 +41,7 @@ namespaces = false
 [tool.setuptools.dynamic.version]
 file = "{{ pythonVersionStamp }}"
 
-[tool.distutils.bdist_wheel]
+{% endif %}[tool.distutils.bdist_wheel]
 plat-name = "{{ pythonPackagePlatform }}"
 
 [tool.pyright]

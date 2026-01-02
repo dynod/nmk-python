@@ -8,3 +8,6 @@ config:
         - bar
       tests:
         - pytest
+
+  venvArchiveDeps:
+    - ${PROJECTDIR}/foo_bar-1.2.3.whl

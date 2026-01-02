@@ -3,26 +3,31 @@ Python package build module
 """
 
 import shutil
-import sys
-from logging import Logger
 from pathlib import Path
 
+from nmk.logs import NmkLogWrapper
 from nmk.model.builder import NmkTaskBuilder
-from nmk.model.keys import NmkRootConfig
-from nmk.model.resolver import NmkListConfigResolver, NmkStrConfigResolver
-from nmk.utils import is_windows, run_pip, run_with_logs
-from nmk_base.venvbuilder import VenvUpdateBuilder
-from tomlkit import loads
-from tomlkit.toml_file import TOMLFile
+from nmk.model.model import NmkModel
+from nmk.model.resolver import NmkDictConfigResolver, NmkListConfigResolver, NmkStrConfigResolver
+from nmk.utils import is_windows
+
+from nmk_python.backends.factory import BuildBackendFactory
 
 
 # Install filter for Windows
-def _can_install(name: str, logger: Logger) -> bool:
+def _can_install(name: str, logger: NmkLogWrapper) -> bool:
     # On Windows, refuse to install nmk package while running nmk (wont' work)
-    if is_windows() and name == "nmk":
-        logger.warning("Can't install nmk while running nmk!")
+    if is_windows() and name in ["nmk", "buildenv"]:
+        logger.warning(f"Can't install {name} while running {name}!")
         return False
     return True
+
+
+# Get python package from model
+def _python_package(model: NmkModel) -> str:
+    cfg = model.config.get("pythonPackage")
+    assert cfg is not None and isinstance(cfg.value, str), "Can't read pythonPackage from model"
+    return cfg.value
 
 
 class PackageBuilder(NmkTaskBuilder):
@@ -30,7 +35,7 @@ class PackageBuilder(NmkTaskBuilder):
     Python package builder
     """
 
-    def build(self, project_file: str, version_file: str, source_dirs: list[str], artifacts_dir: str, build_dir: str, extra_resources: dict[str, str]):
+    def build(self, project_file: str, version_file: str, source_dirs: list[str], artifacts_dir: str, build_dir: str, extra_resources: dict[str, str]):  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Delegate to python build module, from a temporary build folder
 
@@ -49,21 +54,14 @@ class PackageBuilder(NmkTaskBuilder):
         build_path.mkdir(exist_ok=True, parents=True)
 
         # Copy source folders and various project files
-        project_root = Path(self.model.config[NmkRootConfig.PROJECT_DIR].value)
+        project_path = Path(project_file)
+        project_root = project_path.parent
         for source_dir in map(Path, source_dirs):
             shutil.copytree(source_dir, build_path / source_dir.relative_to(project_root))
-        for candidate in filter(lambda p: p.is_file(), map(Path, [project_file, version_file, project_root / "README.md", project_root / "LICENSE"])):
-            shutil.copyfile(candidate, build_path / candidate.name)
-
-        # Update project file with version
-        build_project = build_path / Path(project_file).name
-        build_version = build_path / Path(version_file).name
-        with build_project.open() as f:
-            project_doc = loads(f.read())
-        dyn_table = project_doc.get("tool").get("setuptools").get("dynamic")
-        dyn_table["version"] = {"file": build_version.name}
-        project_output = TOMLFile(build_project)
-        project_output.write(project_doc)
+        for candidate in filter(lambda p: p.is_file(), map(Path, [project_path, version_file, project_root / "README.md", project_root / "LICENSE"])):
+            dest = build_path / candidate.relative_to(project_root)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(candidate, dest)
 
         # Handle extra resources
         for src, dst in extra_resources.items():
@@ -90,18 +88,17 @@ class PackageBuilder(NmkTaskBuilder):
         for wheel in artifacts_path.glob("*.whl"):
             wheel.unlink()
 
-        # Delegate to build module
-        run_with_logs(
-            [sys.executable, "-m", "build", "--wheel", "--skip-dependency-check", "--no-isolation"],
-            self.logger,
-            cwd=build_path,
+        # Read version from file
+        wheel_version = Path(version_file).read_text().splitlines()[0]
+
+        # Delegate to build backend
+        built_wheel = BuildBackendFactory.create(self.model).build_wheel(
+            build_dir=build_path, built_wheel_name=self.main_output.name, wheel_version=wheel_version
         )
+        assert built_wheel.is_file(), f"Expected built wheel not found: {built_wheel}"
 
         # Copy wheel to artifacts folder
-        target_wheel = self.main_output
-        built_wheel = build_path / "dist" / target_wheel.name
-        assert built_wheel.is_file(), f"Expected built wheel not found: {built_wheel}"
-        shutil.copyfile(built_wheel, target_wheel)
+        shutil.copyfile(built_wheel, self.main_output)
 
 
 class PythonModuleResolver(NmkStrConfigResolver):
@@ -113,27 +110,30 @@ class PythonModuleResolver(NmkStrConfigResolver):
         """
         Return module name from package (i.e. wheel) name
         """
-        return self.model.config["pythonPackage"].value.replace("-", "_")
+        return _python_package(self.model).replace("-", "_")
 
 
-class Installer(VenvUpdateBuilder):
+class Installer(NmkTaskBuilder):
     """
     Install built wheel in venv
     """
 
-    def build(self, name: str, pip_args: list[str], to_remove: str):
+    def build(self, name: str, wheel: str, pip_args: list[str] | None = None, to_remove: str = ""):  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Install wheel in venv
 
         :param name: wheel name to be installed
-        :param pip_args: pip command line arguments
+        :param wheel: wheel path to be installed
+        :param pip_args: pip command line arguments; deprecated, not used anymore
         :param to_remove: stamp file to be removed
         """
 
         # Check if wheel can be installed
         if _can_install(name, self.logger):
-            # Install wheel in current venv
-            super().build(" ".join(pip_args))
+            # Delegate to build backend
+            old_packages = self.model.env_backend.installed_packages
+            BuildBackendFactory.create(self.model).install_wheel(wheel_path=Path(wheel))
+            self.model.env_backend.print_updates(old_packages)
 
             # Remove stamp file
             Path(to_remove).unlink(missing_ok=True)
@@ -144,7 +144,7 @@ class Uninstaller(NmkTaskBuilder):
     Uninstall current project wheel from venv
     """
 
-    def build(self, name: str):
+    def build(self, name: str):  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Uninstall wheel from venv
 
@@ -153,8 +153,10 @@ class Uninstaller(NmkTaskBuilder):
         :param name: wheel name to be uninstalled
         """
 
-        # Simply delegate to pip
-        run_pip(["uninstall", "--yes", name], logger=self.logger)
+        # Delegate to build backend
+        old_packages = self.model.env_backend.installed_packages
+        BuildBackendFactory.create(self.model).uninstall_wheel(wheel_name=name)
+        self.model.env_backend.print_updates(old_packages)
 
 
 class EditableBuilder(NmkTaskBuilder):
@@ -162,17 +164,19 @@ class EditableBuilder(NmkTaskBuilder):
     Install python project in editable mode
     """
 
-    def build(self, pip_args: list[str]):
+    def build(self, pip_args: list[str] | None = None):  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Install project in venv as editable package
 
-        :param pip_args: pip command line arguments
+        :param pip_args: pip command line arguments; deprecated, not used anymore
         """
 
         # Check if project can be installed in editable mode
-        if _can_install(self.model.config["pythonPackage"].value, self.logger):
-            # Delegate to pip
-            run_pip(["install", "-e", "."], logger=self.logger, extra_args=" ".join(pip_args))
+        if _can_install(_python_package(self.model), self.logger):
+            # Delegate to build backend
+            old_packages = self.model.env_backend.installed_packages
+            BuildBackendFactory.create(self.model).install_editable()
+            self.model.env_backend.print_updates(old_packages)
 
             # Touch stamp file
             self.main_output.touch()
@@ -183,8 +187,39 @@ class PythonOptionalDepsResolver(NmkListConfigResolver):
     Python optional deps resolver
     """
 
-    def get_value(self, name: str, groups: dict[str, list[str]]) -> list[str]:
+    def get_value(self, name: str, groups: dict[str, list[str]]) -> list[str]:  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Turn dependency options deps dict into a merged list of dependencies
         """
         return sorted(list(set(dependency for deps in groups.values() for dependency in deps)))
+
+
+class PythonDevDepsResolver(NmkListConfigResolver):
+    """
+    Python development deps resolver
+    """
+
+    def get_value(self, name: str, package_deps: list[str], all_deps: list[str]) -> list[str]:  # pyright: ignore[reportIncompatibleMethodOverride]
+        """
+        Return development dependencies (all deps minus package deps)
+        """
+        return sorted(list(set(all_deps) - set(package_deps)))
+
+
+class PythonArchiveDepsResolver(NmkDictConfigResolver):
+    """
+    Python archive dependencies resolver
+    """
+
+    def get_value(self, name: str, archives: list[str]) -> dict[str, str]:  # pyright: ignore[reportIncompatibleMethodOverride]
+        """
+        Return archive dependencies mapping (python package name -> wheel path)
+        """
+
+        # Iterate on existing archives paths
+        out: dict[str, str] = {}
+        for dep in filter(lambda p: p.is_file() and "-" in p.name, map(Path, archives)):
+            # Extract package name from wheel file name
+            dep_name = dep.name.split("-")[0].replace("_", "-")
+            out[dep_name] = str(dep.resolve())
+        return out
