@@ -2,6 +2,8 @@
 Python package build module
 """
 
+import importlib.metadata
+import json
 import shutil
 from fnmatch import fnmatch
 from itertools import product
@@ -14,6 +16,7 @@ from nmk.model.builder import NmkTaskBuilder
 from nmk.model.model import NmkModel
 from nmk.model.resolver import NmkDictConfigResolver, NmkListConfigResolver, NmkStrConfigResolver
 from nmk.utils import is_windows
+from packaging.requirements import Requirement
 
 from nmk_python.backends.factory import BuildBackendFactory
 
@@ -238,3 +241,55 @@ class PythonArchiveDepsResolver(NmkDictConfigResolver):
             dep_name = dep.name.split("-")[0].replace("_", "-")
             out[dep_name] = str(dep.resolve()).replace("\\", "\\\\")  # Escape backslashes for Windows paths
         return out
+
+
+class DepsMetadataBuilder(NmkTaskBuilder):
+    """
+    Generate python dependencies metadata file
+    """
+
+    def build(self, root_name: str, local_deps: list[str]):  # pyright: ignore[reportIncompatibleMethodOverride]
+        """
+        Generate python dependencies metadata file
+
+        :param root_name: name of the root package
+        :param local_deps: list of workspace local dependencies patterns
+        """
+
+        # Normalization implementation
+        def normalize(name: str) -> str:
+            return name.lower().replace("_", "-")
+
+        # Prepare distributions map
+        distributions = {normalize(d.name): d for d in importlib.metadata.distributions()}
+        assert root_name in distributions, f"Root package '{root_name}' not found in installed distributions"
+        output_data: dict[str, str] = {}
+
+        # Visitor implementation
+        def visit(name: str):
+            # Already visited or unknown?
+            if (name in output_data) or (name not in distributions):
+                return
+
+            # If this is a local project, don't add metadata
+            if (name != root_name) and not any(fnmatch(name, pattern) for pattern in local_deps):
+                # Keep versions
+                output_data[name] = distributions[name].version
+
+            # Visit dependencies
+            for dep in distributions[name].requires or []:
+                # Get requirement
+                req = Requirement(dep)
+
+                # Check marker, if any
+                if req.marker is not None and not req.marker.evaluate():
+                    continue
+
+                # Visit dependency if installed
+                visit(normalize(req.name))
+
+        # Visit from root
+        visit(root_name)
+
+        # Write output metadata file
+        self.main_output.write_text(json.dumps({k: output_data[k] for k in sorted(output_data)}, indent=4))

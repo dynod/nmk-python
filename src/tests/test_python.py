@@ -1,4 +1,5 @@
 # Tests for python plugin
+import json
 import platform
 import subprocess
 import sysconfig
@@ -330,3 +331,18 @@ class TestSomething:
         # Check dev dependencies (enabled for uv backend)
         dev_packages = project_model.get("dependency-groups").get("dev")  # type: ignore
         assert f"foo-bar@{str(test_wheel)}" in dev_packages
+
+    def test_python_deps(self):
+        # Prepare test project for python deps build
+        self.fake_python_src("")
+        project = self.prepare_project("ref_python.yml")
+        self.nmk(
+            project, extra_args=["py.deps", "--skip", "py.editable", "--config", "pythonPackage=nmk-python", "--config", '{"pythonLocalDepsPatterns":["nmk*"]}']
+        )
+        deps_file = self.test_folder / "out" / "python_deps.json"
+        assert deps_file.is_file()
+
+        # Add some checks on deps file content
+        deps_data = json.loads(deps_file.read_text())
+        assert "ruff" in deps_data
+        assert not any(key.startswith("nmk") for key in deps_data)

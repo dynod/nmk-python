@@ -100,6 +100,9 @@ config:
   # Workspace local dependencies patterns
   pythonLocalDepsPatterns: []
 
+  # Generated python dependencies metadata file
+  pythonDepsMetadata: ${outputDir}/python_deps.json
+
 tasks:
   # Python editable install
   py.editable:
@@ -116,6 +119,23 @@ tasks:
     input:
       - ${pythonProjectFile}
     builder: nmk_python.build.EditableBuilder
+
+  # Python dependencies metadata
+  py.deps:
+    description: Gather python dependencies metadata
+    emoji: ":snake:.:link:"
+    deps:
+      - py.editable
+    appendToDeps: build
+    if: ${pythonSrcFiles} # Only if python source files are found
+    output:
+      - ${pythonDepsMetadata}
+    input:
+      - ${pythonProjectFile}
+    builder: nmk_python.build.DepsMetadataBuilder
+    params:
+      root_name: ${pythonPackage}
+      local_deps: ${pythonLocalDepsPatterns}
 
   # Python wheel build
   py.build:

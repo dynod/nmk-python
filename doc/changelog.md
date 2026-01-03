@@ -11,7 +11,9 @@ The fully detailed changelog is also available on [Github](https://github.com/dy
 ## Release 1.8.0
 
 - added {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` config item to identify local dependencies that are in the same development workspace than the current project
+- added {ref}`${pythonDepsMetadata}<pythonDepsMetadata>` config item pointing to generated dependencies metadata file
 - updated **{ref}`py.uninstall<py.uninstall>`** task to additionally uninstall local dependencies
+- added **{ref}`py.deps<py.deps>`** task to generated dependencies metadata
 
 ## Release 1.7.0
 
