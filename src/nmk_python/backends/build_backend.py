@@ -4,7 +4,9 @@ Python build backend definition module
 
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import cast
 
+from nmk._internal.envbackend_legacy import EnvBackend  # For type hinting
 from nmk.model.model import NmkModel
 
 
@@ -17,7 +19,7 @@ class PythonBuildBackend(ABC):
 
     def __init__(self, model: NmkModel):
         self._model = model
-        self._env_backend = model.env_backend
+        self._env_backend = cast(EnvBackend, model.env_backend)  # type: ignore
 
     @abstractmethod
     def install_editable(self):  # pragma: no cover
@@ -45,10 +47,10 @@ class PythonBuildBackend(ABC):
         pass
 
     @abstractmethod
-    def uninstall_wheel(self, wheel_name: str):  # pragma: no cover
+    def uninstall_wheels(self, wheel_names: list[str]):  # pragma: no cover
         """
-        Uninstall specified wheel
+        Uninstall specified wheels
 
-        :param wheel_name: name of the wheel to uninstall
+        :param wheel_names: names of the wheels to uninstall
         """
         pass

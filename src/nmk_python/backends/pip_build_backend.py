@@ -45,9 +45,9 @@ class PipBuildBackend(PythonBuildBackend):
         # Return built wheel path
         return build_dir / "dist" / built_wheel_name
 
-    def uninstall_wheel(self, wheel_name: str):
+    def uninstall_wheels(self, wheel_names: list[str]):
         # Prepare uninstall args
-        uninstall_args = ["uninstall", "--yes", wheel_name]
+        uninstall_args = ["uninstall", "--yes"] + wheel_names
 
         # Delegate to subprocess
         self._env_backend.subprocess(uninstall_args, cwd=self._env_backend.project_path)

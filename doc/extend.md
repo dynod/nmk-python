@@ -7,12 +7,14 @@ As for all **`nmk`** projects config items, [**`nmk-python`** ones](config.md) a
 Python generated files list may be extended by plugins enabling such python code generation.
 
 Following config items may be extended for that purpose:
-* **{ref}`${pythonGeneratedSrcFiles}<pythonGeneratedSrcFiles>`**: List of python generated files.
+
+- **{ref}`${pythonGeneratedSrcFiles}<pythonGeneratedSrcFiles>`**: List of python generated files.
 
   Example:
+
   ```yaml
   pythonGeneratedSrcFiles:
-      - ${sourceDir}/some_generated_file.py
+    - ${sourceDir}/some_generated_file.py
   ```
 
 ## Code format/analysis
@@ -20,23 +22,28 @@ Following config items may be extended for that purpose:
 Python code format/analysis behavior may be configured by python projects.
 
 Following config items may be extended for that purpose:
-* **{ref}`${pythonLineLength}<pythonLineLength>`**: python source code length
+
+- **{ref}`${pythonLineLength}<pythonLineLength>`**: python source code length
 
   Example:
+
   ```yaml
   pythonLineLength: 150
   ```
-* **{ref}`${pythonIgnoredRules}<pythonIgnoredRules>`**: list of ignored rules
+
+- **{ref}`${pythonIgnoredRules}<pythonIgnoredRules>`**: list of ignored rules
 
   Example:
+
   ```yaml
   pythonIgnoredRules:
     - E123
   ```
 
-* **{ref}`${pythonAutoFixRules}<pythonAutoFixRules>`**: list of rules categories to auto-fix
+- **{ref}`${pythonAutoFixRules}<pythonAutoFixRules>`**: list of rules categories to auto-fix
 
   Example:
+
   ```yaml
   pythonAutoFixRules:
     - F401 # Auto-fix unused imports
@@ -47,9 +54,11 @@ Following config items may be extended for that purpose:
 Python wheel build behavior may be configured by python projects.
 
 Following config items may be extended for that purpose:
-* **{ref}`${pythonPackageRequirements}<pythonPackageRequirements>`** and **{ref}`${pythonPackageOptionalRequirements}<pythonPackageOptionalRequirements>`**: package mandatory/optional dependencies
+
+- **{ref}`${pythonPackageRequirements}<pythonPackageRequirements>`** and **{ref}`${pythonPackageOptionalRequirements}<pythonPackageOptionalRequirements>`**: package mandatory/optional dependencies
 
   Example:
+
   ```yaml
   pythonPackageRequirements:
     - some-package-dep
@@ -57,27 +66,42 @@ Following config items may be extended for that purpose:
     option-name:
       - some-optional-dep
   ```
-* **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**: additional project configuration:
-  * extra details on the project
+
+- **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**: additional project configuration:
+  - extra details on the project
 
     Example:
+
     ```yaml
     pythonProjectFileItems:
       project:
         description: Some descriptive text for my python package
     ```
-* **{ref}`${pythonPackagePlatform}<pythonPackagePlatform>`**: package platform tag
+
+- **{ref}`${pythonPackagePlatform}<pythonPackagePlatform>`**: package platform tag
 
   Example:
+
   ```yaml
   pythonPackagePlatform: win_amd64 # Windows 64bits specific package
   ```
-* **{ref}`${pythonExtraResources}<pythonExtraResources>`**: extra resources to be bundled in the built wheel
+
+- **{ref}`${pythonExtraResources}<pythonExtraResources>`**: extra resources to be bundled in the built wheel
 
   Example:
+
   ```yaml
   pythonExtraResources:
     out/somethingbuilt.lib: ${sourceDir}/my_package
+  ```
+
+- **{ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`**: identify wheels that are part of the same development workspace
+
+  Example:
+
+  ```yaml
+  pythonLocalDepsPatterns:
+    - prefix-*
   ```
 
 ## Tests
@@ -85,16 +109,20 @@ Following config items may be extended for that purpose:
 Python test behavior may be configured by python projects.
 
 Following config items may be extended for that purpose:
-* **{ref}`${pytestExtraArgs}<pytestExtraArgs>`**: pytest extra options
+
+- **{ref}`${pytestExtraArgs}<pytestExtraArgs>`**: pytest extra options
 
   Example:
+
   ```yaml
   pytestExtraArgs:
     cov-fail-under: 80
   ```
-* **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**: extra project config items to exclude folders from coverage
+
+- **{ref}`${pythonProjectFileItems}<pythonProjectFileItems>`**: extra project config items to exclude folders from coverage
 
   Example:
+
   ```yaml
   pythonProjectFileItems:
     tool:

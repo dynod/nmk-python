@@ -8,6 +8,11 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.8.0
+
+- added {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` config item to identify local dependencies that are in the same development workspace than the current project
+- updated **{ref}`py.uninstall<py.uninstall>`** task to additionally uninstall local dependencies
+
 ## Release 1.7.0
 
 - removed **{ref}`py.version<py.version>`** and **{ref}`py.project<py.project>`** trigger condition (tasks are always executed, even if no python files were found in project)

@@ -509,6 +509,18 @@ It's mainly used for **dev** dependency group generation in {ref}`${pythonProjec
 
 _<span style="color:green">Added in version 1.7.0</span>_
 
+(pythonLocalDepsPatterns)=
+
+### **`pythonLocalDepsPatterns`** -- Python local dependencies patterns
+
+| Type      | Default value |
+| --------- | ------------- |
+| list[str] | []            |
+
+This is a list of patterns ([fnmatch style ones](https://docs.python.org/3/library/fnmatch.html)) used to identify installed wheels that are part of the same workspace than the current project.
+
+_<span style="color:green">Added in version 1.8.0</span>_
+
 ## Tests
 
 (pythonTestOutput)=
