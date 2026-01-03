@@ -135,6 +135,28 @@ This task installs the project in editable mode in the venv.
 | output   | {ref}`${pythonEditableStamp}<pythonEditableStamp>` file |
 | if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found      |
 
+(py.deps)=
+
+### **`py.deps`** -- Generate Python dependencies metadata
+
+This task generates the {ref}`${pythonDepsMetadata}<pythonDepsMetadata>` metadata json file, containing all current project dependencies versions (indexed by name). If some {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` are provided, matching dependencies are not included in this file (but their own dependencies are included anyway).
+
+| Property | Value/description                                     |
+| -------- | ----------------------------------------------------- |
+| builder  | {py:class}`nmk_python.build.DepsMetadataBuilder`      |
+| input    | {ref}`${pythonProjectFile}<pythonProjectFile>` file   |
+| output   | {ref}`${pythonDepsMetadata}<pythonDepsMetadata>` file |
+| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found    |
+
+The builder is called with the following parameters mapping:
+
+| Name       | Value                                                      |
+| ---------- | ---------------------------------------------------------- |
+| root_name  | {ref}`${pythonPackage}<pythonPackage>`                     |
+| local_deps | {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` |
+
+_<span style="color:green">Added in version 1.8.0</span>_
+
 ## Tests tasks
 
 All tasks in this chapter are dependencies of the base [**`tests`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#tests-task) task.
