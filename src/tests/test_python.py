@@ -205,11 +205,14 @@ class TestSomething:
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.install", "--config", "pythonPackage=nmk"])
         self.check_logs("Can't install nmk while running nmk!")
 
-    def test_uninstall(self):
+    def test_uninstall(self, monkeypatch: pytest.MonkeyPatch):
+        # Prevent pip execution
+        monkeypatch.setattr(subprocess, "run", lambda *args, **kwargs: subprocess.CompletedProcess(args, 0, "", ""))  # type: ignore
+
         # Simple pip call with sample package
         self.fake_python_src("")
-        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.uninstall"])
-        self.check_logs("'-m', 'pip', 'uninstall', '--yes', 'fake'")
+        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.uninstall", "--config", '{"pythonLocalDepsPatterns":["nmk-py*"]}'])
+        self.check_logs("'-m', 'pip', 'uninstall', '--yes', 'fake', 'nmk-python'")
 
     def test_supported_versions(self):
         def quote(a: str) -> str:

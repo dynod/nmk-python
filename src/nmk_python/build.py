@@ -3,8 +3,12 @@ Python package build module
 """
 
 import shutil
+from fnmatch import fnmatch
+from itertools import product
 from pathlib import Path
+from typing import cast
 
+from nmk._internal.envbackend_legacy import EnvBackend  # For type hinting
 from nmk.logs import NmkLogWrapper
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.model import NmkModel
@@ -131,9 +135,10 @@ class Installer(NmkTaskBuilder):
         # Check if wheel can be installed
         if _can_install(name, self.logger):
             # Delegate to build backend
-            old_packages = self.model.env_backend.installed_packages
+            eb = cast(EnvBackend, self.model.env_backend)  # type: ignore
+            old_packages = eb.installed_packages
             BuildBackendFactory.create(self.model).install_wheel(wheel_path=Path(wheel))
-            self.model.env_backend.print_updates(old_packages)
+            eb.print_updates(old_packages)
 
             # Remove stamp file
             Path(to_remove).unlink(missing_ok=True)
@@ -144,19 +149,28 @@ class Uninstaller(NmkTaskBuilder):
     Uninstall current project wheel from venv
     """
 
-    def build(self, name: str):  # pyright: ignore[reportIncompatibleMethodOverride]
+    def build(self, name: str, local_deps: list[str] | None = None):  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Uninstall wheel from venv
 
         Note that task won't fail if the wheel is not installed
 
         :param name: wheel name to be uninstalled
+        :param local_deps: list of workspace local dependencies patterns, used to find additional wheels to uninstall
         """
 
+        # Find local deps to uninstall, from provided packages
+        wheel_names = set([name])
+        eb = cast(EnvBackend, self.model.env_backend)  # type: ignore
+        old_packages = eb.installed_packages
+        for pattern, dep_name in product(local_deps if local_deps else [], old_packages.keys()):
+            if fnmatch(dep_name, pattern):
+                self.logger.debug(f"wheel name '{dep_name}' matches local dependency pattern '{pattern}', will be uninstalled")
+                wheel_names.add(dep_name)
+
         # Delegate to build backend
-        old_packages = self.model.env_backend.installed_packages
-        BuildBackendFactory.create(self.model).uninstall_wheel(wheel_name=name)
-        self.model.env_backend.print_updates(old_packages)
+        BuildBackendFactory.create(self.model).uninstall_wheels(wheel_names=sorted(list(wheel_names)))
+        eb.print_updates(old_packages)
 
 
 class EditableBuilder(NmkTaskBuilder):
@@ -174,9 +188,10 @@ class EditableBuilder(NmkTaskBuilder):
         # Check if project can be installed in editable mode
         if _can_install(_python_package(self.model), self.logger):
             # Delegate to build backend
-            old_packages = self.model.env_backend.installed_packages
+            eb = cast(EnvBackend, self.model.env_backend)  # type: ignore
+            old_packages = eb.installed_packages
             BuildBackendFactory.create(self.model).install_editable()
-            self.model.env_backend.print_updates(old_packages)
+            eb.print_updates(old_packages)
 
             # Touch stamp file
             self.main_output.touch()

@@ -217,9 +217,9 @@ All tasks in this chapter are dependencies of the base [**`clean`**](https://nmk
 
 (py.uninstall)=
 
-### **`py.uninstall`** -- Uninstall Python wheel
+### **`py.uninstall`** -- Uninstall Python wheel and local dependencies
 
-This task uninstalls the built python wheel from the project venv.
+This task uninstalls the built python wheel and its local dependencies from the project venv.
 
 | Property | Value/description                                  |
 | -------- | -------------------------------------------------- |
@@ -228,6 +228,7 @@ This task uninstalls the built python wheel from the project venv.
 
 The builder is called with the following parameters mapping:
 
-| Name | Value                                      |
-| ---- | ------------------------------------------ |
-| name | **{ref}`${pythonPackage}<pythonPackage>`** |
+| Name       | Value                                                                                                                            |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| name       | **{ref}`${pythonPackage}<pythonPackage>`**                                                                                       |
+| local_deps | **{ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`**<br> <br>_<span style="color:green">Added in version 1.8.0</span>_ |
