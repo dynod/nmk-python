@@ -344,5 +344,6 @@ class TestSomething:
 
         # Add some checks on deps file content
         deps_data = json.loads(deps_file.read_text())
-        assert "ruff" in deps_data
-        assert not any(key.startswith("nmk") for key in deps_data)
+        assert "ruff" in deps_data["external"]
+        assert not any(key.startswith("nmk") for key in deps_data["external"])
+        assert "nmk" in deps_data["internal"]
