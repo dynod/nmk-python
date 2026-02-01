@@ -243,6 +243,11 @@ class PythonArchiveDepsResolver(NmkDictConfigResolver):
         return out
 
 
+# Internal/external dependencies keys
+_INTERNAL_DEPS_KEY = "internal"
+_EXTERNAL_DEPS_KEY = "external"
+
+
 class DepsMetadataBuilder(NmkTaskBuilder):
     """
     Generate python dependencies metadata file
@@ -263,18 +268,22 @@ class DepsMetadataBuilder(NmkTaskBuilder):
         # Prepare distributions map
         distributions = {normalize(d.name): d for d in importlib.metadata.distributions()}
         assert root_name in distributions, f"Root package '{root_name}' not found in installed distributions"
-        output_data: dict[str, str] = {}
+        output_data: dict[str, dict[str, str]] = {_INTERNAL_DEPS_KEY: {}, _EXTERNAL_DEPS_KEY: {}}
 
         # Visitor implementation
         def visit(name: str):
             # Already visited or unknown?
-            if (name in output_data) or (name not in distributions):
+            if (name in output_data[_INTERNAL_DEPS_KEY]) or (name in output_data[_EXTERNAL_DEPS_KEY]) or (name not in distributions):
                 return
 
-            # If this is a local project, don't add metadata
-            if (name != root_name) and not any(fnmatch(name, pattern) for pattern in local_deps):
-                # Keep versions
-                output_data[name] = distributions[name].version
+            # Check for internal/external dependency
+            if name != root_name:
+                if any(fnmatch(name, pattern) for pattern in local_deps):
+                    # Internal dependency
+                    output_data[_INTERNAL_DEPS_KEY][name] = distributions[name].version
+                else:
+                    # External dependency
+                    output_data[_EXTERNAL_DEPS_KEY][name] = distributions[name].version
 
             # Visit dependencies
             for dep in distributions[name].requires or []:
@@ -292,4 +301,12 @@ class DepsMetadataBuilder(NmkTaskBuilder):
         visit(root_name)
 
         # Write output metadata file
-        self.main_output.write_text(json.dumps({k: output_data[k] for k in sorted(output_data)}, indent=4))
+        self.main_output.write_text(
+            json.dumps(
+                {
+                    _EXTERNAL_DEPS_KEY: {k: output_data[_EXTERNAL_DEPS_KEY][k] for k in sorted(output_data[_EXTERNAL_DEPS_KEY])},
+                    _INTERNAL_DEPS_KEY: {k: output_data[_INTERNAL_DEPS_KEY][k] for k in sorted(output_data[_INTERNAL_DEPS_KEY])},
+                },
+                indent=4,
+            )
+        )
