@@ -139,7 +139,11 @@ This task installs the project in editable mode in the venv.
 
 ### **`py.deps`** -- Generate Python dependencies metadata
 
-This task generates the {ref}`${pythonDepsMetadata}<pythonDepsMetadata>` metadata json file, containing all current project dependencies versions (indexed by name). If some {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` are provided, matching dependencies are not included in this file (but their own dependencies are included anyway).
+This task generates the {ref}`${pythonDepsMetadata}<pythonDepsMetadata>` metadata json file, containing all current project dependencies versions (indexed by name).
+
+Dependencies are splitted between **internal** and **external** ones:
+* **internal** dependencies are all ones matching with any pattern defined in {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` (if any)
+* **external** dependencies are all the other ones
 
 | Property | Value/description                                     |
 | -------- | ----------------------------------------------------- |
