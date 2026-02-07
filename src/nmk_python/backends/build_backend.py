@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import cast
 
-from nmk._internal.envbackend_legacy import EnvBackend  # For type hinting
+from nmk.envbackend import EnvBackend
 from nmk.model.model import NmkModel
 
 
