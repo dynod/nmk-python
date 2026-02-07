@@ -10,7 +10,7 @@ from itertools import product
 from pathlib import Path
 from typing import cast
 
-from nmk._internal.envbackend_legacy import EnvBackend  # For type hinting
+from nmk.envbackend import EnvBackend
 from nmk.logs import NmkLogWrapper
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.model import NmkModel
