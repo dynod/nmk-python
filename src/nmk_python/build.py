@@ -266,8 +266,9 @@ class DepsMetadataBuilder(NmkTaskBuilder):
             return name.lower().replace("_", "-")
 
         # Prepare distributions map
-        distributions = {normalize(d.name): d for d in importlib.metadata.distributions()}
-        assert root_name in distributions, f"Root package '{root_name}' not found in installed distributions"
+        distributions = {normalize(d.name): d for d in importlib.metadata.distributions() if d.name}
+        normalized_root_name = normalize(root_name)
+        assert normalized_root_name in distributions, f"Root package '{normalized_root_name}' not found in installed distributions"
         output_data: dict[str, dict[str, str]] = {_INTERNAL_DEPS_KEY: {}, _EXTERNAL_DEPS_KEY: {}}
 
         # Visitor implementation
