@@ -187,6 +187,24 @@ class TestSomething:
         # Trigger again to cover clean code
         self.nmk(p, extra_args=["py.tests"])
 
+    def test_python_test_ignore_failures(self):
+        # Prepare test project for python build
+        self.fake_python_src(
+            """
+class TestSomething:
+    def test_something(self):
+        assert False # NOQA: B011
+""",
+            package="tests",
+            name="test_foo.py",
+        )
+        p = self.prepare_project("ref_python.yml")
+        self.nmk(p, extra_args=["py.tests"], expected_rc=1)  # Expects error due to test failure
+        assert self.test_folder / "out" / "tests" / "report.xml"
+
+        # Trigger again with ignore option
+        self.nmk(p, extra_args=["py.tests", "--config", "pytestIgnoreFailures=True"])
+
     def test_plugin_version(self):
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["version"])
         self.check_logs(f"-  👉 nmk-python: {nmk_python.__version__}")

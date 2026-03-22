@@ -8,6 +8,10 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.9.0
+
+- added {ref}`${pytestIgnoreFailures}<pytestIgnoreFailures>` config item to ignore **pytest** execution failures (failed tests or missing coverage)
+
 ## Release 1.8.0
 
 - added {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` config item to identify local dependencies that are in the same development workspace than the current project
