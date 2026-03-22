@@ -596,3 +596,15 @@ Default options are:
 - `"cov-fail-under": 100`: fails if code coverage falls under 100% (see [pytest-cov documentation](https://pytest-cov.readthedocs.io/en/latest/config.html))
 - `"dist": "loadgroup"`: load together tests marked with the same group (see [pytest-xdist documentation](https://pytest-xdist.readthedocs.io/en/stable/distribution.html))
 - `"show-capture": "no"`: don't show captured logs on test failure (see [pytest documentation](https://docs.pytest.org/en/stable/reference/reference.html#cmdoption-show-capture))<br> <br>_<span style="color:green">Added in version 1.6.0</span>_
+
+(pytestIgnoreFailures)=
+
+### **`pytestIgnoreFailures`** -- Ignore pytest failures
+
+| Type           | Default value |
+| -------------- | ------------- |
+| bool           | False         |
+
+This boolean option allows to make **nmk** build not failling if there **pytest** failures (failed tests or missing coverage). Errors are still reported in stdout, but the **nmk** process doesn't stop and will continue to build following tasks.
+
+_<span style="color:green">Added in version 1.9.0</span>_
