@@ -291,8 +291,8 @@ class DepsMetadataBuilder(NmkTaskBuilder):
                 # Get requirement
                 req = Requirement(dep)
 
-                # Check marker, if any
-                if req.marker is not None and not req.marker.evaluate():
+                # Check marker, if any (but not for root package dependencies, which are always included)
+                if (name != root_name) and (req.marker is not None) and (not req.marker.evaluate()):
                     continue
 
                 # Visit dependency if installed
