@@ -1,0 +1,8 @@
+from pytest_multilog import TestHelper
+
+from {{python_module}}.sample import some_sample_function
+
+
+class TestSample(TestHelper):
+    def test_sample_function(self):
+        assert some_sample_function(45, 56) == 45 + 56

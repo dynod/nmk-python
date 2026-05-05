@@ -32,6 +32,9 @@ config:
   pythonProjectFileItems:
     project:
       description: Python plugin for nmk build system
+      entry-points:
+        buildenv_template: # buildenv >=2 template
+          nmk-python: nmk_python._buildenv.template:NmkPythonProjectTemplate
     tool:
       coverage:
         run:
@@ -39,6 +42,7 @@ config:
             - out/tests/*
             - src/nmk_python/templates/*
             - src/nmk_python/backends/uv_build_backend.py
+            - src/nmk_python/_buildenv/template.py # New buildenv project template code
 
   # Github issues logged in nmk project
   githubIssuesRepo: nmk
