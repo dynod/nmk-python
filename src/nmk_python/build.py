@@ -141,7 +141,7 @@ class Installer(NmkTaskBuilder):
             eb = cast(EnvBackend, self.model.env_backend)  # type: ignore
             old_packages = eb.installed_packages
             BuildBackendFactory.create(self.model).install_wheel(wheel_path=Path(wheel))
-            eb.print_updates(old_packages)
+            eb.print_updates(old_packages, ignored_packages=set([name]))
 
             # Remove stamp file
             Path(to_remove).unlink(missing_ok=True)
@@ -173,7 +173,7 @@ class Uninstaller(NmkTaskBuilder):
 
         # Delegate to build backend
         BuildBackendFactory.create(self.model).uninstall_wheels(wheel_names=sorted(list(wheel_names)))
-        eb.print_updates(old_packages)
+        eb.print_updates(old_packages, ignored_packages=set([_python_package(self.model)]))
 
 
 class EditableBuilder(NmkTaskBuilder):
@@ -189,12 +189,13 @@ class EditableBuilder(NmkTaskBuilder):
         """
 
         # Check if project can be installed in editable mode
-        if _can_install(_python_package(self.model), self.logger):
+        package_name = _python_package(self.model)
+        if _can_install(package_name, self.logger):
             # Delegate to build backend
             eb = cast(EnvBackend, self.model.env_backend)  # type: ignore
             old_packages = eb.installed_packages
             BuildBackendFactory.create(self.model).install_editable()
-            eb.print_updates(old_packages)
+            eb.print_updates(old_packages, ignored_packages=set([package_name]))
 
             # Touch stamp file
             self.main_output.touch()
