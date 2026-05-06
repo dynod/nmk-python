@@ -63,7 +63,8 @@ class NmkPythonProjectTemplate(NmkBaseProjectTemplate):
 
     @property
     def ignored_tasks(self) -> list[str]:
-        return super().ignored_tasks + ["py.req"]
+        # Only ignore requirements.txt for uv backend
+        return super().ignored_tasks + (["py.req"] if self.info.backend_name == "uv" else [])
 
     @property
     def python_module_name(self) -> str:
@@ -73,7 +74,7 @@ class NmkPythonProjectTemplate(NmkBaseProjectTemplate):
 
     @property
     def comments(self) -> dict[str, str]:
-        return {
+        return super().comments | {
             "config.venvPkgDeps": "\nDevelopment dependencies (tools)",
             "config.venvArchiveDeps": "\nDevelopment dependencies (tools, from local files)",
             "config.pythonPackageRequirements": "\nPython package dependencies",
