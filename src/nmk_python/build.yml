@@ -59,12 +59,17 @@ config:
   # Python editable install stamp
   pythonEditableStamp: ${outputDir}/.pyeditable
 
+  # Python ignored lockfile, depending on the env backend and if the project is locked or not
+  pythonIgnoredLockfile:
+    __resolver__: nmk_python.build.PythonIgnoredLockfileResolver
+
   # Python files to be ignored
   gitIgnoredFiles:
     - .eggs/
     - "*.egg-info/"
     - "*.pyc"
     - __pycache__
+    - ${pythonIgnoredLockfile}
 
   # Additional github publish step: publish on pypi.org
   githubPublishSteps:

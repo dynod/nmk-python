@@ -2,9 +2,13 @@
 
 The **`nmk-python`** plugin defines the tasks described below.
 
+---
+
 ## Setup tasks
 
 All tasks in this chapter are dependencies of the base [**`setup`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#setup-task) task.
+
+---
 
 (py.version)=
 
@@ -28,6 +32,8 @@ The builder is called with the following parameters mapping:
 *<span style="color:orange">Behavior changed in version 1.7.0</span>*<br>
 In former versions, this task was only triggered if {ref}`${pythonSrcFiles}<pythonSrcFiles>` were found.
 ```
+
+---
 
 (py.project)=
 
@@ -54,9 +60,13 @@ The builder is called with the following parameters mapping:
 In former versions, this task was only triggered if {ref}`${pythonSrcFiles}<pythonSrcFiles>` were found.
 ```
 
+---
+
 ## Build tasks
 
 All tasks in this chapter are dependencies of the base [**`build`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#build-task) task.
+
+---
 
 (py.format)=
 
@@ -77,6 +87,8 @@ The builder is called with the following parameters mapping:
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**                                                                                                                                                                                         |
 | command     | format {ref}`${pythonRuffCommonExtraArgs}<pythonRuffCommonExtraArgs>` {ref}`${pythonRuffFormatExtraArgs}<pythonRuffFormatExtraArgs>`<br> <br>_<span style="color:orange">Changed in version 1.2</span>_ -- Previous value was `"format"` |
+
+---
 
 (py.fix)=
 
@@ -102,6 +114,8 @@ The builder is called with the following parameters mapping:
 
 _<span style="color:green">Added in version 1.2</span>_
 
+---
+
 (py.analyze)=
 
 ### **`py.analyze`** -- Python code analysis
@@ -122,6 +136,8 @@ The builder is called with the following parameters mapping:
 | src_folders | **{ref}`${pythonSrcFolders}<pythonSrcFolders>`**                                                                                                                                                                                     |
 | command     | check {ref}`${pythonRuffCommonExtraArgs}<pythonRuffCommonExtraArgs>` {ref}`${pythonRuffCheckExtraArgs}<pythonRuffCheckExtraArgs>`<br> <br>_<span style="color:orange">Changed in version 1.2</span>_ -- Previous value was `"check"` |
 
+---
+
 (py.editable)=
 
 ### **`py.editable`** -- Python project install in editable mode
@@ -135,6 +151,8 @@ This task installs the project in editable mode in the venv.
 | output   | {ref}`${pythonEditableStamp}<pythonEditableStamp>` file |
 | if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found      |
 
+---
+
 (py.deps)=
 
 ### **`py.deps`** -- Generate Python dependencies metadata
@@ -142,8 +160,9 @@ This task installs the project in editable mode in the venv.
 This task generates the {ref}`${pythonDepsMetadata}<pythonDepsMetadata>` metadata json file, containing all current project dependencies versions (indexed by name).
 
 Dependencies are splitted between **internal** and **external** ones:
-* **internal** dependencies are all ones matching with any pattern defined in {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` (if any)
-* **external** dependencies are all the other ones
+
+- **internal** dependencies are all ones matching with any pattern defined in {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` (if any)
+- **external** dependencies are all the other ones
 
 | Property | Value/description                                     |
 | -------- | ----------------------------------------------------- |
@@ -161,9 +180,13 @@ The builder is called with the following parameters mapping:
 
 _<span style="color:green">Added in version 1.8.0</span>_
 
+---
+
 ## Tests tasks
 
 All tasks in this chapter are dependencies of the base [**`tests`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#tests-task) task.
+
+---
 
 (py.tests)=
 
@@ -182,9 +205,13 @@ The builder is called with the following parameters mapping:
 | ----------- | ---------------------------------------------- |
 | pytest_args | **{ref}`${pytestExtraArgs}<pytestExtraArgs>`** |
 
+---
+
 ## Package tasks
 
 All tasks in this chapter are dependencies of the base [**`package`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#package-task) task.
+
+---
 
 (py.build)=
 
@@ -210,9 +237,13 @@ The builder is called with the following parameters mapping:
 | build_dir       | **{ref}`${pythonBuildDir}<pythonBuildDir>`**             |
 | extra_resources | **{ref}`${pythonExtraResources}<pythonExtraResources>`** |
 
+---
+
 ## Install tasks
 
 All tasks in this chapter are dependencies of the base [**`install`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#install-task) task.
+
+---
 
 (py.install)=
 
@@ -237,9 +268,13 @@ The builder is called with the following parameters mapping:
 
 The builder also removes the **{ref}`${pythonEditableStamp}<pythonEditableStamp>`** stamp file, to force installing the project in editable mode again on the next build.
 
+---
+
 ## Clean tasks
 
 All tasks in this chapter are dependencies of the base [**`clean`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#clean-task) task.
+
+---
 
 (py.uninstall)=
 

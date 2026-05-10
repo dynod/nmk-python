@@ -312,3 +312,19 @@ class DepsMetadataBuilder(NmkTaskBuilder):
                 indent=4,
             )
         )
+
+
+class PythonIgnoredLockfileResolver(NmkListConfigResolver):
+    """
+    Python ignored lockfile resolver
+    """
+
+    def get_value(self, name: str) -> list[str]:  # pyright: ignore[reportIncompatibleMethodOverride]
+        """
+        Return the list of lockfiles to be ignored, depending on the env backend and if the project is locked or not
+        """
+
+        # Ignore uv.lock file if using uv env backend and project is not locked
+        if not self.model.env_backend.is_locked and self.model.env_backend.name == "uv":
+            return ["uv.lock"]  # pragma: no cover
+        return []

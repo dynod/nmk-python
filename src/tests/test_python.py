@@ -233,6 +233,11 @@ class TestSomething:
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.uninstall", "--config", '{"pythonLocalDepsPatterns":["nmk-py*"]}'])
         self.check_logs("'-m', 'pip', 'uninstall', '--yes', 'fake', 'nmk-python'")
 
+    def test_ignored_lockfile(self):
+        # Check ignored lockfile
+        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["--print", "pythonIgnoredLockfile"])
+        self.check_logs('{ "pythonIgnoredLockfile": [] }')
+
     def test_supported_versions(self):
         def quote(a: str) -> str:
             return f'"{a}"'  # NOQA: B028

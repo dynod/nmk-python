@@ -1,4 +1,3 @@
-import re
 from pathlib import Path
 
 from buildenv.extension import BuildEnvRenderer
@@ -9,29 +8,15 @@ _ENV = Environment(loader=PackageLoader("nmk_python"))
 _SRC_PATH = Path("src")
 
 
-def camel_to_snake(name: str) -> str:
-    """Convert a camelCase or PascalCase string to snake_case.
-
-    Examples:
-        camel_to_snake('camelCase') -> 'camel_case'
-        camel_to_snake('CamelCase') -> 'camel_case'
-        camel_to_snake('getHTTPResponse') -> 'get_http_response'
-    """
-    if not name:
-        return ""
-
-    # First pass: put underscore between a lowercase/number and Uppercase-starting group
-    s1 = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", name)
-    # Second pass: put underscore between a lowercase/number and an uppercase (for acronyms)
-    s2 = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", s1)
-    # Replace spaces/dashes with underscore and lowercase the result
-    return s2.replace("-", "_").replace(" ", "_").lower()
-
-
 class NmkPythonProjectTemplate(NmkBaseProjectTemplate):
     """
     Template for **nmk-python** plugin project
     """
+
+    @property
+    def weight(self) -> int:
+        # Top level plugin weight
+        return 300
 
     @property
     def references(self) -> list[NmkReference]:
@@ -68,9 +53,8 @@ class NmkPythonProjectTemplate(NmkBaseProjectTemplate):
 
     @property
     def python_module_name(self) -> str:
-        # Deduce the python module name from the project root name, converting to lowercase and replacing hyphens with underscores
-        assert self.info.project_root is not None, "Project root must be set to determine python module name"
-        return camel_to_snake(self.info.project_root.name)
+        # Deduce the python module name from the project name
+        return self.project_name.replace("-", "_")
 
     @property
     def comments(self) -> dict[str, str]:
@@ -127,6 +111,5 @@ class NmkPythonProjectTemplate(NmkBaseProjectTemplate):
     @property
     def config_items(self) -> dict[str, NmkConfigType]:
         return {
-            "pythonPackage": self.python_module_name.replace("_", "-"),
             "pythonProjectFileItems": {"project": {"description": "Insert here a oneline description of your project"}},
         }

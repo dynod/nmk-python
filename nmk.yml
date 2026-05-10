@@ -34,7 +34,7 @@ config:
       description: Python plugin for nmk build system
       entry-points:
         buildenv_template: # buildenv >=2 template
-          nmk-python: nmk_python._buildenv.template:NmkPythonProjectTemplate
+          nmk.python: nmk_python._buildenv.template:NmkPythonProjectTemplate
     tool:
       coverage:
         run:
