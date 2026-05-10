@@ -31,7 +31,7 @@ Repository = "https://github.com/dynod/nmk-python"
 Issues = "https://github.com/dynod/nmk/issues?q=is%3Aopen+is%3Aissue+label%3Aplugin%3Apython"
 
 [project.entry-points.buildenv_template]
-nmk-python = "nmk_python._buildenv.template:NmkPythonProjectTemplate"
+"nmk.python" = "nmk_python._buildenv.template:NmkPythonProjectTemplate"
 
 [dependency-groups]
 dev = ["nmk-badges", "nmk-base", "nmk-doc", "nmk-github", "nmk-vscode", "sphinx-autoapi"]

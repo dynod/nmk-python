@@ -8,6 +8,11 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.10.0
+
+- Change documentation template
+- Add buildenv 2.0 install template preliminary support
+
 ## Release 1.9.0
 
 - added {ref}`${pytestIgnoreFailures}<pytestIgnoreFailures>` config item to ignore **pytest** execution failures (failed tests or missing coverage)
