@@ -62,8 +62,7 @@ class NmkPythonProjectTemplate(NmkBaseProjectTemplate):
             "config.venvPkgDeps": "\nDevelopment dependencies (tools)",
             "config.venvArchiveDeps": "\nDevelopment dependencies (tools, from local files)",
             "config.pythonPackageRequirements": "\nPython package dependencies",
-            "config.pythonPackage": "\nPython package name",
-            "config.pythonProjectFileItems": "\nExtra projects settings",
+            "config.pythonProjectFileItems": "\nExtra project settings",
         }
 
     def handle_dependencies(self, packages: list[str]) -> dict[str, NmkConfigType]:
@@ -110,6 +109,10 @@ class NmkPythonProjectTemplate(NmkBaseProjectTemplate):
 
     @property
     def config_items(self) -> dict[str, NmkConfigType]:
-        return {
-            "pythonProjectFileItems": {"project": {"description": "Insert here a oneline description of your project"}},
-        }
+        items = dict(super().config_items)
+        items.update(
+            {
+                "pythonProjectFileItems": {"project": {"description": "Insert here a oneline description of your project"}},
+            }
+        )
+        return items
