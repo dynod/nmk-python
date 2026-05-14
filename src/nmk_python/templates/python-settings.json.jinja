@@ -6,12 +6,10 @@
         "editor.defaultFormatter": "charliermarsh.ruff",
         "editor.formatOnSave": true
     },
-    "python.defaultInterpreterPath": "{{ venvName }}/bin/python",
     "python.autoComplete.extraPaths": [{% for folder in pythonSrcFolders %}{% if loop.index > 1 %},{% endif %}
         "{{folder}}"{% endfor %}
     ],
     "cSpell.words": [
-        "isort",
         "noqa",
         "pycache",
         "pylint",
