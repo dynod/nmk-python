@@ -52,5 +52,5 @@ class UvBuildBackend(PythonBuildBackend):
         return build_dir / wheel_sub_dir / built_wheel_name
 
     def uninstall_wheels(self, wheel_names: list[str]):
-        # Same as setup
-        self._env_backend.upgrade(full=False, only_deps=True)
+        # Same as setup, just don't print updates (will be done by uninstall builder)
+        self._env_backend.upgrade(full=False, only_deps=True, print_updates=False)
