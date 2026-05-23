@@ -10,10 +10,11 @@ build
 Jinja2
 nmk-badges
 nmk-base
-nmk-base>=1.0.1
+nmk-base>=1.5.0
 nmk-doc
 nmk-github
 nmk-vscode
+nmk>=1.5.1
 pytest-cov
 pytest-multilog
 pytest-xdist

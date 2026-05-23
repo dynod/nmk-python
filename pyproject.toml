@@ -9,7 +9,7 @@ name = "nmk-python"
 dynamic = ["version"]
 requires-python = ">=3.10"
 classifiers = ["Programming Language :: Python :: 3.10", "Programming Language :: Python :: 3.11", "Programming Language :: Python :: 3.12", "Programming Language :: Python :: 3.13", "Programming Language :: Python :: 3.14"]
-dependencies = ["nmk-base>=1.0.1", "Jinja2", "tomlkit", "setuptools", "wheel", "build", "ruff", "pytest-xdist", "pytest-cov", "pytest-multilog"]
+dependencies = ["nmk-base>=1.5.0", "nmk>=1.5.1", "Jinja2", "tomlkit", "setuptools", "wheel", "build", "ruff", "pytest-xdist", "pytest-cov", "pytest-multilog"]
 description = "Python plugin for nmk build system"
 
 [[project.authors]]

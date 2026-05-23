@@ -64,13 +64,19 @@ In former versions, this task was only triggered if {ref}`${pythonSrcFiles}<pyth
 
 ## Build tasks
 
-All tasks in this chapter are dependencies of the base [**`build`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#build-task) task.
+---
+
+### Preprocessing tasks
+
+All tasks in this chapter are dependencies of the base [**`build.preprocess`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#build-preprocess-task) task.
+
+_<span style="color:orange">Changed in version 1.10.2</span>_ -- previous dependency was on main [**`build`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#build-task) task.
 
 ---
 
 (py.format)=
 
-### **`py.format`** -- Python code format
+#### **`py.format`** -- Python code format
 
 This task calls **`ruff format`** command to format python code of this project.
 
@@ -92,7 +98,7 @@ The builder is called with the following parameters mapping:
 
 (py.fix)=
 
-### **`py.fix`** -- Python code fix
+#### **`py.fix`** -- Python code fix
 
 This task calls **`ruff check --fix-only`** command to fix python code of this project.
 
@@ -118,7 +124,7 @@ _<span style="color:green">Added in version 1.2</span>_
 
 (py.analyze)=
 
-### **`py.analyze`** -- Python code analysis
+#### **`py.analyze`** -- Python code analysis
 
 This task calls **`ruff check`** command to analyze python code of this project.
 
@@ -138,9 +144,17 @@ The builder is called with the following parameters mapping:
 
 ---
 
+### Compilation tasks
+
+All tasks in this chapter are dependencies of the base [**`build.compile`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#build-compile-task) task.
+
+_<span style="color:orange">Changed in version 1.10.2</span>_ -- previous dependency was on main [**`build`**](https://nmk-base.readthedocs.io/en/stable/tasks.html#build-task) task.
+
+---
+
 (py.editable)=
 
-### **`py.editable`** -- Python project install in editable mode
+#### **`py.editable`** -- Python project install in editable mode
 
 This task installs the project in editable mode in the venv.
 
@@ -155,7 +169,7 @@ This task installs the project in editable mode in the venv.
 
 (py.deps)=
 
-### **`py.deps`** -- Generate Python dependencies metadata
+#### **`py.deps`** -- Generate Python dependencies metadata
 
 This task generates the {ref}`${pythonDepsMetadata}<pythonDepsMetadata>` metadata json file, containing all current project dependencies versions (indexed by name).
 
