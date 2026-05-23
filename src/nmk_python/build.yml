@@ -117,7 +117,7 @@ tasks:
       - py.project
       - py.format
       - py.analyze
-    appendToDeps: build
+    appendToDeps: build.compile
     if: ${pythonSrcFiles} # Only if python source files are found
     output:
       - ${pythonEditableStamp}
@@ -131,7 +131,7 @@ tasks:
     emoji: ":snake:.:link:"
     deps:
       - py.editable
-    appendToDeps: build
+    appendToDeps: build.compile
     if: ${pythonSrcFiles} # Only if python source files are found
     output:
       - ${pythonDepsMetadata}

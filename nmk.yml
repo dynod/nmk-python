@@ -17,7 +17,8 @@ path:
 config:
   # Nmk dependencies
   pythonPackageRequirements:
-    - nmk-base>=1.0.1
+    - nmk-base>=1.5.0
+    - nmk>=1.5.1
     - Jinja2
     - tomlkit
     - setuptools
