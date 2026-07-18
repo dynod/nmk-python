@@ -1,8 +1,10 @@
 refs:
-    - pip://nmk-python!plugin.yml
+  - pip://nmk-python!plugin.yml
 
 config:
-    pythonPackage: fake
-    pytestExtraArgs:
-        no-cov: true
-        fancy-opt: false
+  pythonPackage: fake
+  pytestExtraArgs:
+    no-cov: true
+    fancy-opt: false
+    v: true
+    m: "not unknown"

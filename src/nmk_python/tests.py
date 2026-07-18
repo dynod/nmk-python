@@ -34,13 +34,17 @@ class PytestBuilder(NmkTaskBuilder):
         # Compute extra args
         args: list[str] = []
         for opt_k, opt_v in pytest_args.items():
+            # Prepare long/short option name
+            is_long_option = len(opt_k) > 1
+            opt_name = f"--{opt_k}" if is_long_option else f"-{opt_k}"
+
             if isinstance(opt_v, bool):
                 if opt_v:
                     # Simple option
-                    args.append(f"--{opt_k}")
+                    args.append(opt_name)
             else:
                 # Key + value
-                args.append(f"--{opt_k}={opt_v}")
+                args.extend([f"{opt_name}={opt_v}"] if is_long_option else [opt_name, str(opt_v)])
 
         # Invoke pytest
         all_args = [sys.executable, "-m", "pytest"] + args

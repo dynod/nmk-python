@@ -184,6 +184,9 @@ class TestSomething:
         self.nmk(p, extra_args=["py.tests"])
         assert self.test_folder / "out" / "tests" / "report.xml"
 
+        # Check used options (cf ref_python.yml)
+        self.check_logs("pytest --numprocesses=auto --cov-fail-under=100 --dist=loadgroup --show-capture=no --no-cov -v -m not unknown")
+
         # Trigger again to cover clean code
         self.nmk(p, extra_args=["py.tests"])
 
