@@ -698,7 +698,12 @@ This is the cumulative data file for python code coverage.
 | -------------- | ------------- |
 | dict[str, str] | see below     |
 
-This is a name/value dictionary of [pytest](https://docs.pytest.org/) options used on the command line when launching tests. Name/value pairs are converted to command-line options using the `--name=value` syntax.
+This is a name/value dictionary of [pytest](https://docs.pytest.org/) options used on the command line when launching tests. Name/value pairs are converted to command-line options using one of the following syntaxes:
+
+- `--name=value`: for long option with string value
+- `--name`: for long option with boolean true value (boolean false removes the option)
+- `-x value`: for short option with string value
+- `-x`: for short option with boolean true value (boolean false removes the option)
 
 ```{warning}
 Because of YAML "feature" to consider some values as valid booleans (e.g. unquoted `no` value is parsed as a boolean `false`), please pay attention to these options syntax.
