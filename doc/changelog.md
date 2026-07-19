@@ -8,6 +8,14 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.11.0
+
+- added config items to configure {ref}`${pythonVersion}<pythonVersion>` computing:
+  - {ref}`${pythonVersionScheme}<pythonVersionScheme>` (version scheme)
+  - {ref}`${pythonVersionLocalScheme}<pythonVersionLocalScheme>` (local scheme)
+  - {ref}`${pythonVersionFallback}<pythonVersionFallback>` (fallback version)
+- added `[tool.uv.cache-keys]` in generated **pyproject.toml** (only with **uv** backend) to trigger project refresh on git commit/tag
+
 ## Release 1.10.0
 
 - Change documentation template

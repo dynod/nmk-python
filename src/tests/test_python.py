@@ -12,6 +12,7 @@ from nmk_base.venvbuilder import VenvUpdateBuilder
 from tomlkit import parse
 
 import nmk_python
+import nmk_python.version as nmk_python_version_mod
 
 
 class TestPythonPlugin(NmkBaseTester):
@@ -25,9 +26,9 @@ class TestPythonPlugin(NmkBaseTester):
     def check_version(self, monkeypatch: pytest.MonkeyPatch, git_version: str, expected_python_version: str):
         # Fake git subprocess behavior
         monkeypatch.setattr(
-            subprocess,
-            "run",
-            lambda all_args, *args, **kwargs: subprocess.CompletedProcess(all_args, 0, git_version, ""),  # type: ignore
+            nmk_python_version_mod,
+            "get_version",
+            lambda **kwargs: expected_python_version,  # type: ignore
         )
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["--print", "pythonVersion"])
         self.check_logs(f'Config dump: {{ "pythonVersion": "{expected_python_version}" }}')  # NOQA: B028

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["{% if pythonUseUvBuildBackend %}uv_build>=0.9.18,<0.10.0{% else %}setuptools{% endif %}"]
+requires = ["{% if pythonUseUvBuildBackend %}uv_build>=0.9.18,<0.10.0{% else %}setuptools", "setuptools_scm", "wheel{% endif %}"]
 build-backend = "{% if pythonUseUvBuildBackend %}uv_build{% else %}setuptools.build_meta{% endif %}"
 
 [project]
@@ -38,8 +38,10 @@ namespaces = false
 [tool.setuptools.package-data]
 "*" = ["*"]
 
-[tool.setuptools.dynamic.version]
-file = "{{ pythonVersionStamp }}"
+[tool.setuptools_scm]
+version_scheme = "{{ pythonVersionScheme }}"
+local_scheme = "{{ pythonVersionLocalScheme }}"
+fallback_version = "{{ pythonVersionFallback }}"
 
 {% endif %}[tool.distutils.bdist_wheel]
 plat-name = "{{ pythonPackagePlatform }}"
@@ -47,4 +49,8 @@ plat-name = "{{ pythonPackagePlatform }}"
 [tool.pyright]
 include = {{ pythonSrcFolders }}
 typeCheckingMode = "{{ pythonTypeCheckingMode }}"
-reportMissingTypeStubs = false
+reportMissingTypeStubs = false{% if not backendUseRequirements %}
+
+[tool.uv]
+cache-keys = [{ file = "pyproject.toml" }, { git = { commit = true, tags = true } }]
+{% endif %}

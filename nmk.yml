@@ -23,6 +23,7 @@ config:
     - tomlkit
     - setuptools
     - wheel
+    - setuptools-scm
     - build
     - ruff
     - pytest-xdist

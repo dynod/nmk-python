@@ -1,28 +1,38 @@
 config:
-    # The python version itself
-    pythonVersion:
-        __resolver__: nmk_python.version.PythonVersionResolver
+  # Automated version computing from git tags --  see https://setuptools-scm.readthedocs.io/en/latest/config/
+  pythonVersionScheme: no-guess-dev
+  pythonVersionLocalScheme: node-and-date
+  pythonVersionFallback: "0.0.0"
 
-    # Python version stamp file
-    pythonVersionStamp: ${outputDir}/.pythonversion
+  # The python version itself
+  pythonVersion:
+    __resolver__: nmk_python.version.PythonVersionResolver
+    params:
+      root: ${PROJECTDIR}
+      version_scheme: ${pythonVersionScheme}
+      local_scheme: ${pythonVersionLocalScheme}
+      fallback_version: ${pythonVersionFallback}
 
-    # Python supported versions range (min-max)
-    pythonMinVersion: "3.10"
-    pythonMaxVersion: "3.14"
-    pythonSupportedVersions:
-        __resolver__: nmk_python.version.PythonSupportedVersionsResolver
+  # Python version stamp file
+  pythonVersionStamp: ${outputDir}/.pythonversion
+
+  # Python supported versions range (min-max)
+  pythonMinVersion: "3.10"
+  pythonMaxVersion: "3.14"
+  pythonSupportedVersions:
+    __resolver__: nmk_python.version.PythonSupportedVersionsResolver
 
 tasks:
-    # To refresh python version stamp file
-    py.version:
-        description: Refresh python version
-        emoji: ":snake:.:label: "
-        input: ${gitVersionStamp}
-        output: ${pythonVersionStamp}
-        params:
-            version: ${pythonVersion}
-        silent: true
-        builder: nmk_python.version.PythonVersionRefresh
-        deps:
-            - git.version
-        appendToDeps: setup
+  # To refresh python version stamp file
+  py.version:
+    description: Refresh python version
+    emoji: ":snake:.:label: "
+    input: ${gitVersionStamp}
+    output: ${pythonVersionStamp}
+    params:
+      version: ${pythonVersion}
+    silent: true
+    builder: nmk_python.version.PythonVersionRefresh
+    deps:
+      - git.version
+    appendToDeps: setup
