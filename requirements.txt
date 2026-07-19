@@ -20,6 +20,7 @@ pytest-multilog
 pytest-xdist
 ruff
 setuptools
+setuptools-scm
 sphinx-autoapi
 tomlkit
 wheel

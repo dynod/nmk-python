@@ -3,13 +3,11 @@ Python version handling
 """
 
 import platform
-import re
+from typing import cast
 
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.resolver import NmkListConfigResolver, NmkStrConfigResolver
-
-# Git version pattern
-_GIT_VERSION_PATTERN = re.compile("([^-]+)(?:-([0-9]+))?(?:-(.+))?")
+from setuptools_scm import get_version
 
 
 class PythonVersionResolver(NmkStrConfigResolver):
@@ -17,26 +15,12 @@ class PythonVersionResolver(NmkStrConfigResolver):
     Python version resolver
     """
 
-    def get_value(self, name: str) -> str:
+    def get_value(self, name: str, root: str, version_scheme: str, local_scheme: str, fallback_version: str) -> str:  # type: ignore
         """
-        Turn the git version in the Python way
+        Delegates to setuptools_scm to get the version from git
         """
-        git_version = self.model.config["gitVersion"].value
-        m = _GIT_VERSION_PATTERN.match(git_version)
-        if m is not None:
-            # Build python version from git version segments
-            out = m.group(1)
-            if m.group(2) is not None:
-                # Add commits count
-                out += f".post{m.group(2)}"
-            if m.group(3) is not None:
-                # Add hash/dirty
-                out += f"+{m.group(3)}".replace("-", ".")
-            return out
 
-        # Probably a simpler version (without segments)
-        # Assume it is already compliant...
-        return git_version
+        return get_version(root=root, version_scheme=version_scheme, local_scheme=local_scheme, fallback_version=fallback_version)
 
 
 class PythonVersionRefresh(NmkTaskBuilder):
@@ -44,11 +28,11 @@ class PythonVersionRefresh(NmkTaskBuilder):
     Python version builder
     """
 
-    def build(self, version: str):
+    def build(self, version: str):  # type: ignore
         """
         Simple python version dump
         """
-        self.logger.info(self.task.emoji, self.task.description)
+        self.logger.info(self.task.emoji, self.task.description)  # type: ignore
         with self.main_output.open("w") as f:
             f.write(version)
 
@@ -69,7 +53,7 @@ class PythonSupportedVersionsResolver(NmkListConfigResolver):
             return list(map(int, v.split(".")))
 
         # Get min/max values, and verify consistency
-        min_ver, max_ver = self.model.config["pythonMinVersion"].value, self.model.config["pythonMaxVersion"].value
+        min_ver, max_ver = cast(tuple[str, str], (self.model.config["pythonMinVersion"].value, self.model.config["pythonMaxVersion"].value))
         min_split, max_split = _split_version(min_ver), _split_version(max_ver)
         prefix = "Inconsistency in python min/max supported versions: "
         assert len(min_split) == len(max_split), prefix + "not the same segments count"

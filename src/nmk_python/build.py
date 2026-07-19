@@ -17,6 +17,8 @@ from nmk.model.model import NmkModel
 from nmk.model.resolver import NmkDictConfigResolver, NmkListConfigResolver, NmkStrConfigResolver
 from nmk.utils import is_windows
 from packaging.requirements import Requirement
+from tomlkit import loads
+from tomlkit.toml_file import TOMLFile
 
 from nmk_python.backends.factory import BuildBackendFactory
 
@@ -69,6 +71,16 @@ class PackageBuilder(NmkTaskBuilder):
             dest = build_path / candidate.relative_to(project_root)
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(candidate, dest)
+
+        # Update project file scm root
+        build_project = build_path / project_path.name
+        with build_project.open() as f:
+            project_doc = loads(f.read())
+        scm_config = cast(dict[str, dict[str, str]], project_doc.get("tool")).get("setuptools_scm")  # type: ignore
+        assert scm_config is not None, "Can't find setuptools_scm config in project file"
+        scm_config["root"] = "/".join([".."] * len(build_path.relative_to(project_root).parts))
+        project_output = TOMLFile(build_project)
+        project_output.write(project_doc)
 
         # Handle extra resources
         for src, dst in extra_resources.items():
