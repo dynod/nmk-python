@@ -53,4 +53,7 @@ reportMissingTypeStubs = false{% if not backendUseRequirements %}
 
 [tool.uv]
 cache-keys = [{ file = "pyproject.toml" }, { git = { commit = true, tags = true } }]
+{% if pythonMergedConstraints %}
+constraint-dependencies = {{ pythonMergedConstraints }}
+{% endif %}
 {% endif %}

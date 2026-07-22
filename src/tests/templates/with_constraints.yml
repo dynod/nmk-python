@@ -1,0 +1,10 @@
+refs:
+  - pip://nmk-python!plugin.yml
+
+config:
+  pythonConstraints:
+    - foo==1.2.3
+
+  pythonConstraintsFiles:
+    - ${PROJECTDIR}/constraints.txt
+    - ${PROJECTDIR}/unknown.txt

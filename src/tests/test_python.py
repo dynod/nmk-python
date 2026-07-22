@@ -374,3 +374,22 @@ class TestSomething:
         assert "ruff" in deps_data["external"]
         assert not any(key.startswith("nmk") for key in deps_data["external"])
         assert "nmk" in deps_data["internal"]
+
+    def test_python_constraints(self):
+        # Prepare test project for python build with constraints
+        self.fake_python_src("")
+        project = self.prepare_project("with_constraints.yml")
+        (self.test_folder / "constraints.txt").write_text("""
+# Some comment to be kept
+
+bar
+
+zzz<2    #   Some comment to remove
+
+""")
+        self.nmk(project, extra_args=["py.project", "--config", "backendUseRequirements=false"])
+        self.check_logs(f"Constraints file not found: {self.test_folder / 'unknown.txt'}")
+        project_content = (self.test_folder / "pyproject.toml").read_text()
+        for expected_statement in ["# Some comment to be kept", "bar", "zzz<2", "foo==1.2.3"]:
+            assert expected_statement in project_content
+        assert "Some comment to remove" not in project_content
