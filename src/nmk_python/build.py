@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import cast
 
 from nmk.envbackend import EnvBackend
-from nmk.logs import NmkLogWrapper
+from nmk.logs import NmkLogger, NmkLogWrapper
 from nmk.model.builder import NmkTaskBuilder
 from nmk.model.model import NmkModel
 from nmk.model.resolver import NmkDictConfigResolver, NmkListConfigResolver, NmkStrConfigResolver
@@ -340,3 +340,38 @@ class PythonIgnoredLockfileResolver(NmkListConfigResolver):
         if not self.model.env_backend.is_locked and self.model.env_backend.name == "uv":
             return ["uv.lock"]  # pragma: no cover
         return []
+
+
+class PythonMergedConstraintsResolver(NmkListConfigResolver):
+    """
+    Python merged constraints resolver
+    """
+
+    def get_value(self, name: str, constraints: list[str], constraints_files: list[str]) -> list[str]:  # pyright: ignore[reportIncompatibleMethodOverride]
+        """
+        Return the merged list of constraints, coming from raw items and files
+        """
+
+        all_constraints: list[str] = []
+
+        # Step 1: read files
+        for constraints_file in map(Path, constraints_files):
+            # Check file existence
+            if not constraints_file.is_file():
+                NmkLogger.warning(f"Constraints file not found: {constraints_file}")
+                continue
+
+            def clean_line(line: str) -> str | None:
+                line = line.strip()
+                if not line.startswith("#"):
+                    # Remove end of line comments (keep full line ones)
+                    line = line.split("#", 1)[0].strip()
+                return line
+
+            # Get lines
+            all_constraints.extend(filter(None, map(clean_line, constraints_file.read_text().splitlines())))
+
+        # Step 2: add items
+        all_constraints.extend(constraints)
+
+        return all_constraints

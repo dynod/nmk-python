@@ -15,6 +15,11 @@ The fully detailed changelog is also available on [Github](https://github.com/dy
   - {ref}`${pythonVersionLocalScheme}<pythonVersionLocalScheme>` (local scheme)
   - {ref}`${pythonVersionFallback}<pythonVersionFallback>` (fallback version)
 - added `[tool.uv.cache-keys]` in generated **pyproject.toml** (only with **uv** backend) to trigger project refresh on git commit/tag
+- added config items for package dependencies constraints handling:
+  - {ref}`${pythonConstraints}<pythonConstraints>` (constraints statements list)
+  - {ref}`${pythonConstraintsFiles}<pythonConstraintsFiles>` (constraints files list)
+  - {ref}`${pythonMergedConstraints}<pythonMergedConstraints>` (resulting merged list)
+- added `[tool.uv.constraint-dependencies]` in generated **pyproject.toml** (only with **uv** backend) to constrain dependencies resolution
 
 ## Release 1.10.0
 

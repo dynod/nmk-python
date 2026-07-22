@@ -108,6 +108,19 @@ config:
   # Generated python dependencies metadata file
   pythonDepsMetadata: ${outputDir}/python_deps.json
 
+  # Python constraints, raw listed in nmk.yml files
+  pythonConstraints: []
+
+  # Python constraints files
+  pythonConstraintsFiles: []
+
+  # Merged constraints (from items + files)
+  pythonMergedConstraints:
+    __resolver__: nmk_python.build.PythonMergedConstraintsResolver
+    params:
+      constraints: ${pythonConstraints}
+      constraints_files: ${pythonConstraintsFiles}
+
 tasks:
   # Python editable install
   py.editable:
