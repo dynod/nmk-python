@@ -43,8 +43,7 @@ config:
           omit:
             - out/tests/*
             - src/nmk_python/templates/*
-            - src/nmk_python/backends/uv_build_backend.py
-            - src/nmk_python/_buildenv/template.py # New buildenv project template code
+            - src/nmk_python/backends/pip_build_backend.py
 
   # Github issues logged in nmk project
   githubIssuesRepo: nmk
