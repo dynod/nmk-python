@@ -67,35 +67,23 @@ class NmkPythonProjectTemplate(NmkBaseProjectTemplate):
 
     def handle_dependencies(self, packages: list[str]) -> dict[str, NmkConfigType]:
         # Iterate on packages
-        config_items: dict[str, NmkConfigType] = {}
-        simple_refs: list[str] = []
-        file_refs: list[str] = []
+        other_refs: list[str] = []
         dep_refs: list[str] = []
+
+        # Pre-filter non-dev dependencies
         for package in packages:
             # Check for dependency groups (no group means it's a regular dependency, otherwise it's a dev dependency)
             if ":" not in package:
                 dep_refs.append(package)
-            # Dev dependencies
             else:
-                package = package.split(":")[-1]  # Ignore dependency groups, if any (e.g. `dev:package` -> `package`)
-                if "." in package:
-                    package_path = Path(package)
-                    if package_path.is_absolute() and package_path.is_file():
-                        file_refs.append(package)
-                    elif (Path.cwd() / package).is_file():
-                        file_refs.append(f"${{PROJECTDIR}}/{package}")
-                    else:
-                        simple_refs.append(package)
-                else:
-                    simple_refs.append(package)
+                other_refs.append(package)
+
+        # Delegate to normal processing
+        config_items: dict[str, NmkConfigType] = super().handle_dependencies(other_refs)
 
         # Build settings
-        if dep_refs:
+        if dep_refs:  # pragma: no branch
             config_items["pythonPackageRequirements"] = dep_refs
-        if simple_refs:
-            config_items["venvPkgDeps"] = simple_refs
-        if file_refs:
-            config_items["venvArchiveDeps"] = file_refs
 
         return config_items
 

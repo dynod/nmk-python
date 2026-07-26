@@ -235,12 +235,12 @@ class TestSomething:
         # Simple pip call with sample package
         self.fake_python_src("")
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.uninstall", "--config", '{"pythonLocalDepsPatterns":["nmk-py*"]}'])
-        self.check_logs("'-m', 'pip', 'uninstall', '--yes', 'fake', 'nmk-python'")
+        self.check_logs("'uv', 'sync', '--no-install-project'")
 
     def test_ignored_lockfile(self):
         # Check ignored lockfile
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["--print", "pythonIgnoredLockfile"])
-        self.check_logs('{ "pythonIgnoredLockfile": [] }')
+        self.check_logs('{ "pythonIgnoredLockfile": [ "uv.lock" ] }')
 
     def test_supported_versions(self):
         def quote(a: str) -> str:
@@ -331,16 +331,6 @@ class TestSomething:
         self.fake_python_src()
         test_wheel = self.test_folder / "foo_bar-1.2.3.whl"
         test_wheel.touch()
-
-        # Check generated requirements
-        self.nmk(prj, extra_args=["py.req"])
-        req_file = self.test_folder / "requirements.txt"
-        assert req_file.is_file()
-        with req_file.open("r") as f:
-            content = f.read().splitlines()
-            assert "foo" in content
-            assert "bar" in content
-            assert "pytest" in content
 
         # Check generated project file
         self.nmk(prj, extra_args=["py.project"])

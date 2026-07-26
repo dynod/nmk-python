@@ -39,11 +39,6 @@ class UvBuildBackend(PythonBuildBackend):
         # Name for wheel sub-directory
         wheel_sub_dir = "wheel_dist"
 
-        # Check for (experimental) uv-build backend
-        if self._model.config["pythonUseUvBuildBackend"].value:
-            # Prepare project version (without updating the venv)
-            self._env_backend.subprocess(["version", "--active", "--no-sync", wheel_version], cwd=build_dir)
-
         # Delegate to uv
         build_args = ["build", "--wheel", "--out-dir", wheel_sub_dir]
         self._env_backend.subprocess(build_args, cwd=build_dir)

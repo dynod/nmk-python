@@ -338,8 +338,8 @@ class PythonIgnoredLockfileResolver(NmkListConfigResolver):
 
         # Ignore uv.lock file if using uv env backend and project is not locked
         if not self.model.env_backend.is_locked and self.model.env_backend.name == "uv":
-            return ["uv.lock"]  # pragma: no cover
-        return []
+            return ["uv.lock"]
+        return []  # pragma: no cover
 
 
 class PythonMergedConstraintsResolver(NmkListConfigResolver):
