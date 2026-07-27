@@ -67,7 +67,7 @@ class PackageBuilder(NmkTaskBuilder):
         project_root = project_path.parent
         for source_dir in map(Path, source_dirs):
             shutil.copytree(source_dir, build_path / source_dir.relative_to(project_root))
-        for candidate in filter(lambda p: p.is_file(), map(Path, [project_path, version_file, project_root / "README.md", project_root / "LICENSE"])):
+        for candidate in filter(lambda p: p.is_file(), map(Path, [project_path, project_root / "README.md", project_root / "LICENSE"])):
             dest = build_path / candidate.relative_to(project_root)
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(candidate, dest)
