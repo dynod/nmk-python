@@ -59,7 +59,7 @@ class PythonSupportedVersionsResolver(NmkListConfigResolver):
         assert len(min_split) == len(max_split), prefix + "not the same segments count"
         assert len(min_split) == 2, prefix + "can only deal with X.Y versions (2 segments expected)"
         assert min_split[0] == max_split[0], prefix + "can't deal with different major versions"
-        assert max_split[1] > min_split[1], prefix + "max isn't greater than min"
+        assert max_split[1] >= min_split[1], prefix + "max isn't greater than min"
 
         # Also verifies current runtime is in range
         p_ver = platform.python_version()
