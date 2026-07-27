@@ -349,12 +349,28 @@ class TestSomething:
         dev_packages = project_model.get("dependency-groups").get("dev")  # type: ignore
         assert f"foo-bar@{str(test_wheel)}" in dev_packages
 
-    def test_python_deps(self):
+    @pytest.mark.parametrize("exploding", [True, False])
+    def test_python_deps(self, exploding: bool):
         # Prepare test project for python deps build
         self.fake_python_src("")
         project = self.prepare_project("ref_python.yml")
+        self.prepare_project("constraints.txt")
         self.nmk(
-            project, extra_args=["py.deps", "--skip", "py.editable", "--config", "pythonPackage=nmk-python", "--config", '{"pythonLocalDepsPatterns":["nmk*"]}']
+            project,
+            extra_args=[
+                "py.deps",
+                "--skip",
+                "py.editable",
+                "--config",
+                "pythonPackage=nmk-python",
+                "--config",
+                '{"pythonLocalDepsPatterns":["nmk*"]}',
+                "--config",
+                '{"pythonConstraintsFiles":["${PROJECTDIR}/constraints.txt"]}',
+                "--config",
+                f"pythonConstraintsStrictCheck={exploding}",
+            ],
+            expected_rc=1 if exploding else 0,
         )
         deps_file = self.test_folder / "out" / "python_deps.json"
         assert deps_file.is_file()
@@ -365,18 +381,14 @@ class TestSomething:
         assert not any(key.startswith("nmk") for key in deps_data["external"])
         assert "nmk" in deps_data["internal"]
 
+        # Check constraints warnings
+        self.check_logs(["Found dependency with constraint mismatch: ruff", "Found dependency with missing constraint:  argcomplete"])
+
     def test_python_constraints(self):
         # Prepare test project for python build with constraints
         self.fake_python_src("")
         project = self.prepare_project("with_constraints.yml")
-        (self.test_folder / "constraints.txt").write_text("""
-# Some comment to be kept
-
-bar
-
-zzz<2    #   Some comment to remove
-
-""")
+        self.prepare_project("constraints.txt")
         self.nmk(project, extra_args=["py.project", "--config", "backendUseRequirements=false"])
         self.check_logs(f"Constraints file not found: {self.test_folder / 'unknown.txt'}")
         project_content = (self.test_folder / "pyproject.toml").read_text()

@@ -121,6 +121,9 @@ config:
       constraints: ${pythonConstraints}
       constraints_files: ${pythonConstraintsFiles}
 
+  # Constraints check mode (strict or not)
+  pythonConstraintsStrictCheck: false
+
 tasks:
   # Python editable install
   py.editable:
@@ -154,6 +157,8 @@ tasks:
     params:
       root_name: ${pythonPackage}
       local_deps: ${pythonLocalDepsPatterns}
+      constraints: ${pythonMergedConstraints}
+      fail_on_error: ${pythonConstraintsStrictCheck}
 
   # Python wheel build
   py.build:
