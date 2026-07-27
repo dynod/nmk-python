@@ -4,6 +4,7 @@ Python package build module
 
 import importlib.metadata
 import json
+import os
 import shutil
 from fnmatch import fnmatch
 from itertools import product
@@ -17,6 +18,7 @@ from nmk.model.model import NmkModel
 from nmk.model.resolver import NmkDictConfigResolver, NmkListConfigResolver, NmkStrConfigResolver
 from nmk.utils import is_windows
 from packaging.requirements import Requirement
+from packaging.version import Version
 from tomlkit import loads
 from tomlkit.toml_file import TOMLFile
 
@@ -266,12 +268,14 @@ class DepsMetadataBuilder(NmkTaskBuilder):
     Generate python dependencies metadata file
     """
 
-    def build(self, root_name: str, local_deps: list[str]):  # pyright: ignore[reportIncompatibleMethodOverride]
+    def build(self, root_name: str, local_deps: list[str], constraints: list[str], fail_on_error: bool):  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Generate python dependencies metadata file
 
         :param root_name: name of the root package
         :param local_deps: list of workspace local dependencies patterns
+        :param constraints: list of package constraints (may contain comments) to be checked against found dependencies
+        :param fail_on_error: if there are mismatches between actual dependencies and constraints, and if true, and the build in error
         """
 
         # Normalization implementation
@@ -324,6 +328,40 @@ class DepsMetadataBuilder(NmkTaskBuilder):
                 indent=4,
             )
         )
+
+        # Check constraints vs external deps if any
+        filtered_constraints = [line for line in constraints if not line.startswith("# ")]
+        if filtered_constraints and output_data[_EXTERNAL_DEPS_KEY]:  # pragma: no branch
+            try:
+                self._check_constraints(filtered_constraints, output_data[_EXTERNAL_DEPS_KEY], fail_on_error)
+            except Exception as e:
+                # Touch output file to force task to be retriggered on next build
+                input_state = self.main_input.stat()
+                os.utime(self.main_output, (input_state.st_atime, input_state.st_mtime))
+                raise e
+
+    def _check_constraints(self, constraints: list[str], deps: dict[str, str], fail_on_error: bool):
+        # Build all requirements
+        all_reqs = {r[0].name: r for r in [(Requirement(line), line) for line in constraints]}
+
+        # Count errors
+        errors = 0
+
+        # Browse dependencies
+        for name, version in deps.items():
+            # Check missing constraint on actual dependency
+            if name not in all_reqs:
+                self.logger.warning(f"Found dependency with missing constraint:  {name}")
+                errors += 1
+                continue
+
+            # Check mismatch version
+            req, req_line = all_reqs[name]
+            if Version(version) not in req.specifier:
+                self.logger.warning(f"Found dependency with constraint mismatch: {name} ({version}) vs '{req_line}'")
+                errors += 1
+
+        assert (errors == 0) or not fail_on_error, f"{errors} error(s) found while checking dependencies vs constraints"
 
 
 class PythonIgnoredLockfileResolver(NmkListConfigResolver):

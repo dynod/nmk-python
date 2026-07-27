@@ -187,12 +187,21 @@ Dependencies are splitted between **internal** and **external** ones:
 
 The builder is called with the following parameters mapping:
 
-| Name       | Value                                                      |
-| ---------- | ---------------------------------------------------------- |
-| root_name  | {ref}`${pythonPackage}<pythonPackage>`                     |
-| local_deps | {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>` |
+| Name          | Value                                                                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| root_name     | {ref}`${pythonPackage}<pythonPackage>`                                                                                               |
+| local_deps    | {ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`                                                                           |
+| constraints   | {ref}`${pythonMergedConstraints}<pythonMergedConstraints>` <br> _<span style="color:green">Added in version 1.12.0</span>_           |
+| fail_on_error | {ref}`${pythonConstraintsStrictCheck}<pythonConstraintsStrictCheck>` <br> _<span style="color:green">Added in version 1.12.0</span>_ |
 
 _<span style="color:green">Added in version 1.8.0</span>_
+
+Since _<span style="color:green">Version 1.12.0</span>_, this task also checks found external dependencies vs constraints (listed in {ref}`${pythonMergedConstraints}<pythonMergedConstraints>`), i.e. raise a warning if:
+
+- any dependency is not found at all in the input constraints
+- any dependency version does not match the specified version constraint
+
+Moreover, if {ref}`${pythonConstraintsStrictCheck}<pythonConstraintsStrictCheck>` item is set to **True**, the task will fail if at least one of these warnings is raised.
 
 ---
 

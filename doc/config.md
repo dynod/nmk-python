@@ -731,6 +731,20 @@ _<span style="color:green">Added in version 1.11.0</span>_
 
 ---
 
+(pythonConstraintsStrictCheck)=
+
+### **`pythonConstraintsStrictCheck`** -- Strict constraints checking enablement
+
+| Type | Default value |
+| ---- | ------------- |
+| bool | False         |
+
+When checking dependencies vs constraints, enable the strict mode (or not). In strict mode, the **{ref}`py.deps<py.deps>`** task will stop in error if there is any dependency/constraint mismatch.
+
+_<span style="color:green">Added in version 1.12.0</span>_
+
+---
+
 ## Tests
 
 ---

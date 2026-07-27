@@ -8,6 +8,11 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.12.0
+
+- updated **{ref}`py.deps<py.deps>`** task behavior to check external dependencies vs constraints
+- added {ref}`${pythonConstraintsStrictCheck}<pythonConstraintsStrictCheck>` item to control if this check should be strict or not
+
 ## Release 1.11.0
 
 - added config items to configure {ref}`${pythonVersion}<pythonVersion>` computing:
