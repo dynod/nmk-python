@@ -78,7 +78,7 @@ config:
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
-        packages_dir: ${r!pythonArtifacts}
+        packages_dir: ${r!pythonBuildDir}/wheel_dist
 
   # Wheel install arguments (for pip backend)
   pythonWheelPipInstallArgs:
