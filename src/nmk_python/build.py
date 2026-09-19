@@ -288,12 +288,15 @@ class DepsMetadataBuilder(NmkTaskBuilder):
         normalized_root_name = _normalize(root_name)
         assert normalized_root_name in distributions, f"Root package '{normalized_root_name}' not found in installed distributions"
         output_data: dict[str, dict[str, str]] = {_INTERNAL_DEPS_KEY: {}, _EXTERNAL_DEPS_KEY: {}}
+        visited: set[tuple[str, frozenset[str]]] = set()
 
         # Visitor implementation
-        def visit(name: str):
-            # Already visited or unknown?
-            if (name in output_data[_INTERNAL_DEPS_KEY]) or (name in output_data[_EXTERNAL_DEPS_KEY]) or (name not in distributions):
+        def visit(name: str, extras: frozenset[str] = frozenset()):
+            # Already visited with the same extras or unknown?
+            visit_key = (name, extras)
+            if visit_key in visited or name not in distributions:
                 return
+            visited.add(visit_key)
 
             # Check for internal/external dependency
             if name != root_name:
@@ -310,11 +313,15 @@ class DepsMetadataBuilder(NmkTaskBuilder):
                 req = Requirement(dep)
 
                 # Check marker, if any (but not for root package dependencies, which are always included)
-                if (name != root_name) and (req.marker is not None) and (not req.marker.evaluate()):
+                if (
+                    (name != root_name)
+                    and (req.marker is not None)
+                    and (not any(req.marker.evaluate(environment={"extra": extra}) for extra in extras) if extras else not req.marker.evaluate())
+                ):
                     continue
 
                 # Visit dependency if installed
-                visit(_normalize(req.name))
+                visit(_normalize(req.name), frozenset(req.extras))
 
         # Visit from root
         visit(root_name)
