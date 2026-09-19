@@ -6,3 +6,6 @@ zzz<2    #   Some comment to remove
 
 ruff >= 1
 jinja2 > 2
+
+# With strange case; shouldn't raise any warning anyway
+BuildEnv >= 2

@@ -382,7 +382,9 @@ class TestSomething:
         assert "nmk" in deps_data["internal"]
 
         # Check constraints warnings
-        self.check_logs(["Found dependency with constraint mismatch: ruff", "Found dependency with missing constraint:  argcomplete"])
+        self.check_logs(["Found dependency with constraint mismatch: ruff", "Found dependency with missing constraint: argcomplete"])
+        with pytest.raises(AssertionError, match="Missing patterns"):
+            self.check_logs("Found dependency with missing constraint: buildenv")
 
     def test_python_constraints(self):
         # Prepare test project for python build with constraints

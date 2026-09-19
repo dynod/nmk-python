@@ -263,6 +263,11 @@ _INTERNAL_DEPS_KEY = "internal"
 _EXTERNAL_DEPS_KEY = "external"
 
 
+# Normalization implementation
+def _normalize(name: str) -> str:
+    return name.lower().replace("_", "-")
+
+
 class DepsMetadataBuilder(NmkTaskBuilder):
     """
     Generate python dependencies metadata file
@@ -278,13 +283,9 @@ class DepsMetadataBuilder(NmkTaskBuilder):
         :param fail_on_error: if there are mismatches between actual dependencies and constraints, and if true, and the build in error
         """
 
-        # Normalization implementation
-        def normalize(name: str) -> str:
-            return name.lower().replace("_", "-")
-
         # Prepare distributions map
-        distributions = {normalize(d.name): d for d in importlib.metadata.distributions() if d.name}
-        normalized_root_name = normalize(root_name)
+        distributions = {_normalize(d.name): d for d in importlib.metadata.distributions() if d.name}
+        normalized_root_name = _normalize(root_name)
         assert normalized_root_name in distributions, f"Root package '{normalized_root_name}' not found in installed distributions"
         output_data: dict[str, dict[str, str]] = {_INTERNAL_DEPS_KEY: {}, _EXTERNAL_DEPS_KEY: {}}
 
@@ -313,7 +314,7 @@ class DepsMetadataBuilder(NmkTaskBuilder):
                     continue
 
                 # Visit dependency if installed
-                visit(normalize(req.name))
+                visit(_normalize(req.name))
 
         # Visit from root
         visit(root_name)
@@ -342,7 +343,7 @@ class DepsMetadataBuilder(NmkTaskBuilder):
 
     def _check_constraints(self, constraints: list[str], deps: dict[str, str], fail_on_error: bool):
         # Build all requirements
-        all_reqs = {r[0].name: r for r in [(Requirement(line), line) for line in constraints]}
+        all_reqs = {_normalize(r[0].name): r for r in [(Requirement(line), line) for line in constraints]}
 
         # Count errors
         errors = 0
@@ -350,13 +351,13 @@ class DepsMetadataBuilder(NmkTaskBuilder):
         # Browse dependencies
         for name, version in deps.items():
             # Check missing constraint on actual dependency
-            if name not in all_reqs:
-                self.logger.warning(f"Found dependency with missing constraint:  {name}")
+            if _normalize(name) not in all_reqs:
+                self.logger.warning(f"Found dependency with missing constraint: {name}")
                 errors += 1
                 continue
 
             # Check mismatch version
-            req, req_line = all_reqs[name]
+            req, req_line = all_reqs[_normalize(name)]
             if Version(version) not in req.specifier:
                 self.logger.warning(f"Found dependency with constraint mismatch: {name} ({version}) vs '{req_line}'")
                 errors += 1
