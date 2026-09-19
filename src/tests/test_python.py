@@ -1,4 +1,5 @@
 # Tests for python plugin
+import importlib.metadata
 import json
 import platform
 import subprocess
@@ -13,6 +14,7 @@ from tomlkit import parse
 
 import nmk_python
 import nmk_python.version as nmk_python_version_mod
+from nmk_python.build import DepsMetadataBuilder
 
 
 class TestPythonPlugin(NmkBaseTester):
@@ -385,6 +387,40 @@ class TestSomething:
         self.check_logs(["Found dependency with constraint mismatch: ruff", "Found dependency with missing constraint: argcomplete"])
         with pytest.raises(AssertionError, match="Missing patterns"):
             self.check_logs("Found dependency with missing constraint: buildenv")
+
+    @pytest.mark.parametrize(
+        ("root_requirement", "expected_dependencies"),
+        [("B", {"b"}), ("B[foo]", {"b", "c"})],
+    )
+    def test_python_deps_propagates_extras(self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path, root_requirement: str, expected_dependencies: set[str]):
+        class Distribution:
+            def __init__(self, name: str, requires: list[str] | None = None):
+                self.name = name
+                self.version = "1.0"
+                self.requires = requires
+
+        # Don't go through a traditional nmk build for this test, just call the builder directly
+        monkeypatch.setattr(
+            importlib.metadata,
+            "distributions",
+            lambda: [
+                Distribution("a", [root_requirement]),
+                Distribution(
+                    "b",
+                    ["C; extra == 'foo'"],
+                ),
+                Distribution("c"),
+            ],
+        )
+        builder = DepsMetadataBuilder(None)  # type: ignore
+
+        # Need this to fake the main_output property, since the builder normally expects to be run in a full nmk build context
+        monkeypatch.setattr(DepsMetadataBuilder, "main_output", property(lambda _: tmp_path / "python_deps.json"))
+
+        builder.build("a", [], [], False)
+
+        dependencies = json.loads(builder.main_output.read_text())["external"]
+        assert set(dependencies) == expected_dependencies
 
     def test_python_constraints(self):
         # Prepare test project for python build with constraints
