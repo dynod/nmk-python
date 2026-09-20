@@ -28,7 +28,7 @@ config:
   # Additional github build step: upload coverage report on codecov
   githubBuildSteps:
     - name: Upload coverage information
-      uses: codecov/codecov-action@v4.3.1
+      uses: codecov/codecov-action@v7.1.1
       with:
         files: ${r!pythonCoverageXmlReport}
       env:
