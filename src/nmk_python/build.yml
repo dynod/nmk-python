@@ -212,4 +212,5 @@ tasks:
     params:
       name: ${pythonPackage}
       local_deps: ${pythonLocalDepsPatterns}
+      lock_files: ${pythonIgnoredLockfile}
     if: ${pythonSrcFiles} # Only if python source files are found

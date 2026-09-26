@@ -303,7 +303,11 @@ All tasks in this chapter are dependencies of the base [**`clean`**](https://nmk
 
 ### **`py.uninstall`** -- Uninstall Python wheel and local dependencies
 
-This task uninstalls the built python wheel and its local dependencies from the project venv.
+This task:
+
+- uninstalls the built python wheel from the project venv
+- uninstalls its local dependencies (computed from the provided **{ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`** patterns) from the project venv
+- clean the **{ref}`${pythonIgnoredLockfile}<pythonIgnoredLockfile>`** lock files, if any<br>_<span style="color:green">Added in version 1.13.0</span>_
 
 | Property | Value/description                                  |
 | -------- | -------------------------------------------------- |
@@ -312,7 +316,8 @@ This task uninstalls the built python wheel and its local dependencies from the 
 
 The builder is called with the following parameters mapping:
 
-| Name       | Value                                                                                                                            |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| name       | **{ref}`${pythonPackage}<pythonPackage>`**                                                                                       |
-| local_deps | **{ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`**<br> <br>_<span style="color:green">Added in version 1.8.0</span>_ |
+| Name       | Value                                                                                                                       |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------- |
+| name       | **{ref}`${pythonPackage}<pythonPackage>`**                                                                                  |
+| local_deps | **{ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`**<br>_<span style="color:green">Added in version 1.8.0</span>_ |
+| lock_files | **{ref}`${pythonIgnoredLockfile}<pythonIgnoredLockfile>`**<br>_<span style="color:green">Added in version 1.13.0</span>_    |
