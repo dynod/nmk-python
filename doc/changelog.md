@@ -8,6 +8,10 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 1.13.0
+
+- updated **{ref}`py.uninstall<py.uninstall>`** task behavior to delete {ref}`${pythonIgnoredLockfile}<pythonIgnoredLockfile>` lock files
+
 ## Release 1.12.0
 
 - updated **{ref}`py.deps<py.deps>`** task behavior to check external dependencies vs constraints
