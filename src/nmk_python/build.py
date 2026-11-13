@@ -139,13 +139,12 @@ class Installer(NmkTaskBuilder):
     Install built wheel in venv
     """
 
-    def build(self, name: str, wheel: str, pip_args: list[str] | None = None, to_remove: str = ""):  # pyright: ignore[reportIncompatibleMethodOverride]
+    def build(self, name: str, wheel: str, to_remove: str = ""):  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Install wheel in venv
 
         :param name: wheel name to be installed
         :param wheel: wheel path to be installed
-        :param pip_args: pip command line arguments; deprecated, not used anymore
         :param to_remove: stamp file to be removed
         """
 
@@ -204,11 +203,9 @@ class EditableBuilder(NmkTaskBuilder):
     Install python project in editable mode
     """
 
-    def build(self, pip_args: list[str] | None = None):  # pyright: ignore[reportIncompatibleMethodOverride]
+    def build(self):
         """
         Install project in venv as editable package
-
-        :param pip_args: pip command line arguments; deprecated, not used anymore
         """
 
         # Check if project can be installed in editable mode
@@ -391,8 +388,8 @@ class PythonIgnoredLockfileResolver(NmkListConfigResolver):
         Return the list of lockfiles to be ignored, depending on the env backend and if the project is locked or not
         """
 
-        # Ignore uv.lock file if using uv env backend and project is not locked
-        if not self.model.env_backend.is_locked and self.model.env_backend.name == "uv":
+        # Ignore uv.lock file if using uv env backend
+        if self.model.env_backend.name == "uv":
             return ["uv.lock"]
         return []  # pragma: no cover
 

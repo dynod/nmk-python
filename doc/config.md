@@ -152,7 +152,7 @@ This is the python version stamp file, updated each time the version is modified
 
 | Type | Default value                                                                   |
 | ---- | ------------------------------------------------------------------------------- |
-| str  | "3.10"<br> <br>_<span style="color:orange">Last update in version 1.6.0</span>_ |
+| str  | "3.11"<br> <br>_<span style="color:orange">Last update in version 2.0.0</span>_ |
 
 This is the minimum python version supported by this project.
 
@@ -164,7 +164,7 @@ This is the minimum python version supported by this project.
 
 | Type | Default value                                                                   |
 | ---- | ------------------------------------------------------------------------------- |
-| str  | "3.14"<br> <br>_<span style="color:orange">Last update in version 1.6.0</span>_ |
+| str  | "3.15"<br> <br>_<span style="color:orange">Last update in version 2.0.0</span>_ |
 
 This is the maximum python version supported by this project.
 
