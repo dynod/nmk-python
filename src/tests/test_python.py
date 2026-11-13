@@ -23,7 +23,7 @@ class TestPythonPlugin(NmkBaseTester):
         return Path(__file__).parent / "templates"
 
     def expected_supp_versions(self) -> list[str]:
-        return ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        return ["3.11", "3.12", "3.13", "3.14", "3.15"]
 
     def check_version(self, monkeypatch: pytest.MonkeyPatch, git_version: str, expected_python_version: str):
         # Fake git subprocess behavior
@@ -216,7 +216,7 @@ class TestSomething:
         self.check_logs(f"-  👉 nmk-python: {nmk_python.__version__}")
 
     def test_install_ok(self, monkeypatch: pytest.MonkeyPatch):
-        monkeypatch.setattr(VenvUpdateBuilder, "build", lambda _s, pip_args: None)  # type: ignore
+        monkeypatch.setattr(VenvUpdateBuilder, "build", lambda _s: None)  # type: ignore
 
         # Prepare test project for python install
         self.fake_python_src("")

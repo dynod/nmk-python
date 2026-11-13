@@ -17,8 +17,8 @@ config:
   pythonVersionStamp: ${outputDir}/.pythonversion
 
   # Python supported versions range (min-max)
-  pythonMinVersion: "3.10"
-  pythonMaxVersion: "3.14"
+  pythonMinVersion: "3.11"
+  pythonMaxVersion: "3.15"
   pythonSupportedVersions:
     __resolver__: nmk_python.version.PythonSupportedVersionsResolver
 

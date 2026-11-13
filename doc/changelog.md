@@ -8,6 +8,12 @@ Only interface and important behavior changes are listed here.
 The fully detailed changelog is also available on [Github](https://github.com/dynod/nmk-python/releases)
 ```
 
+## Release 2.0.0
+
+- updated {ref}`${pythonMinVersion}<pythonMinVersion>` item to **3.11**
+- updated {ref}`${pythonMaxVersion}<pythonMaxVersion>` item to **3.15**
+- removed deprecated **pip_args** parameters from {py:class}`~nmk_python.build.EditableBuilder` and {py:class}`~nmk_python.build.Installer` **`build`** methods
+
 ## Release 1.13.0
 
 - updated **{ref}`py.uninstall<py.uninstall>`** task behavior to delete {ref}`${pythonIgnoredLockfile}<pythonIgnoredLockfile>` lock files
