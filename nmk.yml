@@ -43,8 +43,11 @@ config:
           omit:
             - out/tests/*
             - src/nmk_python/templates/*
-            - src/nmk_python/backends/pip_build_backend.py
 
   # Github issues logged in nmk project
   githubIssuesRepo: nmk
   githubIssuesLabel: "plugin:python"
+
+  # Temporary ignore while waiting for nmk-base upgrade
+  gitIgnoredFiles:
+    - uv.lock

@@ -236,16 +236,8 @@ class TestSomething:
 
         # Simple pip call with sample package
         self.fake_python_src("")
-        lock_file = self.test_folder / "uv.lock"
-        lock_file.touch()
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.uninstall", "--config", '{"pythonLocalDepsPatterns":["nmk-py*"]}'])
-        self.check_logs([f"Removing lock file: {lock_file}", "'uv', 'sync', '--no-install-project'"])
-        assert not lock_file.is_file()  # Lock file should be removed
-
-    def test_ignored_lockfile(self):
-        # Check ignored lockfile
-        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["--print", "pythonIgnoredLockfile"])
-        self.check_logs('{ "pythonIgnoredLockfile": [ "uv.lock" ] }')
+        self.check_logs(["'uv', 'sync', '--no-install-project'"])
 
     def test_supported_versions(self):
         def quote(a: str) -> str:

@@ -5,11 +5,10 @@ Build backend factory definition module
 from nmk.model.model import NmkModel
 
 from .build_backend import PythonBuildBackend
-from .pip_build_backend import PipBuildBackend
 from .uv_build_backend import UvBuildBackend
 
 # Supported backends mapping
-_SUPPORTED_BACKENDS = {"pip": PipBuildBackend, "legacy": PipBuildBackend, "uv": UvBuildBackend}
+_SUPPORTED_BACKENDS = {"uv": UvBuildBackend}
 
 
 class BuildBackendFactory:

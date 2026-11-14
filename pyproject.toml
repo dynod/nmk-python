@@ -129,4 +129,4 @@ data_file = "out/.coverage"
 concurrency = ["thread"]
 disable_warnings = ["no-data-collected"]
 branch = true
-omit = ["src/tests/*", "out/tests/*", "src/nmk_python/templates/*", "src/nmk_python/backends/pip_build_backend.py"]
+omit = ["src/tests/*", "out/tests/*", "src/nmk_python/templates/*"]

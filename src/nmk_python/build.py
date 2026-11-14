@@ -165,7 +165,7 @@ class Uninstaller(NmkTaskBuilder):
     Uninstall current project wheel from venv
     """
 
-    def build(self, name: str, local_deps: list[str] | None = None, lock_files: list[str] | None = None):  # pyright: ignore[reportIncompatibleMethodOverride]
+    def build(self, name: str, local_deps: list[str] | None = None):  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Uninstall wheel from venv
 
@@ -173,16 +173,7 @@ class Uninstaller(NmkTaskBuilder):
 
         :param name: wheel name to be uninstalled
         :param local_deps: list of workspace local dependencies patterns, used to find additional wheels to uninstall
-        :param lock_files: list of paths to lock files to be cleaned
         """
-
-        # Clean lock files, if required and present
-        project_root = self.model.env_backend.project_path
-        for lock_file_path in filter(
-            lambda p: p.is_file(), map(lambda p: p if p.is_absolute() else project_root / p, map(Path, lock_files if lock_files else []))
-        ):
-            self.logger.debug(f"Removing lock file: {lock_file_path}")
-            lock_file_path.unlink()
 
         # Find local deps to uninstall, from provided packages
         wheel_names = set([name])
@@ -376,22 +367,6 @@ class DepsMetadataBuilder(NmkTaskBuilder):
                 errors += 1
 
         assert (errors == 0) or not fail_on_error, f"{errors} error(s) found while checking dependencies vs constraints"
-
-
-class PythonIgnoredLockfileResolver(NmkListConfigResolver):
-    """
-    Python ignored lockfile resolver
-    """
-
-    def get_value(self, name: str) -> list[str]:  # pyright: ignore[reportIncompatibleMethodOverride]
-        """
-        Return the list of lockfiles to be ignored, depending on the env backend and if the project is locked or not
-        """
-
-        # Ignore uv.lock file if using uv env backend
-        if self.model.env_backend.name == "uv":
-            return ["uv.lock"]
-        return []  # pragma: no cover
 
 
 class PythonMergedConstraintsResolver(NmkListConfigResolver):
