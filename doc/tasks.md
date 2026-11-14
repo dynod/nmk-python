@@ -307,7 +307,6 @@ This task:
 
 - uninstalls the built python wheel from the project venv
 - uninstalls its local dependencies (computed from the provided **{ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`** patterns) from the project venv
-- clean the **{ref}`${pythonIgnoredLockfile}<pythonIgnoredLockfile>`** lock files, if any<br>_<span style="color:green">Added in version 1.13.0</span>_
 
 | Property | Value/description                                  |
 | -------- | -------------------------------------------------- |
@@ -320,4 +319,3 @@ The builder is called with the following parameters mapping:
 | ---------- | --------------------------------------------------------------------------------------------------------------------------- |
 | name       | **{ref}`${pythonPackage}<pythonPackage>`**                                                                                  |
 | local_deps | **{ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`**<br>_<span style="color:green">Added in version 1.8.0</span>_ |
-| lock_files | **{ref}`${pythonIgnoredLockfile}<pythonIgnoredLockfile>`**<br>_<span style="color:green">Added in version 1.13.0</span>_    |

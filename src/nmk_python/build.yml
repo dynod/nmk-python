@@ -59,17 +59,12 @@ config:
   # Python editable install stamp
   pythonEditableStamp: ${outputDir}/.pyeditable
 
-  # Python ignored lockfile, depending on the env backend and if the project is locked or not
-  pythonIgnoredLockfile:
-    __resolver__: nmk_python.build.PythonIgnoredLockfileResolver
-
   # Python files to be ignored
   gitIgnoredFiles:
     - .eggs/
     - "*.egg-info/"
     - "*.pyc"
     - __pycache__
-    - ${pythonIgnoredLockfile}
 
   # Additional github publish step: publish on pypi.org
   githubPublishSteps:
@@ -79,16 +74,6 @@ config:
         user: __token__
         password: ${{ secrets.pypi_password }}
         packages_dir: ${r!pythonBuildDir}/wheel_dist
-
-  # Wheel install arguments (for pip backend)
-  pythonWheelPipInstallArgs:
-    - --force-reinstall # force reinstall because otherwise install will be skipped if version didn't changed
-    - --no-deps # but skip dependencies to avoid reinstalling everything (deps are already installed by py.venv task)
-
-  # Editable install arguments (for pip backend)
-  pythonEditablePipInstallArgs:
-    - --no-deps # skip dependencies to avoid reinstalling everything
-    - --no-build-isolation # disable dependencies install when building for "editable" mode
 
   # Wheel install arguments (for uv backend)
   pythonWheelUvInstallArgs: []
@@ -212,5 +197,4 @@ tasks:
     params:
       name: ${pythonPackage}
       local_deps: ${pythonLocalDepsPatterns}
-      lock_files: ${pythonIgnoredLockfile}
     if: ${pythonSrcFiles} # Only if python source files are found
