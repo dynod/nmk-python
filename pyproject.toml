@@ -20,7 +20,8 @@ classifiers = [
     "Programming Language :: Python :: 3.15",
 ]
 dependencies = [
-    "nmk-base>=1.5.0",
+    "nmk-base>=2.0.0",
+    "buildenv>=3.0.0",
     "nmk>=1.5.1",
     "Jinja2",
     "tomlkit",
