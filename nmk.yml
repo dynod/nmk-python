@@ -47,7 +47,3 @@ config:
   # Github issues logged in nmk project
   githubIssuesRepo: nmk
   githubIssuesLabel: "plugin:python"
-
-  # Temporary ignore while waiting for nmk-base upgrade
-  gitIgnoredFiles:
-    - uv.lock

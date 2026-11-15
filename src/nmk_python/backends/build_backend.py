@@ -22,13 +22,6 @@ class PythonBuildBackend(ABC):
         self._env_backend = cast(EnvBackend, model.env_backend)  # type: ignore
 
     @abstractmethod
-    def install_editable(self):  # pragma: no cover
-        """
-        Install current project as editable package
-        """
-        pass
-
-    @abstractmethod
     def install_wheel(self, wheel_path: Path):  # pragma: no cover
         """
         Install current project built wheel
@@ -47,10 +40,8 @@ class PythonBuildBackend(ABC):
         pass
 
     @abstractmethod
-    def uninstall_wheels(self, wheel_names: list[str]):  # pragma: no cover
+    def uninstall_wheels(self):  # pragma: no cover
         """
-        Uninstall specified wheels
-
-        :param wheel_names: names of the wheels to uninstall
+        Uninstall wheels (i.e. restore venv in editable mode)
         """
         pass

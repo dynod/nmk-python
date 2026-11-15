@@ -1,4 +1,4 @@
-# Changelog
+# 📝 Changelog
 
 Here are listed all the meaningfull changes done on **`nmk-python`** since version 1.0
 
@@ -17,12 +17,16 @@ The fully detailed changelog is also available on [Github](https://github.com/dy
 ### Breaking changes
 
 - Removed support for <font color="red">Python 3.10</font>
-- Removed deprecated <font color="red">pip_args</font> parameters from {py:class}`~nmk_python.build.EditableBuilder` and {py:class}`~nmk_python.build.Installer` **`build`** methods
+- Removed deprecated <font color="red">pip_args</font> parameters from {py:class}`~nmk_python.build.Installer` **`build`** method
 - Removed support for <font color="red">pip</font> build backend; only <font color="green">uv</font> build backend is supported for now
 - Removed support for lockfile cleaning + adding to git ignored files, since it is now handled globally in [nmk-base](https://nmk-base.rtfd.io/) plugin
+- Removed **`py.editable`** task; since project editable install is automatically handled by **uv** as part of **[py.venv](https://nmk-base.readthedocs.io/en/stable/tasks.html#py-venv)** task.
 - Consequently removed config items:
+  - <font color="red">pythonEditableStamp</font>
   - <font color="red">pythonEditablePipInstallArgs</font>
   - <font color="red">pythonWheelPipInstallArgs</font>
+  - <font color="red">pythonEditableUvInstallArgs</font>
+  - <font color="red">pythonWheelUvInstallArgs</font>
   - <font color="red">pythonIgnoredLockfile</font>
 
 ### Config updates
@@ -72,9 +76,9 @@ The fully detailed changelog is also available on [Github](https://github.com/dy
 
 - removed **{ref}`py.version<py.version>`** and **{ref}`py.project<py.project>`** trigger condition (tasks are always executed, even if no python files were found in project)
 - added {ref}`${pythonDevRequirements}<pythonDevRequirements>` and {ref}`${pythonArchiveRequirements}<pythonArchiveRequirements>` config items to ease **dev** dependency group generation
-- renamed `${pythonEditableInstallArgs}` config item to {ref}`${pythonEditablePipInstallArgs}<pythonEditablePipInstallArgs>` one
-- renamed `${pythonWheelInstallArgs}` config item to {ref}`${pythonWheelPipInstallArgs}<pythonWheelPipInstallArgs>` one
-- added {ref}`${pythonEditableUvInstallArgs}<pythonEditableUvInstallArgs>` and {ref}`${pythonWheelUvInstallArgs}<pythonWheelUvInstallArgs>` config items to provide extra args for build with **uv** tool
+- renamed `${pythonEditableInstallArgs}` config item to `${pythonEditablePipInstallArgs}` one
+- renamed `${pythonWheelInstallArgs}` config item to `${pythonWheelPipInstallArgs}` one
+- added `${pythonEditableUvInstallArgs}` and `${pythonWheelUvInstallArgs}` config items to provide extra args for build with **uv** tool
 - in generated **pyproject.toml**, add a **dependency-groups** section with a **dev** group holding all tools dependencies (as [required by uv tool](https://docs.astral.sh/uv/concepts/projects/dependencies/#development-dependencies))
 - add override of [${venvUpdateInput}](https://nmk-base.readthedocs.io/en/stable/config.html#venvupdateinput) to condition venv refresh on **pyproject.toml** file
 - refactored builders to introduce "build backend" logic and separate implementations:
@@ -115,4 +119,4 @@ The fully detailed changelog is also available on [Github](https://github.com/dy
 
 - new `${pythonEditableInstallArgs}` config item
 - new `${pythonWheelInstallArgs}` config item
-- changed **{ref}`py.install<py.install>`** and **{ref}`py.editable<py.editable>`** tasks pip install args to point to these new items
+- changed **{ref}`py.install<py.install>`** and **`py.editable`** tasks pip install args to point to these new items
