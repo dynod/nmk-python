@@ -3,7 +3,6 @@ Uv build backend module.
 """
 
 from pathlib import Path
-from typing import cast
 
 from .build_backend import PythonBuildBackend
 
@@ -15,22 +14,9 @@ class UvBuildBackend(PythonBuildBackend):
     :param model: NmkModel instance
     """
 
-    def install_editable(self):
-        # Prepare install args
-        install_args = ["sync"]
-
-        # Add extra args from model config
-        install_args += cast(list[str], self._model.config["pythonEditableUvInstallArgs"].value)
-
-        # Delegate to subprocess
-        self._env_backend.subprocess(install_args, cwd=self._env_backend.project_path)
-
     def install_wheel(self, wheel_path: Path):
         # Prepare install args
         install_args = ["pip", "install", str(wheel_path)]
-
-        # Add extra args from model config
-        install_args += cast(list[str], self._model.config["pythonWheelUvInstallArgs"].value)
 
         # Delegate to subprocess
         self._env_backend.subprocess(install_args, cwd=self._env_backend.project_path)
@@ -46,6 +32,6 @@ class UvBuildBackend(PythonBuildBackend):
         # Return built wheel path
         return build_dir / wheel_sub_dir / built_wheel_name
 
-    def uninstall_wheels(self, wheel_names: list[str]):
+    def uninstall_wheels(self):
         # Same as setup, just don't print updates (will be done by uninstall builder)
-        self._env_backend.upgrade(full=False, only_deps=True, print_updates=False)
+        self._env_backend.upgrade(full=False)

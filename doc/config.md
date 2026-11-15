@@ -1,4 +1,4 @@
-# Configuration Reference
+# 📖 Configuration Reference
 
 The **`nmk-python`** plugin handles the configuration items listed in this page.
 
@@ -542,46 +542,6 @@ Paths may be absolute or relative; non-absolute paths are considered to be relat
 ```{note}
 Resources won't actually be copied in the source tree. Destination path should be considered as the location where resource *would* exist in the source tree.
 ```
-
----
-
-(pythonEditableStamp)=
-
-### **`pythonEditableStamp`** -- Python editable install stamp file
-
-| Type | Default value                                                                                                     |
-| ---- | ----------------------------------------------------------------------------------------------------------------- |
-| str  | [${outputDir}](https://nmk-base.readthedocs.io/en/stable/config.html#outputdir-output-base-directory)/.pyeditable |
-
-This is the python editable install stamp file, updated each time the project is installed in editable mode.
-
----
-
-(pythonEditableUvInstallArgs)=
-
-### **`pythonEditableUvInstallArgs`** -- uv arguments for editable mode install
-
-| Type      | Default value |
-| --------- | ------------- |
-| list[str] | []            |
-
-This is the list of **`uv sync`** options to be used when installing project in editable mode with **{ref}`py.editable<py.editable>`** task, with uv build backend.
-
-_<span style="color:green">Added in version 1.7.0</span>_
-
----
-
-(pythonWheelUvInstallArgs)=
-
-### **`pythonWheelUvInstallArgs`** -- uv arguments for wheel install
-
-| Type      | Default value |
-| --------- | ------------- |
-| list[str] | []            |
-
-This is the list of **`uv pip install`** options to be used when installing project built wheel with **{ref}`py.install<py.install>`** task, with uv build backend.
-
-_<span style="color:green">Added in version 1.7.0</span>_ -- was previously named `${pythonWheelInstallArgs}`
 
 ---
 

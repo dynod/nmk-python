@@ -56,9 +56,6 @@ config:
   # Extra (external) resources to be bundled in built python wheel
   pythonExtraResources: {}
 
-  # Python editable install stamp
-  pythonEditableStamp: ${outputDir}/.pyeditable
-
   # Python files to be ignored
   gitIgnoredFiles:
     - .eggs/
@@ -74,12 +71,6 @@ config:
         user: __token__
         password: ${{ secrets.pypi_password }}
         packages_dir: ${r!pythonBuildDir}/wheel_dist
-
-  # Wheel install arguments (for uv backend)
-  pythonWheelUvInstallArgs: []
-
-  # Editable install arguments (for uv backend)
-  pythonEditableUvInstallArgs: []
 
   # Type checking mode for Pyright; may be off, basic, standard, strict
   pythonTypeCheckingMode: strict
@@ -110,28 +101,12 @@ config:
   pythonConstraintsStrictCheck: false
 
 tasks:
-  # Python editable install
-  py.editable:
-    description: Install python editable package
-    emoji: ":snake:.:house:"
-    deps:
-      - py.project
-      - py.format
-      - py.analyze
-    appendToDeps: build.compile
-    if: ${pythonSrcFiles} # Only if python source files are found
-    output:
-      - ${pythonEditableStamp}
-    input:
-      - ${pythonProjectFile}
-    builder: nmk_python.build.EditableBuilder
-
   # Python dependencies metadata
   py.deps:
     description: Gather python dependencies metadata
     emoji: ":snake:.:link:"
     deps:
-      - py.editable
+      - py.project
     appendToDeps: build.compile
     if: ${pythonSrcFiles} # Only if python source files are found
     output:
@@ -185,16 +160,12 @@ tasks:
     params:
       name: ${pythonPackage}
       wheel: ${pythonWheel}
-      to_remove: ${pythonEditableStamp}
 
   # Python module clean
   py.uninstall:
-    description: Uninstall python package and local dependencies
+    description: Uninstall python wheel
     emoji: ":broom:.:snake:"
     appendToDeps:
       - clean
     builder: nmk_python.build.Uninstaller
-    params:
-      name: ${pythonPackage}
-      local_deps: ${pythonLocalDepsPatterns}
     if: ${pythonSrcFiles} # Only if python source files are found

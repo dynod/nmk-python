@@ -1,4 +1,4 @@
-# Tasks
+# 🛠️ Tasks
 
 The **`nmk-python`** plugin defines the tasks described below.
 
@@ -152,21 +152,6 @@ _<span style="color:orange">Changed in version 1.10.2</span>_ -- previous depend
 
 ---
 
-(py.editable)=
-
-#### **`py.editable`** -- Python project install in editable mode
-
-This task installs the project in editable mode in the venv.
-
-| Property | Value/description                                       |
-| -------- | ------------------------------------------------------- |
-| builder  | {py:class}`nmk_python.build.EditableBuilder`            |
-| input    | {ref}`${pythonProjectFile}<pythonProjectFile>` file     |
-| output   | {ref}`${pythonEditableStamp}<pythonEditableStamp>` file |
-| if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found      |
-
----
-
 (py.deps)=
 
 #### **`py.deps`** -- Generate Python dependencies metadata
@@ -283,13 +268,10 @@ This task installs the built python wheel in the project venv.
 
 The builder is called with the following parameters mapping:
 
-| Name      | Value                                                                                                       |
-| --------- | ----------------------------------------------------------------------------------------------------------- |
-| name      | **{ref}`${pythonPackage}<pythonPackage>`**                                                                  |
-| wheel     | **{ref}`${pythonWheel}<pythonWheel>`**<br> <br>_<span style="color:orange">Changed in version 1.7.0</span>_ |
-| to_remove | **{ref}`${pythonEditableStamp}<pythonEditableStamp>`**                                                      |
-
-The builder also removes the **{ref}`${pythonEditableStamp}<pythonEditableStamp>`** stamp file, to force installing the project in editable mode again on the next build.
+| Name  | Value                                                                                                       |
+| ----- | ----------------------------------------------------------------------------------------------------------- |
+| name  | **{ref}`${pythonPackage}<pythonPackage>`**                                                                  |
+| wheel | **{ref}`${pythonWheel}<pythonWheel>`**<br> <br>_<span style="color:orange">Changed in version 1.7.0</span>_ |
 
 ---
 
@@ -301,21 +283,11 @@ All tasks in this chapter are dependencies of the base [**`clean`**](https://nmk
 
 (py.uninstall)=
 
-### **`py.uninstall`** -- Uninstall Python wheel and local dependencies
+### **`py.uninstall`** -- Uninstall Python wheel
 
-This task:
-
-- uninstalls the built python wheel from the project venv
-- uninstalls its local dependencies (computed from the provided **{ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`** patterns) from the project venv
+This task uninstalls the built python wheel from the project venv, and restore it in editable mode.
 
 | Property | Value/description                                  |
 | -------- | -------------------------------------------------- |
 | builder  | {py:class}`nmk_python.build.Uninstaller`           |
 | if       | {ref}`${pythonSrcFiles}<pythonSrcFiles>` are found |
-
-The builder is called with the following parameters mapping:
-
-| Name       | Value                                                                                                                       |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------- |
-| name       | **{ref}`${pythonPackage}<pythonPackage>`**                                                                                  |
-| local_deps | **{ref}`${pythonLocalDepsPatterns}<pythonLocalDepsPatterns>`**<br>_<span style="color:green">Added in version 1.8.0</span>_ |

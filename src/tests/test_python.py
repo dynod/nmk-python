@@ -100,27 +100,6 @@ class TestPythonPlugin(NmkBaseTester):
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.analyze"])
         assert (self.test_folder / "out" / ".ruff-check").is_file()
 
-    def test_python_editable(self):
-        # Prepare test project for python editable install
-        self.fake_python_src("")
-        project = self.prepare_project("ref_python.yml")
-        self.nmk(project, extra_args=["py.editable"])
-        stamp = self.test_folder / "out" / ".pyeditable"
-        assert (self.test_folder / "pyproject.toml").is_file()
-        assert stamp.is_file()
-
-        # Another build
-        self.nmk(project, extra_args=["py.editable"])
-        self.check_logs("nothing to do")
-
-    def test_python_editable_skipped(self, monkeypatch: pytest.MonkeyPatch):
-        monkeypatch.setattr("nmk_python.build.is_windows", lambda: True)
-
-        # Prepare test project for python install
-        self.fake_python_src("")
-        self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.editable", "--config", "pythonPackage=nmk"])
-        self.check_logs("Can't install nmk while running nmk!")
-
     def test_python_build(self):
         # Prepare test project for python build
         self.fake_python_src("")
@@ -237,7 +216,7 @@ class TestSomething:
         # Simple pip call with sample package
         self.fake_python_src("")
         self.nmk(self.prepare_project("ref_python.yml"), extra_args=["py.uninstall", "--config", '{"pythonLocalDepsPatterns":["nmk-py*"]}'])
-        self.check_logs(["'uv', 'sync', '--no-install-project'"])
+        self.check_logs(["'uv', 'sync'"])
 
     def test_supported_versions(self):
         def quote(a: str) -> str:
@@ -356,8 +335,6 @@ class TestSomething:
             project,
             extra_args=[
                 "py.deps",
-                "--skip",
-                "py.editable",
                 "--config",
                 "pythonPackage=nmk-python",
                 "--config",
